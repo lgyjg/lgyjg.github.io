@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          envsetup-sh的常用命令 - 渐行渐远 | yangjianguo&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.aman.site/2016/03/10/envsetup_common_command/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">渐行渐远</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('post-bg-unix-linux.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#android open source" title="android open source">android open source</a>
+                        
+                    </div>
+                    <h1>envsetup-sh的常用命令</h1>
+                    <h2 class="subheading"> Android开源项目编译中sh的常用命令</h2>
+                    <span class="meta">
+                        Posted by JianGuo Yang on
+                        2016-03-10
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="envsetup-sh的常用命令"><a href="#envsetup-sh的常用命令" class="headerlink" title="envsetup-sh的常用命令"></a>envsetup-sh的常用命令</h1><p><strong> 摘要：</strong> 这篇文档主要对android下的编译脚本文件 envsetup.sh 进行了简单的分析，并且从中总结了一些在开发过程中常用的命令，以便于开发者们提高开发效率。</p>
+<h2 id="常用命令索引"><a href="#常用命令索引" class="headerlink" title="常用命令索引"></a>常用命令索引</h2><p><code>croot</code>  - -到达android根目录；<br><code>cproj + 模块名</code>  - -到达项目的根目录下；<br><code>gettop</code>  - -得到顶级目录路径；<br><code>findmakefile</code> - -找到make文件。</p>
+<p><code>m</code> - -当前目录下编译执行，相当于在android目录下执行make<br><code>mm</code> - -执行当前目录下最近的make文件<br><code>mmm</code>  - -在android目录下，执行某个文件夹下的make文件<br><code>mma</code> - -编译当前目录下所有的模块和他们的依赖<br><code>mmma</code> - -编译提供的目录下的所有模块和他们的依赖<br><code>make sdk</code> - -编译SDK及其包含的一些工具 (adb, fastboot, 等等)。<br><code>make snod</code>  - -从当前编译出的二进制数据编译system.img文件 ，这条命令将重新生成镜像，消耗的时间很少，如果你修改了一些数据文件（如音乐、视频）等文件时比较有用。<br><code>make cts</code>  - -这条命令将编译CTS套机，编译出的结果放在out目录对应版的data/app目录下面。CTS测试时有用。<br><code>make services</code> - -<br><code>make runtime</code> - -<br><code>make droid</code> - -make droid is the normal build.<br><code>make all</code> - -make everything, whether it is included in the product definition or not<br><code>make clean</code> - -remove all built files (prepare for a new build). Same as rm -rf out _make modules - shows a list of submodules that can be built (List of all LOCAL_MODULE definitions)<br><code>make installclean</code>  - -同上<br><code>make *</code> - -make a specific module (note that this is not the same as directory name. It is the LOCAL_MODULE definition in the Android.mk file)<br><code>make clean *</code>  - -clean a specific module<br><code>make bootimage</code> - -编译创建一个新的 boot image<br><code>make bootimage</code>  - -TARGET_PREBUILT_KERNEL=/path/to/bzImage - create a new boot image with custom bzImage<br><code>make systemimage</code> - -编译创建一个新的 system image</p>
+<h2 id="make命令"><a href="#make命令" class="headerlink" title="make命令"></a>make命令</h2><p>不用多解释，编译整个项目，可以加模块名参数等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">make</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">local</span> start_time=$(date +<span class="string">"%s"</span>)</span><br><span class="line">    $(get_make_<span class="built_in">command</span>) <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">    <span class="built_in">local</span> ret=$?</span><br><span class="line">    <span class="built_in">local</span> end_time=$(date +<span class="string">"%s"</span>)</span><br><span class="line">    <span class="built_in">local</span> tdiff=$((<span class="variable">$end_time</span>-<span class="variable">$start_time</span>))</span><br><span class="line">    <span class="built_in">local</span> hours=$((<span class="variable">$tdiff</span> / 3600 ))</span><br><span class="line">    <span class="built_in">local</span> mins=$(((<span class="variable">$tdiff</span> % 3600) / 60))</span><br><span class="line">    <span class="built_in">local</span> secs=$((<span class="variable">$tdiff</span> % 60))</span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$ret</span> <span class="_">-eq</span> 0 ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> -n <span class="_">-e</span> <span class="string">"#### make completed successfully "</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">echo</span> -n <span class="_">-e</span> <span class="string">"#### make failed to build some targets "</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$hours</span> <span class="_">-gt</span> 0 ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">"(%02g:%02g:%02g (hh:mm:ss))"</span> <span class="variable">$hours</span> <span class="variable">$mins</span> <span class="variable">$secs</span></span><br><span class="line">    <span class="keyword">elif</span> [ <span class="variable">$mins</span> <span class="_">-gt</span> 0 ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">"(%02g:%02g (mm:ss))"</span> <span class="variable">$mins</span> <span class="variable">$secs</span></span><br><span class="line">    <span class="keyword">elif</span> [ <span class="variable">$secs</span> <span class="_">-gt</span> 0 ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">printf</span> <span class="string">"(%s seconds)"</span> <span class="variable">$secs</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="_">-e</span> <span class="string">" ####"</span></span><br><span class="line">    <span class="built_in">echo</span></span><br><span class="line">    <span class="built_in">return</span> <span class="variable">$ret</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>提示：</strong>具体功能还需要分析。</p>
+</blockquote>
+<h2 id="设置编译环境的java-home"><a href="#设置编译环境的java-home" class="headerlink" title="设置编译环境的java home"></a>设置编译环境的java home</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Force JAVA_HOME to point to java 1.7 or java 1.6  if it isn't already set.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Note that the MacOS path for java 1.7 includes a minor revision number (sigh).</span></span><br><span class="line"><span class="comment"># For some reason, installing the JDK doesn't make it show up in the</span></span><br><span class="line"><span class="comment"># JavaVM.framework/Versions/1.7/ folder.</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">set_java_home</span></span>() &#123;</span><br><span class="line">    <span class="comment"># Clear the existing JAVA_HOME value if we set it ourselves, so that</span></span><br><span class="line">    <span class="comment"># we can reset it later, depending on the version of java the build</span></span><br><span class="line">    <span class="comment"># system needs.</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment"># If we don't do this, the JAVA_HOME value set by the first call to</span></span><br><span class="line">    <span class="comment"># build/envsetup.sh will persist forever.</span></span><br><span class="line">    <span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$ANDROID_SET_JAVA_HOME</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">      <span class="built_in">export</span> JAVA_HOME=<span class="string">""</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$JAVA_HOME</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">      <span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LEGACY_USE_JAVA6</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">case</span> `uname <span class="_">-s</span>` <span class="keyword">in</span></span><br><span class="line">            Darwin)</span><br><span class="line">                <span class="built_in">export</span> JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home</span><br><span class="line">                ;;</span><br><span class="line">            *)</span><br><span class="line">                <span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-6-sun</span><br><span class="line">                ;;</span><br><span class="line">        <span class="keyword">esac</span></span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">case</span> `uname <span class="_">-s</span>` <span class="keyword">in</span></span><br><span class="line">            Darwin)</span><br><span class="line">                <span class="built_in">export</span> JAVA_HOME=$(/usr/libexec/java_home -v 1.7)</span><br><span class="line">                ;;</span><br><span class="line">            *)</span><br><span class="line">                <span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64</span><br><span class="line">                ;;</span><br><span class="line">        <span class="keyword">esac</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Keep track of the fact that we set JAVA_HOME ourselves, so that</span></span><br><span class="line">      <span class="comment"># we can change it on the next envsetup.sh, if required.</span></span><br><span class="line">      <span class="built_in">export</span> ANDROID_SET_JAVA_HOME=<span class="literal">true</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="到某个文件所在的目录下"><a href="#到某个文件所在的目录下" class="headerlink" title="到某个文件所在的目录下"></a>到某个文件所在的目录下</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">godir</span></span> () &#123;</span><br><span class="line">    <span class="keyword">if</span> [[ -z <span class="string">"<span class="variable">$1</span>"</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Usage: godir &lt;regex&gt;"</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    T=$(gettop)</span><br><span class="line">    <span class="keyword">if</span> [[ ! <span class="_">-f</span> <span class="variable">$T</span>/filelist ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> -n <span class="string">"Creating index..."</span></span><br><span class="line">        (\<span class="built_in">cd</span> <span class="variable">$T</span>; find . -wholename ./out -prune -o -wholename ./.repo -prune -o -type f &gt; filelist)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">" Done"</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">""</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">local</span> lines</span><br><span class="line">    lines=($(\grep <span class="string">"<span class="variable">$1</span>"</span> <span class="variable">$T</span>/filelist | sed <span class="_">-e</span> <span class="string">'s/\/[^/]*$//'</span> | sort | uniq))</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$&#123;#lines[@]&#125;</span> = 0 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Not found"</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">local</span> pathname</span><br><span class="line">    <span class="built_in">local</span> choice</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$&#123;#lines[@]&#125;</span> &gt; 1 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">while</span> [[ -z <span class="string">"<span class="variable">$pathname</span>"</span> ]]; <span class="keyword">do</span></span><br><span class="line">            <span class="built_in">local</span> index=1</span><br><span class="line">            <span class="built_in">local</span> line</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> <span class="variable">$&#123;lines[@]&#125;</span>; <span class="keyword">do</span></span><br><span class="line">                <span class="built_in">printf</span> <span class="string">"%6s %s\n"</span> <span class="string">"[<span class="variable">$index</span>]"</span> <span class="variable">$line</span></span><br><span class="line">                index=$((<span class="variable">$index</span> + 1))</span><br><span class="line">            <span class="keyword">done</span></span><br><span class="line">            <span class="built_in">echo</span></span><br><span class="line">            <span class="built_in">echo</span> -n <span class="string">"Select one: "</span></span><br><span class="line">            <span class="built_in">unset</span> choice</span><br><span class="line">            <span class="built_in">read</span> choice</span><br><span class="line">            <span class="keyword">if</span> [[ <span class="variable">$choice</span> <span class="_">-gt</span> <span class="variable">$&#123;#lines[@]&#125;</span> || <span class="variable">$choice</span> <span class="_">-lt</span> 1 ]]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">"Invalid choice"</span></span><br><span class="line">                <span class="built_in">continue</span></span><br><span class="line">            <span class="keyword">fi</span></span><br><span class="line">            pathname=<span class="variable">$&#123;lines[$(($choice-1))]&#125;</span></span><br><span class="line">        <span class="keyword">done</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        pathname=<span class="variable">$&#123;lines[0]&#125;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    \<span class="built_in">cd</span> <span class="variable">$T</span>/<span class="variable">$pathname</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体参数查看runtest-h"><a href="#具体参数查看runtest-h" class="headerlink" title="具体参数查看runtest -h"></a>具体参数查看runtest -h</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># simple shortcut to the runtest command</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">runtest</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    T=$(gettop)</span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$T</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Couldn't locate the top of the tree.  Try setting TOP."</span> &gt;&amp;2</span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    (<span class="string">"<span class="variable">$T</span>"</span>/development/testrunner/runtest.py <span class="variable">$@</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="smoketest"><a href="#smoketest" class="headerlink" title="smoketest"></a>smoketest</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">smoketest</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$ANDROID_PRODUCT_OUT</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Couldn't locate output files.  Try running 'lunch' first."</span> &gt;&amp;2</span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    T=$(gettop)</span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$T</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Couldn't locate the top of the tree.  Try setting TOP."</span> &gt;&amp;2</span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    (\<span class="built_in">cd</span> <span class="string">"<span class="variable">$T</span>"</span> &amp;&amp; mmm tests/SmokeTest) &amp;&amp;</span><br><span class="line">      adb uninstall com.android.smoketest &gt; /dev/null &amp;&amp;</span><br><span class="line">      adb uninstall com.android.smoketest.tests &gt; /dev/null &amp;&amp;</span><br><span class="line">      adb install <span class="variable">$ANDROID_PRODUCT_OUT</span>/data/app/SmokeTestApp.apk &amp;&amp;</span><br><span class="line">      adb install <span class="variable">$ANDROID_PRODUCT_OUT</span>/data/app/SmokeTest.apk &amp;&amp;</span><br><span class="line">      adb shell am instrument -w com.android.smoketest.tests/android.test.InstrumentationTestRunner</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="常用的安卓物理键模拟及viewserver"><a href="#常用的安卓物理键模拟及viewserver" class="headerlink" title="常用的安卓物理键模拟及viewserver"></a>常用的安卓物理键模拟及viewserver</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启viewServer</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">startviewserver</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">local</span> port=4939</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$#</span> <span class="_">-gt</span> 0 ]; <span class="keyword">then</span></span><br><span class="line">            port=<span class="variable">$1</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    adb shell service call window 1 i32 <span class="variable">$port</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 停止viewServer</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">stopviewserver</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    adb shell service call window 2</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 查看viewServer状态</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">isviewserverstarted</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    adb shell service call window 3</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 相当于按下设备home键、back键、menu键</span></span><br><span class="line"><span class="keyword">function</span> key_home()</span><br><span class="line"><span class="keyword">function</span> key_back()</span><br><span class="line"><span class="keyword">function</span> key_menu()</span><br></pre></td></tr></table></figure>
+<p>##获取手机中的bug日志<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">getbugreports</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">local</span> reports=(`adb shell ls /sdcard/bugreports | tr <span class="_">-d</span> <span class="string">'\r'</span>`)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$reports</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Could not locate any bugreports."</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> report</span><br><span class="line">    <span class="keyword">for</span> report <span class="keyword">in</span> <span class="variable">$&#123;reports[@]&#125;</span></span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"/sdcard/bugreports/<span class="variable">$&#123;report&#125;</span>"</span></span><br><span class="line">        adb pull /sdcard/bugreports/<span class="variable">$&#123;report&#125;</span> <span class="variable">$&#123;report&#125;</span></span><br><span class="line">        gunzip <span class="variable">$&#123;report&#125;</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="得到sdcard的路径，屏幕截图路径和最后一张截图"><a href="#得到sdcard的路径，屏幕截图路径和最后一张截图" class="headerlink" title="得到sdcard的路径，屏幕截图路径和最后一张截图"></a>得到sdcard的路径，屏幕截图路径和最后一张截图</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> getsdcardpath()</span><br><span class="line"><span class="keyword">function</span> getscreenshotpath()</span><br><span class="line"><span class="keyword">function</span> getlastscreenshot()</span><br></pre></td></tr></table></figure>
+<h2 id="dump某一时刻的trace数据"><a href="#dump某一时刻的trace数据" class="headerlink" title="dump某一时刻的trace数据"></a>dump某一时刻的trace数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">tracedmdump</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    T=$(gettop)</span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$T</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Couldn't locate the top of the tree.  Try setting TOP."</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">local</span> prebuiltdir=$(getprebuilt)</span><br><span class="line">    <span class="built_in">local</span> arch=$(gettargetarch)</span><br><span class="line">    <span class="built_in">local</span> KERNEL=<span class="variable">$T</span>/prebuilts/qemu-kernel/<span class="variable">$arch</span>/vmlinux-qemu</span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> TRACE=<span class="variable">$1</span></span><br><span class="line">    <span class="keyword">if</span> [ ! <span class="string">"<span class="variable">$TRACE</span>"</span> ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"usage:  tracedmdump  tracename"</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ ! -r <span class="string">"<span class="variable">$KERNEL</span>"</span> ] ; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Error: cannot find kernel: '<span class="variable">$KERNEL</span>'"</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> BASETRACE=$(basename <span class="variable">$TRACE</span>)</span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">"<span class="variable">$BASETRACE</span>"</span> = <span class="string">"<span class="variable">$TRACE</span>"</span> ] ; <span class="keyword">then</span></span><br><span class="line">        TRACE=<span class="variable">$ANDROID_PRODUCT_OUT</span>/traces/<span class="variable">$TRACE</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"post-processing traces..."</span></span><br><span class="line">    rm <span class="_">-f</span> <span class="variable">$TRACE</span>/qtrace.dexlist</span><br><span class="line">    post_trace <span class="variable">$TRACE</span></span><br><span class="line">    <span class="keyword">if</span> [ $? <span class="_">-ne</span> 0 ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"***"</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"*** Error: malformed trace.  Did you remember to exit the emulator?"</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"***"</span></span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"generating dexlist output..."</span></span><br><span class="line">    /bin/ls <span class="variable">$ANDROID_PRODUCT_OUT</span>/system/framework/*.jar <span class="variable">$ANDROID_PRODUCT_OUT</span>/system/app/*.apk <span class="variable">$ANDROID_PRODUCT_OUT</span>/data/app/*.apk 2&gt;/dev/null | xargs dexlist &gt; <span class="variable">$TRACE</span>/qtrace.dexlist</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"generating dmtrace data..."</span></span><br><span class="line">    q2dm -r <span class="variable">$ANDROID_PRODUCT_OUT</span>/symbols <span class="variable">$TRACE</span> <span class="variable">$KERNEL</span> <span class="variable">$TRACE</span>/dmtrace || <span class="built_in">return</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"generating html file..."</span></span><br><span class="line">    dmtracedump -h <span class="variable">$TRACE</span>/dmtrace &gt;| <span class="variable">$TRACE</span>/dmtrace.html || <span class="built_in">return</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"done, see <span class="variable">$TRACE</span>/dmtrace.html for details"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"or run:"</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"    traceview <span class="variable">$TRACE</span>/dmtrace"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查询-gradle、-java-等文件中某个字符串在文件中的位置"><a href="#查询-gradle、-java-等文件中某个字符串在文件中的位置" class="headerlink" title="查询.gradle、.java 等文件中某个字符串在文件中的位置"></a>查询.gradle、.java 等文件中某个字符串在文件中的位置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ggrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f -name <span class="string">"*\.gradle"</span> -print0 | xargs -0 grep --color -n <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">jgrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f -name <span class="string">"*\.java"</span> -print0 | xargs -0 grep --color -n <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">cgrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \( -name <span class="string">'*.c'</span> -o -name <span class="string">'*.cc'</span> -o -name <span class="string">'*.cpp'</span> -o -name <span class="string">'*.h'</span> \) -print0 | xargs -0 grep --color -n <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">resgrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> dir <span class="keyword">in</span> `find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -name res -type d`; <span class="keyword">do</span> find <span class="variable">$dir</span> -type f -name <span class="string">'*\.xml'</span> -print0 | xargs -0 grep --color -n <span class="string">"<span class="variable">$@</span>"</span>; <span class="keyword">done</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">mangrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    find . -name .repo -prune -o -name .git -prune -o -path ./out -prune -o -type f -name <span class="string">'AndroidManifest.xml'</span> -print0 | xargs -0 grep --color -n <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">sepgrep</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    find . -name .repo -prune -o -name .git -prune -o -path ./out -prune -o -name sepolicy -type d -print0 | xargs -0 grep --color -n -r --exclude-dir=\.git <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 得到顶级目录路径</span></span><br><span class="line"><span class="keyword">function</span> gettop</span><br><span class="line"><span class="comment"># 找到make文件</span></span><br><span class="line"><span class="keyword">function</span> findmakefile()</span><br><span class="line"><span class="comment"># 当前目录下编译执行，相当于在android目录下执行make</span></span><br><span class="line"><span class="keyword">function</span> m()</span><br><span class="line"><span class="comment"># 执行当前目录下最近的make文件</span></span><br><span class="line"><span class="keyword">function</span> mm()</span><br><span class="line"><span class="comment"># 在android目录下，执行某个文件夹下的make文件</span></span><br><span class="line"><span class="keyword">function</span> mmm()</span><br><span class="line"><span class="comment"># Builds all of the modules in the current directory, and their dependencies.</span></span><br><span class="line"><span class="keyword">function</span> mma()</span><br><span class="line"><span class="comment"># Builds all of the modules in the supplied directories, and their dependencies.</span></span><br><span class="line"><span class="keyword">function</span> mmma()</span><br></pre></td></tr></table></figure>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/03/10/envsetup_common_command/"
+                    data-title="envsetup-sh的常用命令"
+                    data-url="http://www.aman.site/2016/03/10/envsetup_common_command/"
+                    data-images="http://www.aman.site/2016/03/10/envsetup_common_command/post-bg-unix-linux.jpg"
+                    data-content="envsetup-sh的常用命令 摘要： 这篇文档主要对android下的编译脚本文件 env... | 渐行渐远 | yangjianguo&#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/04/19/AndroidStudio_VS_eclipse/" data-toggle="tooltip" data-placement="top" title="AndroidStudio VS eclipse">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/03/10/envsetup_common_command/"
+                        data-title="envsetup-sh的常用命令"
+                        data-url="http://www.aman.site/2016/03/10/envsetup_common_command/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#android open source" title="android open source">android open source</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://xuwenzhi.com" target="_blank">徐文志程序猿</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'amansite';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/yang-jian-guo-51">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/建国-杨-964324109">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 渐行渐远 2016 
+                    <br>
+                    Theme by <a href="https://github.com/Kaijun/hexo-theme-huxblog">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=lgyjg&repo=lgyjg.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.aman.site/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '41c114db1f7b1a79a2a2442b96df6457';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
