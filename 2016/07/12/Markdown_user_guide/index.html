@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Markdown使用总结 - 渐行渐远 | yangjianguo&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.aman.site/2016/07/12/Markdown_user_guide/">
+
+    <!-- yangjg change for debug -->
+    
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/hux-blog.css">
+    
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    
+        <!-- yangjg change font-awesome to local because pending sometime -->
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+    
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">渐行渐远</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('markdown-guide-1.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Markdown" title="Markdown">Markdown</a>
+                        
+                    </div>
+                    <h1>Markdown使用总结</h1>
+                    <h2 class="subheading">Markdown 是一种轻量级标记语言，它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”</h2>
+                    <span class="meta">
+                        Posted by JianGuo on
+                        2016-07-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="什么是Markdown"><a href="#什么是Markdown" class="headerlink" title="什么是Markdown"></a>什么是Markdown</h2><p>Markdown 是一种<a href="https://zh.wikipedia.org/wiki/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80" target="_blank" rel="external">轻量级标记语言</a>，创始人为<a href="https://zh.wikipedia.org/wiki/%E7%B4%84%E7%BF%B0%C2%B7%E6%A0%BC%E9%AD%AF%E4%BC%AF" target="_blank" rel="external">约翰·格鲁伯（John Gruber）</a>。它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”。[3]这种语言吸收了很多在电子邮件中已有的纯文本标记的特性。  </p>
+<p>Markdown同时还是一个由Gruber编写的Perl脚本：Markdown.pl。它把用markdown语法编写的内容转换成有效的、结构良好的XHTML或HTML内容，并将左尖括号(‘&lt;’)和&amp;号替换成它们各自的字符实体引用。它可以用作单独的脚本，Blosxom和Movable Type的插件又或者BBEdit的文本过滤器。</p>
+<h3 id="Markdown的优点"><a href="#Markdown的优点" class="headerlink" title="Markdown的优点"></a>Markdown的优点</h3><ul>
+<li>纯文本，所以兼容性极强，可以用所有文本编辑器打开。</li>
+<li>让你专注于文字而不是排版。</li>
+<li>格式转换方便，Markdown 的文本你可以轻松转换为 html、电子书等。</li>
+<li>Markdown 的标记语法有极好的可读性。</li>
+</ul>
+<h2 id="linux下使用工具的推荐"><a href="#linux下使用工具的推荐" class="headerlink" title="linux下使用工具的推荐"></a>linux下使用工具的推荐</h2><h3 id="Atom"><a href="#Atom" class="headerlink" title="Atom"></a>Atom</h3><h4 id="Atom的介绍"><a href="#Atom的介绍" class="headerlink" title="Atom的介绍"></a>Atom的介绍</h4><p><a href="https://atom.io/" target="_blank" rel="external">Atom</a> 是 Github 专门为程序员推出的一款开源的免费的多平台跨平台文本编辑器。同时，还拥有活跃的 <a href="https://atom-china.org/" target="_blank" rel="external">中文社区</a>。</p>
+<h4 id="Atom的安装"><a href="#Atom的安装" class="headerlink" title="Atom的安装"></a>Atom的安装</h4><p>可以到官方网站<a href="https://atom.io/" target="_blank" rel="external">https://atom.io/</a> 进行下载deb包，并安装即可。</p>
+<h4 id="Atom的个性配置"><a href="#Atom的个性配置" class="headerlink" title="Atom的个性配置"></a>Atom的个性配置</h4><h5 id="命令面板"><a href="#命令面板" class="headerlink" title="命令面板"></a>命令面板</h5><p>当你按下 cmd-shift-P 并且当前焦点在一个窗格上的时候，命令面板就会弹出来。你可以使用命令面板完成<br>大多数的命令。</p>
+<h5 id="偏好设置"><a href="#偏好设置" class="headerlink" title="偏好设置"></a>偏好设置</h5><p>在设置界面中，你可以修改主题、修改文本折行的行为（wrapping）、字体大小、缩进宽度、滚动速度等选项。你也可以用这个界面安装新的插件和主题。你可以通过菜单栏中 Atom 下的 Preferences 菜单项打开设置界面。你也可以在命令面板中搜索 settings-view:open 或使用快捷键 cmd-,打开。</p>
+<h6 id="修改主题"><a href="#修改主题" class="headerlink" title="修改主题"></a>修改主题</h6><p>你可以在设置界面中修改 Atom 的主题，Atom 内建了 4 个不同的 UI 主题，分别是亮色和暗色版本的名为 Atom 和 One 的主题。以及 8 个不同的语法着色主题。你可以通过点击左边栏的 Themes 选项卡来改变当前主题，或安装新的主题。</p>
+<p><img src="https://atom-china.org/uploads/default/_optimized/f67/38e/5fd8580ee2_690x479.png" alt="">  </p>
+<p>UI 主题会修改标签栏、左侧目录树（tree view）等 UI 元素的颜色；而语法着色主题修改编辑器中文字的语法高亮方案。你只需要简单地在下拉框中选择另一项，即可修改主题。</p>
+<p>在 Atom.io 上有很多种主题供你选择，下面会介绍如何安装主题。</p>
+<h5 id="插件的安装"><a href="#插件的安装" class="headerlink" title="插件的安装"></a>插件的安装</h5><h6 id="安装-markdown-scroll-sync"><a href="#安装-markdown-scroll-sync" class="headerlink" title="安装 markdown-scroll-sync"></a>安装 markdown-scroll-sync</h6><p>不幸的是，atom虽然支持markdown格式的预览，但是却不能跟随滚动预览，我们可以通过安装插件实现相应的功能。安装步骤如下：</p>
+<ol>
+<li>主页面键入 Ctrl+Shift+P 后输入install packages and thmes</li>
+<li>搜索：“markdown-scroll-sync”</li>
+<li>点击安装  </li>
+</ol>
+<p>或者使用命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apm install</span><br></pre></td></tr></table></figure></p>
+<p>效果如下：<br><img src="https://cloud.githubusercontent.com/assets/811455/11317259/c5b9b0c2-8fdc-11e5-8f85-b7deefb525c5.gif" alt=""></p>
+<h6 id="安装Markdown转pdf插件"><a href="#安装Markdown转pdf插件" class="headerlink" title="安装Markdown转pdf插件"></a>安装Markdown转pdf插件</h6><p>我们在使用Atom时，需要安装插件实现md文件转pdf的功能<br>安装过程同上，搜索“markdown-scroll-sync”</p>
+<p>安装命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apm install markdown-pdf</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://raw.githubusercontent.com/travs/markdown-pdf/master/assets/testpdf.png" alt="">  </p>
+<h6 id="安装目录自动生成插件：Markdown-toc"><a href="#安装目录自动生成插件：Markdown-toc" class="headerlink" title="安装目录自动生成插件：Markdown-toc"></a>安装目录自动生成插件：Markdown-toc</h6><p>在生成目录结构的时候显得非常有用。安装过程同上，搜索“Markdown-toc”或者使用命令安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apm install markdown-toc</span><br></pre></td></tr></table></figure></p>
+<h6 id="安装文件图标（可选）"><a href="#安装文件图标（可选）" class="headerlink" title="安装文件图标（可选）"></a>安装文件图标（可选）</h6><p>在文件名前添加文件类型相关的图标，以便于识别。详情请移步<a href="https://atom.io/packages/file-icons" target="_blank" rel="external">https://atom.io/packages/file-icons</a><br>安装过程同上，搜索“apm install file-icons”<br>或者使用安装命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apm install file-icons</span><br></pre></td></tr></table></figure></p>
+<h6 id="安装公式支持（可选）"><a href="#安装公式支持（可选）" class="headerlink" title="安装公式支持（可选）"></a>安装公式支持（可选）</h6><p>Atom的markdown预览同样不支持公式的渲染，需要安装对应的插件。<br>安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apm install markdown-preview-plus</span><br></pre></td></tr></table></figure></p>
+<h3 id="cmd-Markdown"><a href="#cmd-Markdown" class="headerlink" title="cmd Markdown"></a>cmd Markdown</h3><p><a href="https://www.zybuluo.com/mdeditor" target="_blank" rel="external">cmd markdown</a>是作业部落出品的一款笔记编辑器，提供了网页，windows，linux，mac OS的软件。<br> 主要优点是样式好看，功能非常强大，支持流程图，公式等。带有大纲功能！可以调转到你的各个章节很方便啊！但需要注册才能使用高级功能。同步功能一年要 99RMB。 =。= 故不推荐使用。<br> 客户端下载地址：<a href="https://www.zybuluo.com/cmd/" target="_blank" rel="external">https://www.zybuluo.com/cmd/</a></p>
+<h3 id="FarboxApp"><a href="#FarboxApp" class="headerlink" title="FarboxApp"></a>FarboxApp</h3><p><a href="https://www.farbox.com/service/app/desktop_editor" target="_blank" rel="external">FarboxApp</a>样式不错，功能强大。 下载本地客户端也可使用。</p>
+<h3 id="google-chrome插件"><a href="#google-chrome插件" class="headerlink" title="google chrome插件"></a>google chrome插件</h3><p><a href="www.maxiang.io">马克飞象</a>是针对印象笔记开发的markdown笔记插件，有网页版和chrome插件。<br>同样需要注册，付费才能使用高级功能。</p>
+<h2 id="Markdown语法示例"><a href="#Markdown语法示例" class="headerlink" title="Markdown语法示例"></a>Markdown语法示例</h2><p>具体语法可参考：<a href="http://wowubuntu.com/markdown/" target="_blank" rel="external">http://wowubuntu.com/markdown/</a></p>
+<h3 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h3><p> 在 Markdown 中，你只需要在文本前面加上 # 即可完成标题，同理、你还可以增加二级标题、三级标题、四级标题、五级标题和六级标题，总共六级。如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br><span class="line">```  </span><br><span class="line">效果预览：  </span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">#### 四级标题</span><br><span class="line">##### 五级标题</span><br><span class="line">###### 六级标题</span><br><span class="line">----</span><br><span class="line">&gt; 注：# 和「一级标题」之间建议保留一个字符的空格，这是最标准的 Markdown 写法。</span><br><span class="line"></span><br><span class="line">### 列表</span><br><span class="line">列表格式也很常用，在 Markdown 中，你只需要在文字前面加上 - 就可以了，例如：</span><br><span class="line">```html</span><br><span class="line">- 文本1</span><br><span class="line">- 文本2</span><br><span class="line">- 文本3</span><br></pre></td></tr></table></figure>
+<p>如果你希望有序列表，也可以在文字前面加上 1. 2. 3. 就可以了，例如：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 文本1</span><br><span class="line">2. 文本2</span><br><span class="line">3. 文本3</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：-、1.和文本之间要保留一个字符的空格。</p>
+</blockquote>
+<h3 id="链接和图片"><a href="#链接和图片" class="headerlink" title="链接和图片"></a>链接和图片</h3><p>在 Markdown 中，插入链接不需要其他按钮，你只需要使用 [显示文本](链接地址) 这样的语法即可，例如：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[测试链接](http://www.test.com)</span><br></pre></td></tr></table></figure></p>
+<p>在 Markdown 中，插入图片不需要其他按钮，你只需要使用 ![](图片链接地址) 这样的语法即可，例如：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![图片介绍](http://ww4.sinaimg.cn/bmiddle/aa397b7fjw1dzplsgpdw5j.jpg)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：插入图片的语法和链接的语法很像，只是前面多了一个 ！。  </p>
+</blockquote>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>在我们写作的时候经常需要引用他人的文字，这个时候引用这个格式就很有必要了，在 Markdown 中，你只需要在你希望引用的文字前面加上 &gt; 就好了</p>
+<h3 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h3><p>语法：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">~~删除线~~ <span class="tag">&lt;<span class="name">s</span>&gt;</span>删除线（开启识别HTML标签时）<span class="tag">&lt;/<span class="name">s</span>&gt;</span>  </span><br><span class="line">*斜体字*      _斜体字_  </span><br><span class="line">**粗体**  __粗体__  </span><br><span class="line">***粗斜体*** ___粗斜体___  </span><br><span class="line">上标：X<span class="tag">&lt;<span class="name">sub</span>&gt;</span>2<span class="tag">&lt;/<span class="name">sub</span>&gt;</span>  </span><br><span class="line">下标：O<span class="tag">&lt;<span class="name">sup</span>&gt;</span>2<span class="tag">&lt;/<span class="name">sup</span>&gt;</span></span><br><span class="line">```  </span><br><span class="line">效果：</span><br><span class="line">~~删除线~~ <span class="tag">&lt;<span class="name">s</span>&gt;</span>删除线（开启识别HTML标签时）<span class="tag">&lt;/<span class="name">s</span>&gt;</span>  </span><br><span class="line">*斜体字*      _斜体字_  </span><br><span class="line">**粗体**  __粗体__  </span><br><span class="line">***粗斜体*** ___粗斜体___  </span><br><span class="line">上标：X<span class="tag">&lt;<span class="name">sub</span>&gt;</span>2<span class="tag">&lt;/<span class="name">sub</span>&gt;</span>  </span><br><span class="line">下标：O<span class="tag">&lt;<span class="name">sup</span>&gt;</span>2<span class="tag">&lt;/<span class="name">sup</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">效果如下：  </span><br><span class="line"> *一盏灯*， 一片昏黄；**一本书**， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 **保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。**</span><br><span class="line"></span><br><span class="line">### 表格</span><br><span class="line">相关代码：</span><br><span class="line"></span><br><span class="line">```html</span><br><span class="line">| Tables        | Are           | Cool  |</span><br><span class="line">| ------------- |:-------------:| -----:|</span><br><span class="line">| col 3 is      | right-aligned | $1600 |</span><br><span class="line">| col 2 is      | centered      |   $12 |</span><br><span class="line">| zebra stripes | are neat      |    $1 |</span><br></pre></td></tr></table></figure></p>
+<p>显示效果：</p>
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">Are</th>
+<th style="text-align:right">Cool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>col 3 is</td>
+<td style="text-align:center">right-aligned</td>
+<td style="text-align:right">$1600</td>
+</tr>
+<tr>
+<td>col 2 is</td>
+<td style="text-align:center">centered</td>
+<td style="text-align:right">$12</td>
+</tr>
+<tr>
+<td>zebra stripes</td>
+<td style="text-align:center">are neat</td>
+<td style="text-align:right">$1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="引用代码"><a href="#引用代码" class="headerlink" title="引用代码"></a>引用代码</h3><p>markdown支持多种编程语言的代码引用。例如java 、c++等。</p>
+<p>格式：  </p>
+<blockquote>
+<p>```+语言名称，如java<br>引用的代码<br>```  </p>
+</blockquote>
+<h3 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h3><p>在文本中输入的换行会从最终生成的结果中删除，浏览器会根据可用空间自动换行。如果想强迫换行，可以在行尾插入至少两个空格。</p>
+<blockquote>
+<p>Markdown的使用还是很简单的，总之一句话，孰能生巧，这些语法也没必要背，平时用的时候用模板写几次就记住了。</p>
+</blockquote>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/07/12/Markdown_user_guide/"
+                    data-title="Markdown使用总结"
+                    data-url="http://www.aman.site/2016/07/12/Markdown_user_guide/"
+                    data-images="http://www.aman.site/2016/07/12/Markdown_user_guide/markdown-guide-1.jpg"
+                    data-content="什么是MarkdownMarkdown 是一种轻量级标记语言，创始人为约翰·格鲁伯（John ... | 渐行渐远 | yangjianguo&#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/07/12/UML_learning_note/" data-toggle="tooltip" data-placement="top" title="UML序列图学习笔记">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/06/20/AndroidStudySource/" data-toggle="tooltip" data-placement="top" title="Android学习资源推荐">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/07/12/Markdown_user_guide/"
+                        data-title="Markdown使用总结"
+                        data-url="http://www.aman.site/2016/07/12/Markdown_user_guide/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Markdown" title="Markdown">Markdown</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://xuwenzhi.com" target="_blank">徐文志程序猿</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'amansite';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/yang-jian-guo-51">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/建国-杨-964324109">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 渐行渐远 2016 
+                    <br>
+                    Theme by <a href="https://github.com/Kaijun/hexo-theme-huxblog">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> 
+                    <!-- too slow load 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=lgyjg&repo=lgyjg.github.io&type=star&count=true" >
+                    </iframe>
+                    -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- yangjg change for debug -->
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/hux-blog.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.aman.site/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '41c114db1f7b1a79a2a2442b96df6457';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

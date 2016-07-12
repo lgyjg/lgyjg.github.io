@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="keyword"  content="">
@@ -19,20 +19,22 @@
 
     <link rel="canonical" href="http://www.aman.site/tags/">
 
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/hux-blog.min.css">
+    <!-- yangjg change for debug -->
+    
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/hux-blog.css">
+    
 
     <!-- Pygments Github CSS -->
     <link rel="stylesheet" href="/css/syntax.css">
 
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    
+        <!-- yangjg change font-awesome to local because pending sometime -->
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+    
 
     <!-- Hux Delete, sad but pending in China
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -167,6 +169,10 @@
                 
                     <a href="#Android" title="Android" rel="1">Android</a>
                 
+                    <a href="#Markdown" title="Markdown" rel="1">Markdown</a>
+                
+                    <a href="#UML" title="UML" rel="1">UML</a>
+                
                     <a href="#android open source" title="android open source" rel="1">android open source</a>
                 
             </div>
@@ -236,6 +242,58 @@
                         
                             <h3 class="post-subtitle">
                                 为大家整理了一些Android领域的学习资料
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Markdown">
+                    <span class="tag-text">Markdown</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/07/12/Markdown_user_guide/">
+                        <h2 class="post-title">
+                            Markdown使用总结
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                Markdown 是一种轻量级标记语言，它允许人们“使用易读易写的纯文本格式编写文档，然后转换成有效的XHTML(或者HTML)文档”
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="UML">
+                    <span class="tag-text">UML</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/07/12/UML_learning_note/">
+                        <h2 class="post-title">
+                            UML序列图学习笔记
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                序列图主要用于按照交互发生的一系列顺序，显示对象之间的这些交互。
                             </h3>
                         
                     </a>
@@ -355,14 +413,13 @@
     </div>
 </footer>
 
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
+<!-- yangjg change for debug -->
 
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/hux-blog.js"></script>
 
-<!-- Custom Theme JavaScript -->
-<script src="/js/hux-blog.min.js"></script>
 
 
 <!-- async load function -->
