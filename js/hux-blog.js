@@ -40,12 +40,15 @@ jQuery(document).ready(function($) {
 
     //primary navigation slide-in effect
     if ($(window).width() > MQL) {
-        var headerHeight = $('.navbar-custom').height();
+        // yangjg change we do not need show the navbar in intro-header layout
+        // var headerHeight = $('.navbar-custom').height();
+        var headerHeight = $('.intro-header').height();
         $(window).on('scroll', {
                 previousTop: 0
             },
             function() {
                 var currentTop = $(window).scrollTop();
+                /** yangjg change the action of scroll
                 //check if user is scrolling up
                 if (currentTop < this.previousTop) {
                     //if scrolling up...
@@ -57,7 +60,32 @@ jQuery(document).ready(function($) {
                 } else {
                     //if scrolling down...
                     $('.navbar-custom').removeClass('is-visible');
-                    if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) $('.navbar-custom').addClass('is-fixed');
+                    if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) {
+                        $('.navbar-custom').addClass('is-fixed');
+                    }
+                }
+                **/
+                if (currentTop < this.previousTop) {//if scrolling up...
+                    if (currentTop <= headerHeight) {
+                        if ($('.navbar-custom').hasClass('is-fixed')) {
+                            $('.navbar-custom').removeClass('is-fixed');
+                        } else if ($('.navbar-custom').hasClass('is-visible')) {
+                            $('.navbar-custom').removeClass('is-visible');
+                        } else if ($('.navbar-custom').hasClass('is-visible') && !$('.navbar-custom').hasClass('is-fixed')) {
+                            $('.navbar-custom').removeClass('is-visible is-fixed');
+                        }
+                    }
+                } else {//if scrolling down...
+                    $('.navbar-custom').removeClass('is-visible');
+                    if (currentTop > headerHeight) {
+                        if (!$('.navbar-custom').hasClass('is-fixed')) {
+                            $('.navbar-custom').addClass('is-fixed');
+                        } else if (!$('.navbar-custom').hasClass('is-visible')) {
+                            $('.navbar-custom').addClass('is-visible');
+                        } else if (!$('.navbar-custom').hasClass('is-visible') && !$('.navbar-custom').hasClass('is-fixed')) {
+                            $('.navbar-custom').addClass('is-visible is-fixed');
+                        }
+                    }
                 }
                 this.previousTop = currentTop;
             });

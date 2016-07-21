@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="7s8wMtCUkn0si9Ku0tgMVDiPBmNXQRIj3L9imZLNFTg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Logger开源库刨析 - 渐行渐远 | yangjianguo&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.aman.site/2016/07/21/Logger_analyse/">
+
+    <!-- yangjg change for debug -->
+    
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/hux-blog.css">
+    
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    
+        <!-- Hux change font-awesome CDN to qiniu -->
+        <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">渐行渐远</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#开源项目" title="开源项目">开源项目</a>
+                        
+                    </div>
+                    <h1>Logger开源库刨析</h1>
+                    <h2 class="subheading">Logger是github上关于Andorid Log打印优化和封装的软件，是一款简洁、优雅、强大的log跟踪器，截止目前已经有4003个star。</h2>
+                    <span class="meta">
+                        Posted by JianGuo on
+                        2016-07-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>最近突发奇想，想自己重新封装android的log机制，以便于在以后的开发中简单的使用log进行调试。我们知道，在大多数的情况下我们需要对log的状态进行配置，在user版本中为了安全，某些关键log不能打印出来，同时，可能在调试的时候，我们只需要打印某个级别的log。通常情况下，我们是在每个类中进行log打印的控制（使用DEBUG的全局变量），每次打印log时都需要进行判断，这样的代码显然有点繁琐。所以，就需要通过封装Log完成上面的需求。为了避免重复造轮子，我在Github上检索了一下，果然发现了宝藏。一个名为Logger的开源项目，完美的诠释了什么是轮子。所以直接搬来用了。接下来的内容介绍这个项目如何使用。</p>
+</blockquote>
+<h1 id="Loger简介"><a href="#Loger简介" class="headerlink" title="Loger简介"></a>Loger简介</h1><p>Logger是github上关于Andorid Log打印优化和封装的开源项目，是一款简洁、优雅、强大的log跟踪器（官方如是说），截止目前已经有4003个star，700多个fork。项目地址为：<a href="https://github.com/orhanobut/logger" target="_blank" rel="external">https://github.com/orhanobut/logger</a>。  </p>
+<p><img align="right" src="https://raw.githubusercontent.com/orhanobut/logger/master/images/logger-logo.png" width="128" height="128"><br>它主要提供了以下功能：</p>
+<ul>
+<li>输出线程信息</li>
+<li>输出类信息</li>
+<li>输出方法信息</li>
+<li>格式化输出json数据</li>
+<li>对于log中的“\n” 换行输出</li>
+<li>清理输出</li>
+<li>直接跳转到代码行</li>
+</ul>
+<p>下面来看看打印出的log效果吧：<br><img src="https://raw.githubusercontent.com/orhanobut/logger/master/images/current-log.png" alt="Log"></p>
+<blockquote>
+<p>同时，从所有的fork列表中，发现了另一个比较好的版本演变，如果感兴趣的话可以异步：<a href="https://github.com/tianzhijiexian/logger" target="_blank" rel="external">tianzhijiexian/logger</a>。</p>
+</blockquote>
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><h2 id="如何添加依赖"><a href="#如何添加依赖" class="headerlink" title="如何添加依赖"></a>如何添加依赖</h2><p>了解到这么强大的功能后，肯定想知道如何使用了。如果你的项目在使用gradle构建的话，最简单，最直接的方式就是添加依赖了。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.orhanobut:logger:1.15'</span></span><br></pre></td></tr></table></figure></p>
+<p>当然，如果不能直接引用的话，就乖乖下载源码，放入到系统，或者编译出jar包，做依赖吧。</p>
+<h2 id="在代码中使用"><a href="#在代码中使用" class="headerlink" title="在代码中使用"></a>在代码中使用</h2><p>Logger的使用上和Log的区别并不是很大。如下的代码展示了Logger的使用：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Logger.d(<span class="string">"hello"</span>);</span><br><span class="line">Logger.d(<span class="string">"hello %s %d"</span>, <span class="string">"world"</span>, <span class="number">5</span>);   <span class="comment">// String.format</span></span><br><span class="line">Logger.e(<span class="string">"hello"</span>);</span><br><span class="line">Logger.e(exception,<span class="string">"message"</span>);</span><br><span class="line">Logger.w(<span class="string">"hello"</span>);</span><br><span class="line">Logger.v(<span class="string">"hello"</span>);</span><br><span class="line">Logger.wtf(<span class="string">"hello"</span>);</span><br><span class="line">Logger.json(JSON_CONTENT);</span><br><span class="line">Logger.xml(XML_CONTENT);</span><br><span class="line">Logger.log(DEBUG, <span class="string">"tag"</span>, <span class="string">"message"</span>, throwable);</span><br></pre></td></tr></table></figure></p>
+<p>同时，Logger还能直接打印Array, Map, Set and List等对象，不需要进行遍历输出。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Logger.d(list);</span><br><span class="line">Logger.d(map);</span><br><span class="line">Logger.d(set);</span><br><span class="line">Logger.d(<span class="keyword">new</span> String[]);</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置Logger"><a href="#配置Logger" class="headerlink" title="配置Logger"></a>配置Logger</h2><p>如果你相对Logger进行更深的定制的话，也可以在Logger的init方法中进行详细的配置：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Logger</span><br><span class="line">  .init(YOUR_TAG)                 <span class="comment">// 默认为 PRETTYLOGGER 或者仅使用 init()</span></span><br><span class="line">  .methodCount(<span class="number">3</span>)                 <span class="comment">// 默认为 2</span></span><br><span class="line">  .hideThreadInfo()               <span class="comment">// 默认为显示线程信息</span></span><br><span class="line">  .logLevel(LogLevel.NONE)        <span class="comment">// 默认打印所有级别的log，即参数为：LogLevel.FULL</span></span><br><span class="line">  .methodOffset(<span class="number">2</span>)                <span class="comment">// 默认为 0</span></span><br><span class="line">  .logAdapter(<span class="keyword">new</span> AndroidLogAdapter()); <span class="comment">//默认为 AndroidLogAdapter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的是，这个方法只能被调用一次，最好能够在Application类中进行全局设置。所有的设置都是可选的，不设置也无不影响使用。<strong>建议在发布的版本中将logLevel设置为:LogLevel.NONE</strong></p>
+<h3 id="添加TAG"><a href="#添加TAG" class="headerlink" title="添加TAG"></a>添加TAG</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加全局的TAG</span></span><br><span class="line">Logger.init(YOUR_TAG);</span><br><span class="line"><span class="comment">// 添加当前Logger的TAG</span></span><br><span class="line">Logger.t(<span class="string">"mytag"</span>).d(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+<p>效果如下：<br><img src="https://github.com/orhanobut/logger/raw/master/images/custom-tag.png" alt="Logger打印效果"><br>其实，在我看来，添加类的tag已经没有什么大的必要了，因为Logger在打印log的时候，会输出类名和方法名，直接检索就可以了。</p>
+<h3 id="设置打印方法数"><a href="#设置打印方法数" class="headerlink" title="设置打印方法数"></a>设置打印方法数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改全局打印的方法数</span></span><br><span class="line">Logger.init().methodCount(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 修改当前Logger想打印的方法数</span></span><br><span class="line">Logger.t(<span class="number">1</span>).d(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="设置方法方法堆栈偏移量"><a href="#设置方法方法堆栈偏移量" class="headerlink" title="设置方法方法堆栈偏移量"></a>设置方法方法堆栈偏移量</h3><p>为了避免其他库对logger的使用影响到程序的使用，可以设置类避免其他库的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodOffset(<span class="number">5</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="隐藏线程信息"><a href="#隐藏线程信息" class="headerlink" title="隐藏线程信息"></a>隐藏线程信息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodCount(<span class="number">1</span>).hideThreadInfo();</span><br></pre></td></tr></table></figure>
+<h3 id="仅打印消息"><a href="#仅打印消息" class="headerlink" title="仅打印消息"></a>仅打印消息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodCount(<span class="number">0</span>).hideThreadInfo();</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/orhanobut/logger/raw/master/images/just-content.png" alt="只打印信息时的效果"></p>
+<h3 id="使用其他Log工具代替android-util-log"><a href="#使用其他Log工具代替android-util-log" class="headerlink" title="使用其他Log工具代替android.util.log"></a>使用其他Log工具代替android.util.log</h3><ol>
+<li>实现 LogAdapter</li>
+<li>在init中配置它</li>
+</ol>
+<p>具体配置代码可参考下面的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.logAdapter(<span class="keyword">new</span> CustomLogAdapter());</span><br></pre></td></tr></table></figure></p>
+<h3 id="Timber-Integration"><a href="#Timber-Integration" class="headerlink" title="Timber Integration"></a>Timber Integration</h3><p>不明觉厉，所以只能把github上的介绍粘贴过来了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Timber.plant(<span class="keyword">new</span> Timber.DebugTree() &#123;</span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(<span class="keyword">int</span> priority, String tag, String message, Throwable t)</span> </span>&#123;</span><br><span class="line">    Logger.log(priority, tag, message, t);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="代码实现原理解析"><a href="#代码实现原理解析" class="headerlink" title="代码实现原理解析"></a>代码实现原理解析</h1><p>整个代码也只有八个类，非常简洁。代码虽少，但是很规范，融入着基本的设计模式和思想，很值得学习。</p>
+<ul>
+<li>AndroidLogAdapter.java 其实就是对android.util.Log方法的封装。适配器类的简单应用实例。如果想对这个类进行重新封装，则可以实现自己的adapter，然后通过 <strong><em>Logger.logAdapter(new CustomLogAdapter());</em></strong> 方法进行设置。</li>
+<li>Helper.java helper类提供了一些静态方法用来处理字符串的相关操作，例如判空，判断两个字符串是否相同，取得堆栈字符串，避免空指针。</li>
+<li>LogAdapter.java 适配器的接口</li>
+<li>LogLevel.java 定义了log的级别，当前只有两种状态： FULL,NONE</li>
+<li>Logger.java 主类，</li>
+<li>LoggerPrinter.java 负责log的输出格式化，输出json，xml，set等数据。继承字Printer.java</li>
+<li>Printer.java Printer接口</li>
+<li>Settings.java logger配置的数据结构</li>
+</ul>
+<p>下面就针对Logger类和LoggerPrinter的实现进行进一步的分析。<br>在Logger.java中，也基本上是完成了Settings和LoggerPrinter的实例化，并且封装了Printer的接口，给外部调用。主要可操作的接口有以下这些：</p>
+<ul>
+<li>public static Settings init()</li>
+<li>public static Settings init(String tag)</li>
+<li>public static void resetSettings()</li>
+<li>public static Printer t(String tag)</li>
+<li>public static Printer t(int methodCount)</li>
+<li>public static Printer t(String tag, int methodCount)</li>
+<li>public static void log(int priority, String tag, String message, Throwable throwable)</li>
+<li>public static void d(Object object) //其实可以看出的d方法中，可以直接将对象传入，如果是Array，则可以解析出数据进行打印，其他的则打印object.toString()信息，但是其他级别的log中并不能实现这一点。</li>
+<li>public static void d(String message, Object… args)</li>
+<li>public static void e(String message, Object… args)</li>
+<li>public static void e(Throwable throwable, String message, Object… args)</li>
+<li>public static void i(String message, Object… args)</li>
+<li>public static void v(String message, Object… args)</li>
+<li>public static void w(String message, Object… args)</li>
+<li>public static void wtf(String message, Object… args)</li>
+<li>public static void json(String json) //打印json数据</li>
+<li>public static void xml(String xml) //打印xml信息</li>
+</ul>
+<p>在LoggerPrinter.java中，主要的逻辑集中在以下几个方法中：<br>json（）方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">   * Formats the json content and print it</span><br><span class="line">   *</span><br><span class="line">   * <span class="doctag">@param</span> json the json content</span><br><span class="line">   */</span></span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">json</span><span class="params">(String json)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Helper.isEmpty(json)) &#123;</span><br><span class="line">      d(<span class="string">"Empty/Null json content"</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      json = json.trim();</span><br><span class="line">      <span class="keyword">if</span> (json.startsWith(<span class="string">"&#123;"</span>)) &#123;</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject(json);</span><br><span class="line">        String message = jsonObject.toString(JSON_INDENT);</span><br><span class="line">        d(message);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (json.startsWith(<span class="string">"["</span>)) &#123;</span><br><span class="line">        JSONArray jsonArray = <span class="keyword">new</span> JSONArray(json);</span><br><span class="line">        String message = jsonArray.toString(JSON_INDENT);</span><br><span class="line">        d(message);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      e(<span class="string">"Invalid Json"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">      e(<span class="string">"Invalid Json"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>xml方法，用来将xml字符串进行简化。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Formats the json content and print it</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> xml the xml content</span><br><span class="line"> */</span></span><br><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">xml</span><span class="params">(String xml)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (Helper.isEmpty(xml)) &#123;</span><br><span class="line">    d(<span class="string">"Empty/Null xml content"</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    Source xmlInput = <span class="keyword">new</span> StreamSource(<span class="keyword">new</span> StringReader(xml));</span><br><span class="line">    StreamResult xmlOutput = <span class="keyword">new</span> StreamResult(<span class="keyword">new</span> StringWriter());</span><br><span class="line">    Transformer transformer = TransformerFactory.newInstance().newTransformer();</span><br><span class="line">    transformer.setOutputProperty(OutputKeys.INDENT, <span class="string">"yes"</span>);</span><br><span class="line">    transformer.setOutputProperty(<span class="string">"&#123;http://xml.apache.org/xslt&#125;indent-amount"</span>, <span class="string">"2"</span>);</span><br><span class="line">    transformer.transform(xmlInput, xmlOutput);</span><br><span class="line">    d(xmlOutput.getWriter().toString().replaceFirst(<span class="string">"&gt;"</span>, <span class="string">"&gt;\n"</span>));</span><br><span class="line">  &#125; <span class="keyword">catch</span> (TransformerException e) &#123;</span><br><span class="line">    e(<span class="string">"Invalid xml"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>log（）方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(<span class="keyword">int</span> priority, String tag, String message, Throwable throwable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (settings.getLogLevel() == LogLevel.NONE) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (throwable != <span class="keyword">null</span> &amp;&amp; message != <span class="keyword">null</span>) &#123;</span><br><span class="line">      message += <span class="string">" : "</span> + Helper.getStackTraceString(throwable);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (throwable != <span class="keyword">null</span> &amp;&amp; message == <span class="keyword">null</span>) &#123;</span><br><span class="line">      message = Helper.getStackTraceString(throwable);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (message == <span class="keyword">null</span>) &#123;</span><br><span class="line">      message = <span class="string">"No message/exception is set"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> methodCount = getMethodCount();</span><br><span class="line">    <span class="keyword">if</span> (Helper.isEmpty(message)) &#123;</span><br><span class="line">      message = <span class="string">"Empty/NULL log message"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    logTopBorder(priority, tag);</span><br><span class="line">    logHeaderContent(priority, tag, methodCount);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//get bytes of message with system's default charset (which is UTF-8 for Android)</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = message.getBytes();</span><br><span class="line">    <span class="keyword">int</span> length = bytes.length;</span><br><span class="line">    <span class="keyword">if</span> (length &lt;= CHUNK_SIZE) &#123;</span><br><span class="line">      <span class="keyword">if</span> (methodCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        logDivider(priority, tag);</span><br><span class="line">      &#125;</span><br><span class="line">      logContent(priority, tag, message);</span><br><span class="line">      logBottomBorder(priority, tag);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (methodCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      logDivider(priority, tag);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i += CHUNK_SIZE) &#123;</span><br><span class="line">      <span class="keyword">int</span> count = Math.min(length - i, CHUNK_SIZE);</span><br><span class="line">      <span class="comment">//create a new String with system's default charset (which is UTF-8 for Android)</span></span><br><span class="line">      logContent(priority, tag, <span class="keyword">new</span> String(bytes, i, count));</span><br><span class="line">    &#125;</span><br><span class="line">    logBottomBorder(priority, tag);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="功能优化"><a href="#功能优化" class="headerlink" title="功能优化"></a>功能优化</h1><p>这个以后有空再谈，毕竟还没有使用的需求。更谈不上优化了。</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2016/07/21/Logger_analyse/"
+                    data-title="Logger开源库刨析"
+                    data-url="http://www.aman.site/2016/07/21/Logger_analyse/"
+                    data-images=""
+                    data-content="
+最近突发奇想，想自己重新封装android的log机制，以便于在以后的开发中简单的使用log... | 渐行渐远 | yangjianguo&#39;s Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/07/18/yunnan_in_my_heart/" data-toggle="tooltip" data-placement="top" title="《何必等来生》第三章读书笔记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2016/07/21/Logger_analyse/"
+                        data-title="Logger开源库刨析"
+                        data-url="http://www.aman.site/2016/07/21/Logger_analyse/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#开源项目" title="开源项目">开源项目</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://xuwenzhi.com" target="_blank">徐文志程序猿</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'amansite';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/yang-jian-guo-51">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/建国-杨-964324109">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 渐行渐远 2016 
+                    <br>
+                    Theme by <a href="https://github.com/Kaijun/hexo-theme-huxblog" target="_blank">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks" target="_blank">Kaijun</a> 
+                    <!-- too slow load 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=lgyjg&repo=lgyjg.github.io&type=star&count=true" >
+                    </iframe>
+                    -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- yangjg change for debug -->
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/hux-blog.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.aman.site/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '41c114db1f7b1a79a2a2442b96df6457';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
