@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="7s8wMtCUkn0si9Ku0tgMVDiPBmNXQRIj3L9imZLNFTg">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword"  content="">
+    <meta name="description" content="杨建国的个人博客，专注android领域">
+    <meta name="keyword"  content="杨建国 渐行渐远 博客 android aman.site">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
         
-          Logger开源库刨析 - 渐行渐远 | yangjianguo&#39;s Blog
+          Logger开源库刨析 - 杨建国的博客 | 渐行渐远
         
     </title>
 
@@ -205,25 +205,72 @@
 <blockquote>
 <p>同时，从所有的fork列表中，发现了另一个比较好的版本演变，如果感兴趣的话可以异步：<a href="https://github.com/tianzhijiexian/logger" target="_blank" rel="external">tianzhijiexian/logger</a>。</p>
 </blockquote>
-<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><h2 id="如何添加依赖"><a href="#如何添加依赖" class="headerlink" title="如何添加依赖"></a>如何添加依赖</h2><p>了解到这么强大的功能后，肯定想知道如何使用了。如果你的项目在使用gradle构建的话，最简单，最直接的方式就是添加依赖了。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.orhanobut:logger:1.15'</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><h2 id="如何添加依赖"><a href="#如何添加依赖" class="headerlink" title="如何添加依赖"></a>如何添加依赖</h2><p>了解到这么强大的功能后，肯定想知道如何使用了。如果你的项目在使用gradle构建的话，最简单，最直接的方式就是添加依赖了。</p>
+<pre><code class="groovy">compile &#39;com.orhanobut:logger:1.15&#39;
+</code></pre>
 <p>当然，如果不能直接引用的话，就乖乖下载源码，放入到系统，或者编译出jar包，做依赖吧。</p>
-<h2 id="在代码中使用"><a href="#在代码中使用" class="headerlink" title="在代码中使用"></a>在代码中使用</h2><p>Logger的使用上和Log的区别并不是很大。如下的代码展示了Logger的使用：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Logger.d(<span class="string">"hello"</span>);</span><br><span class="line">Logger.d(<span class="string">"hello %s %d"</span>, <span class="string">"world"</span>, <span class="number">5</span>);   <span class="comment">// String.format</span></span><br><span class="line">Logger.e(<span class="string">"hello"</span>);</span><br><span class="line">Logger.e(exception,<span class="string">"message"</span>);</span><br><span class="line">Logger.w(<span class="string">"hello"</span>);</span><br><span class="line">Logger.v(<span class="string">"hello"</span>);</span><br><span class="line">Logger.wtf(<span class="string">"hello"</span>);</span><br><span class="line">Logger.json(JSON_CONTENT);</span><br><span class="line">Logger.xml(XML_CONTENT);</span><br><span class="line">Logger.log(DEBUG, <span class="string">"tag"</span>, <span class="string">"message"</span>, throwable);</span><br></pre></td></tr></table></figure></p>
-<p>同时，Logger还能直接打印Array, Map, Set and List等对象，不需要进行遍历输出。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Logger.d(list);</span><br><span class="line">Logger.d(map);</span><br><span class="line">Logger.d(set);</span><br><span class="line">Logger.d(<span class="keyword">new</span> String[]);</span><br></pre></td></tr></table></figure></p>
-<h2 id="配置Logger"><a href="#配置Logger" class="headerlink" title="配置Logger"></a>配置Logger</h2><p>如果你相对Logger进行更深的定制的话，也可以在Logger的init方法中进行详细的配置：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Logger</span><br><span class="line">  .init(YOUR_TAG)                 <span class="comment">// 默认为 PRETTYLOGGER 或者仅使用 init()</span></span><br><span class="line">  .methodCount(<span class="number">3</span>)                 <span class="comment">// 默认为 2</span></span><br><span class="line">  .hideThreadInfo()               <span class="comment">// 默认为显示线程信息</span></span><br><span class="line">  .logLevel(LogLevel.NONE)        <span class="comment">// 默认打印所有级别的log，即参数为：LogLevel.FULL</span></span><br><span class="line">  .methodOffset(<span class="number">2</span>)                <span class="comment">// 默认为 0</span></span><br><span class="line">  .logAdapter(<span class="keyword">new</span> AndroidLogAdapter()); <span class="comment">//默认为 AndroidLogAdapter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="在代码中使用"><a href="#在代码中使用" class="headerlink" title="在代码中使用"></a>在代码中使用</h2><p>Logger的使用上和Log的区别并不是很大。如下的代码展示了Logger的使用：</p>
+<pre><code class="java">Logger.d(&quot;hello&quot;);
+Logger.d(&quot;hello %s %d&quot;, &quot;world&quot;, 5);   // String.format
+Logger.e(&quot;hello&quot;);
+Logger.e(exception,&quot;message&quot;);
+Logger.w(&quot;hello&quot;);
+Logger.v(&quot;hello&quot;);
+Logger.wtf(&quot;hello&quot;);
+Logger.json(JSON_CONTENT);
+Logger.xml(XML_CONTENT);
+Logger.log(DEBUG, &quot;tag&quot;, &quot;message&quot;, throwable);
+</code></pre>
+<p>同时，Logger还能直接打印Array, Map, Set and List等对象，不需要进行遍历输出。</p>
+<pre><code class="java">Logger.d(list);
+Logger.d(map);
+Logger.d(set);
+Logger.d(new String[]);
+</code></pre>
+<h2 id="配置Logger"><a href="#配置Logger" class="headerlink" title="配置Logger"></a>配置Logger</h2><p>如果你相对Logger进行更深的定制的话，也可以在Logger的init方法中进行详细的配置：</p>
+<pre><code class="java">Logger
+  .init(YOUR_TAG)                 // 默认为 PRETTYLOGGER 或者仅使用 init()
+  .methodCount(3)                 // 默认为 2
+  .hideThreadInfo()               // 默认为显示线程信息
+  .logLevel(LogLevel.NONE)        // 默认打印所有级别的log，即参数为：LogLevel.FULL
+  .methodOffset(2)                // 默认为 0
+  .logAdapter(new AndroidLogAdapter()); //默认为 AndroidLogAdapter
+}
+</code></pre>
 <p>需要注意的是，这个方法只能被调用一次，最好能够在Application类中进行全局设置。所有的设置都是可选的，不设置也无不影响使用。<strong>建议在发布的版本中将logLevel设置为:LogLevel.NONE</strong></p>
-<h3 id="添加TAG"><a href="#添加TAG" class="headerlink" title="添加TAG"></a>添加TAG</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加全局的TAG</span></span><br><span class="line">Logger.init(YOUR_TAG);</span><br><span class="line"><span class="comment">// 添加当前Logger的TAG</span></span><br><span class="line">Logger.t(<span class="string">"mytag"</span>).d(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="添加TAG"><a href="#添加TAG" class="headerlink" title="添加TAG"></a>添加TAG</h3><pre><code class="java">// 添加全局的TAG
+Logger.init(YOUR_TAG);
+// 添加当前Logger的TAG
+Logger.t(&quot;mytag&quot;).d(&quot;hello&quot;);
+</code></pre>
 <p>效果如下：<br><img src="https://github.com/orhanobut/logger/raw/master/images/custom-tag.png" alt="Logger打印效果"><br>其实，在我看来，添加类的tag已经没有什么大的必要了，因为Logger在打印log的时候，会输出类名和方法名，直接检索就可以了。</p>
-<h3 id="设置打印方法数"><a href="#设置打印方法数" class="headerlink" title="设置打印方法数"></a>设置打印方法数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改全局打印的方法数</span></span><br><span class="line">Logger.init().methodCount(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 修改当前Logger想打印的方法数</span></span><br><span class="line">Logger.t(<span class="number">1</span>).d(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="设置方法方法堆栈偏移量"><a href="#设置方法方法堆栈偏移量" class="headerlink" title="设置方法方法堆栈偏移量"></a>设置方法方法堆栈偏移量</h3><p>为了避免其他库对logger的使用影响到程序的使用，可以设置类避免其他库的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodOffset(<span class="number">5</span>);</span><br></pre></td></tr></table></figure></p>
-<h3 id="隐藏线程信息"><a href="#隐藏线程信息" class="headerlink" title="隐藏线程信息"></a>隐藏线程信息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodCount(<span class="number">1</span>).hideThreadInfo();</span><br></pre></td></tr></table></figure>
-<h3 id="仅打印消息"><a href="#仅打印消息" class="headerlink" title="仅打印消息"></a>仅打印消息</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Logger.init().methodCount(<span class="number">0</span>).hideThreadInfo();</span><br></pre></td></tr></table></figure>
+<h3 id="设置打印方法数"><a href="#设置打印方法数" class="headerlink" title="设置打印方法数"></a>设置打印方法数</h3><pre><code class="java">// 修改全局打印的方法数
+Logger.init().methodCount(1);
+// 修改当前Logger想打印的方法数
+Logger.t(1).d(&quot;hello&quot;);
+</code></pre>
+<h3 id="设置方法方法堆栈偏移量"><a href="#设置方法方法堆栈偏移量" class="headerlink" title="设置方法方法堆栈偏移量"></a>设置方法方法堆栈偏移量</h3><p>为了避免其他库对logger的使用影响到程序的使用，可以设置类避免其他库的方法：</p>
+<pre><code class="java">Logger.init().methodOffset(5);
+</code></pre>
+<h3 id="隐藏线程信息"><a href="#隐藏线程信息" class="headerlink" title="隐藏线程信息"></a>隐藏线程信息</h3><pre><code class="java">Logger.init().methodCount(1).hideThreadInfo();
+</code></pre>
+<h3 id="仅打印消息"><a href="#仅打印消息" class="headerlink" title="仅打印消息"></a>仅打印消息</h3><pre><code class="java">Logger.init().methodCount(0).hideThreadInfo();
+</code></pre>
 <p><img src="https://github.com/orhanobut/logger/raw/master/images/just-content.png" alt="只打印信息时的效果"></p>
 <h3 id="使用其他Log工具代替android-util-log"><a href="#使用其他Log工具代替android-util-log" class="headerlink" title="使用其他Log工具代替android.util.log"></a>使用其他Log工具代替android.util.log</h3><ol>
 <li>实现 LogAdapter</li>
 <li>在init中配置它</li>
 </ol>
-<p>具体配置代码可参考下面的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.logAdapter(<span class="keyword">new</span> CustomLogAdapter());</span><br></pre></td></tr></table></figure></p>
-<h3 id="Timber-Integration"><a href="#Timber-Integration" class="headerlink" title="Timber Integration"></a>Timber Integration</h3><p>不明觉厉，所以只能把github上的介绍粘贴过来了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Timber.plant(<span class="keyword">new</span> Timber.DebugTree() &#123;</span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(<span class="keyword">int</span> priority, String tag, String message, Throwable t)</span> </span>&#123;</span><br><span class="line">    Logger.log(priority, tag, message, t);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>具体配置代码可参考下面的例子：</p>
+<pre><code class="java">.logAdapter(new CustomLogAdapter());
+</code></pre>
+<h3 id="Timber-Integration"><a href="#Timber-Integration" class="headerlink" title="Timber Integration"></a>Timber Integration</h3><p>不明觉厉，所以只能把github上的介绍粘贴过来了。</p>
+<pre><code class="java">Timber.plant(new Timber.DebugTree() {
+  @Override protected void log(int priority, String tag, String message, Throwable t) {
+    Logger.log(priority, tag, message, t);
+  }
+});
+</code></pre>
 <h1 id="代码实现原理解析"><a href="#代码实现原理解析" class="headerlink" title="代码实现原理解析"></a>代码实现原理解析</h1><p>整个代码也只有八个类，非常简洁。代码虽少，但是很规范，融入着基本的设计模式和思想，很值得学习。</p>
 <ul>
 <li>AndroidLogAdapter.java 其实就是对android.util.Log方法的封装。适配器类的简单应用实例。如果想对这个类进行重新封装，则可以实现自己的adapter，然后通过 <strong><em>Logger.logAdapter(new CustomLogAdapter());</em></strong> 方法进行设置。</li>
@@ -255,9 +302,105 @@
 <li>public static void json(String json) //打印json数据</li>
 <li>public static void xml(String xml) //打印xml信息</li>
 </ul>
-<p>在LoggerPrinter.java中，主要的逻辑集中在以下几个方法中：<br>json（）方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">   * Formats the json content and print it</span><br><span class="line">   *</span><br><span class="line">   * <span class="doctag">@param</span> json the json content</span><br><span class="line">   */</span></span><br><span class="line">  <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">json</span><span class="params">(String json)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Helper.isEmpty(json)) &#123;</span><br><span class="line">      d(<span class="string">"Empty/Null json content"</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      json = json.trim();</span><br><span class="line">      <span class="keyword">if</span> (json.startsWith(<span class="string">"&#123;"</span>)) &#123;</span><br><span class="line">        JSONObject jsonObject = <span class="keyword">new</span> JSONObject(json);</span><br><span class="line">        String message = jsonObject.toString(JSON_INDENT);</span><br><span class="line">        d(message);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (json.startsWith(<span class="string">"["</span>)) &#123;</span><br><span class="line">        JSONArray jsonArray = <span class="keyword">new</span> JSONArray(json);</span><br><span class="line">        String message = jsonArray.toString(JSON_INDENT);</span><br><span class="line">        d(message);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      e(<span class="string">"Invalid Json"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (JSONException e) &#123;</span><br><span class="line">      e(<span class="string">"Invalid Json"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>xml方法，用来将xml字符串进行简化。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Formats the json content and print it</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> xml the xml content</span><br><span class="line"> */</span></span><br><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">xml</span><span class="params">(String xml)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (Helper.isEmpty(xml)) &#123;</span><br><span class="line">    d(<span class="string">"Empty/Null xml content"</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    Source xmlInput = <span class="keyword">new</span> StreamSource(<span class="keyword">new</span> StringReader(xml));</span><br><span class="line">    StreamResult xmlOutput = <span class="keyword">new</span> StreamResult(<span class="keyword">new</span> StringWriter());</span><br><span class="line">    Transformer transformer = TransformerFactory.newInstance().newTransformer();</span><br><span class="line">    transformer.setOutputProperty(OutputKeys.INDENT, <span class="string">"yes"</span>);</span><br><span class="line">    transformer.setOutputProperty(<span class="string">"&#123;http://xml.apache.org/xslt&#125;indent-amount"</span>, <span class="string">"2"</span>);</span><br><span class="line">    transformer.transform(xmlInput, xmlOutput);</span><br><span class="line">    d(xmlOutput.getWriter().toString().replaceFirst(<span class="string">"&gt;"</span>, <span class="string">"&gt;\n"</span>));</span><br><span class="line">  &#125; <span class="keyword">catch</span> (TransformerException e) &#123;</span><br><span class="line">    e(<span class="string">"Invalid xml"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>log（）方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">log</span><span class="params">(<span class="keyword">int</span> priority, String tag, String message, Throwable throwable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (settings.getLogLevel() == LogLevel.NONE) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (throwable != <span class="keyword">null</span> &amp;&amp; message != <span class="keyword">null</span>) &#123;</span><br><span class="line">      message += <span class="string">" : "</span> + Helper.getStackTraceString(throwable);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (throwable != <span class="keyword">null</span> &amp;&amp; message == <span class="keyword">null</span>) &#123;</span><br><span class="line">      message = Helper.getStackTraceString(throwable);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (message == <span class="keyword">null</span>) &#123;</span><br><span class="line">      message = <span class="string">"No message/exception is set"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> methodCount = getMethodCount();</span><br><span class="line">    <span class="keyword">if</span> (Helper.isEmpty(message)) &#123;</span><br><span class="line">      message = <span class="string">"Empty/NULL log message"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    logTopBorder(priority, tag);</span><br><span class="line">    logHeaderContent(priority, tag, methodCount);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//get bytes of message with system's default charset (which is UTF-8 for Android)</span></span><br><span class="line">    <span class="keyword">byte</span>[] bytes = message.getBytes();</span><br><span class="line">    <span class="keyword">int</span> length = bytes.length;</span><br><span class="line">    <span class="keyword">if</span> (length &lt;= CHUNK_SIZE) &#123;</span><br><span class="line">      <span class="keyword">if</span> (methodCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        logDivider(priority, tag);</span><br><span class="line">      &#125;</span><br><span class="line">      logContent(priority, tag, message);</span><br><span class="line">      logBottomBorder(priority, tag);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (methodCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      logDivider(priority, tag);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i += CHUNK_SIZE) &#123;</span><br><span class="line">      <span class="keyword">int</span> count = Math.min(length - i, CHUNK_SIZE);</span><br><span class="line">      <span class="comment">//create a new String with system's default charset (which is UTF-8 for Android)</span></span><br><span class="line">      logContent(priority, tag, <span class="keyword">new</span> String(bytes, i, count));</span><br><span class="line">    &#125;</span><br><span class="line">    logBottomBorder(priority, tag);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在LoggerPrinter.java中，主要的逻辑集中在以下几个方法中：<br>json（）方法：</p>
+<pre><code class="java">/**
+   * Formats the json content and print it
+   *
+   * @param json the json content
+   */
+  @Override public void json(String json) {
+    if (Helper.isEmpty(json)) {
+      d(&quot;Empty/Null json content&quot;);
+      return;
+    }
+    try {
+      json = json.trim();
+      if (json.startsWith(&quot;{&quot;)) {
+        JSONObject jsonObject = new JSONObject(json);
+        String message = jsonObject.toString(JSON_INDENT);
+        d(message);
+        return;
+      }
+      if (json.startsWith(&quot;[&quot;)) {
+        JSONArray jsonArray = new JSONArray(json);
+        String message = jsonArray.toString(JSON_INDENT);
+        d(message);
+        return;
+      }
+      e(&quot;Invalid Json&quot;);
+    } catch (JSONException e) {
+      e(&quot;Invalid Json&quot;);
+    }
+  }
+</code></pre>
+<p>xml方法，用来将xml字符串进行简化。</p>
+<pre><code class="java">/**
+ * Formats the json content and print it
+ *
+ * @param xml the xml content
+ */
+@Override public void xml(String xml) {
+  if (Helper.isEmpty(xml)) {
+    d(&quot;Empty/Null xml content&quot;);
+    return;
+  }
+  try {
+    Source xmlInput = new StreamSource(new StringReader(xml));
+    StreamResult xmlOutput = new StreamResult(new StringWriter());
+    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);
+    transformer.setOutputProperty(&quot;{http://xml.apache.org/xslt}indent-amount&quot;, &quot;2&quot;);
+    transformer.transform(xmlInput, xmlOutput);
+    d(xmlOutput.getWriter().toString().replaceFirst(&quot;&gt;&quot;, &quot;&gt;\n&quot;));
+  } catch (TransformerException e) {
+    e(&quot;Invalid xml&quot;);
+  }
+}
+</code></pre>
+<p>log（）方法：</p>
+<pre><code class="java">@Override public synchronized void log(int priority, String tag, String message, Throwable throwable) {
+    if (settings.getLogLevel() == LogLevel.NONE) {
+      return;
+    }
+    if (throwable != null &amp;&amp; message != null) {
+      message += &quot; : &quot; + Helper.getStackTraceString(throwable);
+    }
+    if (throwable != null &amp;&amp; message == null) {
+      message = Helper.getStackTraceString(throwable);
+    }
+    if (message == null) {
+      message = &quot;No message/exception is set&quot;;
+    }
+    int methodCount = getMethodCount();
+    if (Helper.isEmpty(message)) {
+      message = &quot;Empty/NULL log message&quot;;
+    }
+
+    logTopBorder(priority, tag);
+    logHeaderContent(priority, tag, methodCount);
+
+    //get bytes of message with system&#39;s default charset (which is UTF-8 for Android)
+    byte[] bytes = message.getBytes();
+    int length = bytes.length;
+    if (length &lt;= CHUNK_SIZE) {
+      if (methodCount &gt; 0) {
+        logDivider(priority, tag);
+      }
+      logContent(priority, tag, message);
+      logBottomBorder(priority, tag);
+      return;
+    }
+    if (methodCount &gt; 0) {
+      logDivider(priority, tag);
+    }
+    for (int i = 0; i &lt; length; i += CHUNK_SIZE) {
+      int count = Math.min(length - i, CHUNK_SIZE);
+      //create a new String with system&#39;s default charset (which is UTF-8 for Android)
+      logContent(priority, tag, new String(bytes, i, count));
+    }
+    logBottomBorder(priority, tag);
+  }
+</code></pre>
 <h1 id="功能优化"><a href="#功能优化" class="headerlink" title="功能优化"></a>功能优化</h1><p>这个以后有空再谈，毕竟还没有使用的需求。更谈不上优化了。</p>
 
 
@@ -273,7 +416,7 @@
                     data-url="http://www.aman.site/2016/07/21/Logger_analyse/"
                     data-images=""
                     data-content="
-最近突发奇想，想自己重新封装android的log机制，以便于在以后的开发中简单的使用log... | 渐行渐远 | yangjianguo&#39;s Blog " >
+最近突发奇想，想自己重新封装android的log机制，以便于在以后的开发中简单的使用log... | 杨建国的博客 | 渐行渐远 " >
                     <div class="ds-share-inline">
                       <ul  class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -344,6 +487,8 @@
 
                     
                         <li><a href="http://xuwenzhi.com" target="_blank">徐文志程序猿</a></li>
+                    
+                        <li><a href="http://songyichao.com" target="_blank">宋祎超</a></li>
                     
                         <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
                     
