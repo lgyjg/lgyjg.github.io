@@ -11,7 +11,7 @@
     <!--  <meta name="keyword"  content="undefined"> -->
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <!-- yangjg add for SEO keyword optimization -->
+    <!-- yangjg add meta data for SEO keyword optimization -->
     
        <meta name="keywords" content="杨建国,渐行渐远,博客,android,aman.site">
     
@@ -100,14 +100,14 @@
 
                         
                         <li>
-                            <a href="/about/">About Me</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About Me</a>
                         </li>
                         
                     
@@ -175,15 +175,17 @@
                 
                     <a href="#AndroidStudio" title="AndroidStudio" rel="2">AndroidStudio</a>
                 
-                    <a href="#Android" title="Android" rel="2">Android</a>
-                
                     <a href="#开源项目" title="开源项目" rel="1">开源项目</a>
+                
+                    <a href="#Android" title="Android" rel="2">Android</a>
                 
                     <a href="#Markdown" title="Markdown" rel="1">Markdown</a>
                 
                     <a href="#感悟" title="感悟" rel="2">感悟</a>
                 
                     <a href="#UML" title="UML" rel="1">UML</a>
+                
+                    <a href="#Java" title="Java" rel="1">Java</a>
                 
             </div>
 
@@ -194,6 +196,25 @@
                 <span class="fa fa-tag listing-seperator" id="AndroidStudio">
                     <span class="tag-text">AndroidStudio</span>
                 </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/05/03/AndroidStudio_shortcut_key/">
+                        <h2 class="post-title">
+                            AndroidStudio快捷键大全
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                介绍AndroidStudio常用的快捷键功能，收集了所有的Android Studio Tips Of the Day的内容
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -214,18 +235,25 @@
                 </div>
                 <hr>
                 
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="开源项目">
+                    <span class="tag-text">开源项目</span>
+                </span>
+                
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2016/05/03/AndroidStudio_shortcut_key/">
+                     <a href="/2016/07/21/Logger_analyse/">
                         <h2 class="post-title">
-                            AndroidStudio快捷键大全
+                            Logger开源库刨析
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                介绍AndroidStudio常用的快捷键功能，收集了所有的Android Studio Tips Of the Day的内容
+                                Logger是github上关于Andorid Log打印优化和封装的软件，是一款简洁、优雅、强大的log跟踪器，截止目前已经有4003个star。
                             </h3>
                         
                     </a>
@@ -271,32 +299,6 @@
                         
                             <h3 class="post-subtitle">
                                  Android开源项目编译中sh的常用命令
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="开源项目">
-                    <span class="tag-text">开源项目</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2016/07/21/Logger_analyse/">
-                        <h2 class="post-title">
-                            Logger开源库刨析
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Logger是github上关于Andorid Log打印优化和封装的软件，是一款简洁、优雅、强大的log跟踪器，截止目前已经有4003个star。
                             </h3>
                         
                     </a>
@@ -394,6 +396,32 @@
                         
                             <h3 class="post-subtitle">
                                 序列图主要用于按照交互发生的一系列顺序，显示对象之间的这些交互。
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Java">
+                    <span class="tag-text">Java</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/08/02/annotation_learning/">
+                        <h2 class="post-title">
+                            java 中的注解
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                针对java中注解的学习笔记
                             </h3>
                         
                     </a>
