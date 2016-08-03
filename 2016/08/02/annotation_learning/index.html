@@ -19,8 +19,7 @@
 
     
     <meta name="description" content="一直对java中的注解不是很了解，但是随处可见，前些天，一位朋友@徐文志程序猿在博客中写了关于PHP的注释，学习了很多，所以，也尝试着学习下java中的注解，并记录在这里，供以后复习，也便于大家共同学习。
-
-在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便">
+在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便记">
 
     <title>
         
@@ -103,14 +102,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About Me</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About Me</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -199,8 +198,8 @@
 
                 <blockquote>
 <p>一直对java中的注解不是很了解，但是随处可见，前些天，一位朋友@徐文志程序猿在博客中写了关于PHP的注释，学习了很多，所以，也尝试着学习下java中的注解，并记录在这里，供以后复习，也便于大家共同学习。</p>
+<p>在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便记忆，我将在将来的文章中尝试着用思维导图知识结构。好了现在就开始干正事，切入正题吧。</p>
 </blockquote>
-<p>在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便记忆，这篇文章中，我会尝试着用思维导图阐述我的学习过程。好了现在就开始干正事，切入正题吧。</p>
 <p>注解（Annotation）是java 5.0引入的新特性。它提供了一种结构化的类型检查的新途径。我们通过加入注解，能够避免很多问题，例如编写累赘的部署描述文件。与代码注释相比，它更注重与描述类的相关信息。</p>
 <h1 id="基本的语法"><a href="#基本的语法" class="headerlink" title="基本的语法"></a>基本的语法</h1><p>注解的语法还是比较简单的，除了多了@符号外，其他的和java的固有语法一致。<br>在java SE5 中就提供了三种原生的注解：</p>
 <ul>
@@ -229,8 +228,9 @@ public @interface Test{}
 <p>这样，就定义了一个@Test的注解。我们可以看到，其实和接口的定义很像。不同的是，在定义注解时，我们需要一些<a href="#什么是元注解">元注解</a>，如@Target，@Retention。其中：  </p>
 <ul>
 <li><strong>@Target</strong> 注解用来定义该注解的作用域，如作用于一个方法还是一个域。</li>
-<li><strong>@Retention</strong> 则定义了该注解在哪个级别可用，源代码（SOURCE）中、类文件（CLASS）中、运行时（RUNTIME）。<br>这类注解由于没有元素，被称为 <strong>标记注解（marker annotation）</strong>， 通常情况下，注解还会加上一些元素用于表示某些值。这些值用于编译器在分析和处理该注解时的参考。可以为这些元素指定默认值。<br>我们来看看元素的使用：  </li>
+<li><strong>@Retention</strong> 则定义了该注解在哪个级别可用，如源代码（SOURCE）中、类文件（CLASS）中、运行时（RUNTIME）。<br>这类注解由于没有元素，被称为 <strong>标记注解（marker annotation）</strong>， 通常情况下，注解还会加上一些元素用于表示某些值。这些值用于编译器在分析和处理该注解时的参考。可以为这些元素指定默认值。</li>
 </ul>
+<h2 id="注解元素"><a href="#注解元素" class="headerlink" title="注解元素"></a>注解元素</h2><p>元素的的定义很简单：</p>
 <pre><code class="java">@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UseCase{
@@ -238,7 +238,15 @@ public @interface UseCase{
   public String description() default &quot;no description&quot;;
 }
 </code></pre>
-<p>这个@UserCase 注解就定义了两个元素，我们为description元素制定了默认值。如果使用该注解在注解某个方法时，没有给定描述字符，将会使用该默认值代替。下面我们接着看看如何使用该注解。</p>
+<p>这个@UserCase 注解就定义了两个元素，我们为description元素制定了默认值。如果使用该注解在注解某个方法时，没有给定描述字符，将会使用该默认值代替。<br>注解元素可用的数据类型如下所示：</p>
+<ul>
+<li>所有的基本数据类型（int, float, boolean型等）及其数组</li>
+<li>String 及String[]</li>
+<li>Class 及 Class[]</li>
+<li>enum 及 enum[]</li>
+<li>Annotation 及 Annotation[]<br>如果使用了其他类型的对象，编译器就会抛出异常，对于这些元素的默认值，就更值得注意了，元素不能有不确定的默认值，也就是说，元素要么在定义的时候就赋给默认值，要么就必须在使用注解时提供该元素的值。<br>非常蛋疼的一点是，这些元素除了基本数据类型外，其他的类型的元素不能赋给其一个 null, 所以很难表现这个元素缺失的状态，如果有这样的需求，我们可以通过 <em>定义特殊的值，如空字符串，或者负数以表示该状态</em> 。</li>
+</ul>
+<p>下面我们接着看看如何使用该注解。</p>
 <h1 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h1><p>注解元素的使用过程中，是以键-值对的形式给出的。</p>
 <pre><code class="java">public class PasswordUtils {
   @UseCase(id= 1,description=&quot;Password must contain at least one numeric&quot;)
@@ -324,7 +332,62 @@ public @interface UseCase{
 </tr>
 </tbody>
 </table>
-<p>接下来将会学习编写注解解释器程序通过反射用于实现注解对应的功能。<br>未完待续～</p>
+<p>@Retention的值：  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">值</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SOURCE</td>
+<td style="text-align:left">注解将被编译器丢弃</td>
+</tr>
+<tr>
+<td style="text-align:left">CLASS</td>
+<td style="text-align:left">注解在class文件中可用，但是会在VM虚拟机执行时丢弃</td>
+</tr>
+<tr>
+<td style="text-align:left">RUNTIME</td>
+<td style="text-align:left">VM虚拟机将在运行时也保留注释，因此可以通过反射机制类读取注解的信息</td>
+</tr>
+</tbody>
+</table>
+<p>但是，仅仅有这些注解是没法满足我们的编程需求的，我们需要定制实现自己的注解，当然，光有注解也不能有任何的作用，我们需要编写自己的处理器来处理这些注解。<br>接下来将会学习编写注解解释器程序通过反射用于实现注解对应的功能。<br>在 Java SE5 中扩展了反射机制的api接口，同时还提供了一个外部工具apt来帮助我们解析带有注解的源代码。<br>下面，我们就通过使用反射机制实现一个简单的注解解释器，来完成上面的例子中关于@UserCase注解的处理。</p>
+<pre><code class="java">public class UserCaseTracker {
+  public static void trackUseCases(List&lt;Integer&gt; useCases, Class&lt;?&gt; cl) {
+    /**
+    * 此处用到了getDecleardMethods() 和 getAnnotation() 方法，他们都属于AnnotatedElement接口，
+    * class、Method、Field类都实现了这个接口，因此，我们可以通过调用Class的getDecleardMethods方法
+    * 获取该类中所有的方法的Method对象（包括 public、protected 和 private方法），再通过Method的
+    * getAnnotation方法返回具体的注解类型，此例中返回UseCase，如果被注解的方法或者类中没有该注解，则返回空。
+    */
+    for (Method m : cl.getDecleardMethods()) {
+      UserCase uc = m.getAnnotation(Usecase.class);
+      if (uc != null) {
+        System.out.println(&quot;Found use case:&quot; + uc.id() + &quot; &quot; + uc.description());
+        useCases.remove(new Integer(uc.id()));
+      }
+    }
+    for (int i : useCases) {
+       System.out.println(&quot;Warning: Missing use case-&quot; + i);
+    }
+  }
+
+  public static void main(String[] args){
+    List&lt;Integer&gt; useCases = new ArrayList&lt;Integer&gt;();
+    Collections.addAll(useCases, 1, 2, 3, 4);//case的编号
+    trackUseCases(useCases, PasswordUtils.class);
+  }
+}
+</code></pre>
+<h1 id="注解不支持继承"><a href="#注解不支持继承" class="headerlink" title="注解不支持继承"></a>注解不支持继承</h1><p>最后的最后，注解不支持继承这件事，不得不在这里提一提，我们不能使用关键字 <em>extends</em> 来继承某个@interface。<br>期待未来的版本中能给我们带来惊喜。  </p>
+<p>最近在关注java 8中的新的语法，注解方面也发生了一些变化，参见：<a href="https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html" target="_blank" rel="external">Repeating Annotations</a>, 要知何时更新，时刻关注博客哦。</p>
+<blockquote>
+<p>参考文献：<br>《java编程思想》（”Think in java”） “注解”一章</p>
+</blockquote>
 
 
                 <hr>
