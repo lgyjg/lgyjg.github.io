@@ -13,21 +13,21 @@
 
     <!-- yangjg add meta data for SEO keyword optimization -->
     
-       
-       <meta name="keywords" content="Java">
+        <meta name="keywords" content="surfaceTexture, surfaceView">
     
 
     
-    <meta name="description" content="一直对java中的注解不是很了解，但是随处可见，前些天，一位朋友@徐文志程序猿在博客中写了关于PHP的注释，学习了很多，所以，也尝试着学习下java中的注解，并记录在这里，供以后复习，也便于大家共同学习。
-在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便记">
+    <meta name="description" content="有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceTexture 更加低功耗，这也激起了很多应用的换脸热潮，所以今天准备一探究竟。BTW： 晚上闲来无事，于是乎又给自己挖了一坑，突然发现想把这个坑填满，遥遥无期啊。
+
+SurfaceViewsurfaceView继承自View，因此它本质上是一个View。但与普通View不同的是，它有自己的Surface。在go">
 
     <title>
         
-          java 中的注解 - 杨建国的博客 | 渐行渐远
+          认识SurfaceView和SurfaceTexture - 杨建国的博客 | 渐行渐远
         
     </title>
 
-    <link rel="canonical" href="http://www.aman.site/2016/08/02/annotation_learning/">
+    <link rel="canonical" href="http://www.aman.site/2016/08/04/SufaceTexture_vs_sufaceView/">
 
     <!-- yangjg change for debug -->
     
@@ -170,14 +170,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                          <a class="tag" href="/tags/#Android" title="Android">Android</a>
                         
                     </div>
-                    <h1>java 中的注解</h1>
-                    <h2 class="subheading">针对java中注解的学习笔记</h2>
+                    <h1>认识SurfaceView和SurfaceTexture</h1>
+                    <h2 class="subheading">有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceTexture 更加低功耗，这也激起了很多应用的换脸热潮，所以今天准备一探究竟。</h2>
                     <span class="meta">
-                        Posted by JianGuo Yang on
-                        2016-08-02
+                        Posted by JianGuo on
+                        2016-08-04
                     </span>
                 </div>
             </div>
@@ -197,196 +197,32 @@
                 post-container">
 
                 <blockquote>
-<p>一直对java中的注解不是很了解，但是随处可见，前些天，一位朋友<a href="http://xuwenzhi.com" target="_blank" rel="external">@徐文志程序猿</a>在博客中写了关于PHP的注释，学习了很多，所以，也尝试着学习下java中的注解，并记录在这里，供以后复习，也便于大家共同学习。</p>
-<p>在开始之前，我墙裂给大家安利一种学习方式。思维导图，又称脑图，是能够将思维中抽象的逻辑关系转化为直观的关系图标的一种方式，在我们的学习中，可以将知识点通过思维导图梳理出来，非常有条理，还方便记忆，我将在将来的文章中尝试着用思维导图知识结构。好了现在就开始干正事，切入正题吧。</p>
+<p>有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceTexture 更加低功耗，这也激起了很多应用的换脸热潮，所以今天准备一探究竟。<br>BTW： 晚上闲来无事，于是乎又给自己挖了一坑，突然发现想把这个坑填满，遥遥无期啊。</p>
 </blockquote>
-<p>注解（Annotation）是java 5.0引入的新特性。它提供了一种结构化的类型检查的新途径。我们通过加入注解，能够避免很多问题，例如编写累赘的部署描述文件。与代码注释相比，它更注重与描述类的相关信息。</p>
-<h1 id="基本的语法"><a href="#基本的语法" class="headerlink" title="基本的语法"></a>基本的语法</h1><p>注解的语法还是比较简单的，除了多了@符号外，其他的和java的固有语法一致。<br>在java SE5 中就提供了三种原生的注解：</p>
+<h2 id="SurfaceView"><a href="#SurfaceView" class="headerlink" title="SurfaceView"></a>SurfaceView</h2><p>surfaceView继承自View，因此它本质上是一个View。但与普通View不同的是，它有自己的Surface。在google的API中，有两个子类分别是：GLSurfaceView 和 VideoView。SurfaceView 是专门用于嵌入在View hierachy的树形结构中进行图像绘制的图层（surface）。我们可以控制这个view的格式，例如大小。SurfaceView将会专注于放置在屏幕上恰当位置的那个图层。对于一个Surface而言，它在Z轴，也就是垂直于屏幕的方向上是有序排列的，所以，它在持有它的SurfaceView的窗口后面。这句话可能很多人不能理解，盗张图（摘自<a href="http://blog.csdn.net/jinzhuojun/article/details/44062175" target="_blank" rel="external">http://blog.csdn.net/jinzhuojun/article/details/44062175</a>） 来说明这个问题。</p>
+<p><img src="http://img.blog.csdn.net/20150304164219975?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamluemh1b2p1bg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>如上图所示：View hierachy的树形结构中，顶层的view为DecorView，也称为根节点视图，对于WMS是可见的，这个DecorView在WMS中有一个对应的WindowState，相应地，在SF中对应的Layer。而SurfaceView自带一个Surface，这个Surface在WMS中有自己对应的WindowState，在SF中也会有自己的Layer。也就是说，虽然在App端它仍在View hierachy中，但在Server端（WMS和SF）中，它与宿主窗口是分离的，这样的好处是对这个Surface的渲染可以放到单独线程去做，渲染时可以有自己的GL context。</p>
+<p>View hierarchy 将会准确的混合位于下层的Surface以及SurfaceView的周边的View控件，使得他们能够正常的呈现在屏幕之上，这样，我们可以放置一些遮罩层，例如在Surface上放置一个按钮。但是，无论如何，这个遮罩层都会在alpha通道混合器的每一次surface刷新的时候对显示性能造成影响。而且，使得surface可见的上层透明区域是由在View层级中的位置决定的。如果post-layout 转化的属性被用于绘制SurfaceView上面的view，有可能导致这个View不能正确的和Surface进行合成。从而导致SurfaceView被遮挡。<br>如果你想获取位于view下层的Surface对象，通过SurfaceHolder接口的getHolder()方法取得Holder对象。</p>
+<p>不幸的是，这个Surface只有在窗口可见的情况下，才会被创建出来。需要实现surfaceCreated(SurfaceHolder) 和 surfaceDestroyed(SurfaceHolder) 方法来处理surface被创建和被销毁时的逻辑。</p>
+<p>这个类的主要目的是为了提供一个辅助线程中的surface对象，这个对象可以在屏幕上渲染。 SurfaceView和View最本质的区别在于，surfaceView是在一个新起的单独线程中可以重新绘制画面而View必须在UI的主线程中更新画面。</p>
+<p>如果你想要了解这种途径，需要了解一些线程的概念：</p>
 <ul>
-<li>@Override 表示当前的方法继承自父类，并且复写了父类的方法，如果被注解的方法在父类中不存在，编译器就会抛出异常。在java中，这个注解是可选的。</li>
-<li>@Deprecated 表示当前的方法已经被废弃，在编译时会有警告提示。</li>
-<li>@SuppressWarings 表示主动忽略不恰当的编译器警告。<br>此外，java 还提供了可扩展的annotation API。<br>下面的例子说明了注解的使用：  </li>
+<li>所有的SurfaceView和 SurfaceHolder.Callback 的方法都是在主线程中被调用。它们在任何情形下都需要被正确的同步。</li>
+<li>你必须保证绘制线程在它可用的时候，也就是说在surfaceCreated(SurfaceHolder) 和 surfaceDestroyed(SurfaceHolder)  两个方法之间，仅仅能够触及到下面的surface。</li>
 </ul>
-<pre><code class="java">public class Testable {
-    public void execute(){
-      System.out.println(&quot;Executing...&quot;);
-    }
-    @Test
-    void testExecute (){
-      execute();
-    }
-}
-</code></pre>
-<p>  <strong>@Test</strong> 注解本身不做任何的操作，但是，编译器在编译的时候，就必须找到关于该注解的定义，否则就会报错。下面的一小节将会介绍如何进行定义。</p>
-<h1 id="注解的定义"><a href="#注解的定义" class="headerlink" title="注解的定义"></a>注解的定义</h1><p>下面，我们就给出前文提到的@Test注解的定义：</p>
-<pre><code class="java">import java.lang.annotation
-
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Test{}
-</code></pre>
-<p>这样，就定义了一个@Test的注解。我们可以看到，其实和接口的定义很像。不同的是，在定义注解时，我们需要一些<a href="#什么是元注解">元注解</a>，如@Target，@Retention。其中：  </p>
-<ul>
-<li><strong>@Target</strong> 注解用来定义该注解的作用域，如作用于一个方法还是一个域。</li>
-<li><strong>@Retention</strong> 则定义了该注解在哪个级别可用，如源代码（SOURCE）中、类文件（CLASS）中、运行时（RUNTIME）。<br>这类注解由于没有元素，被称为 <strong>标记注解（marker annotation）</strong>， 通常情况下，注解还会加上一些元素用于表示某些值。这些值用于编译器在分析和处理该注解时的参考。可以为这些元素指定默认值。</li>
-</ul>
-<h2 id="注解元素"><a href="#注解元素" class="headerlink" title="注解元素"></a>注解元素</h2><p>元素的的定义很简单：</p>
-<pre><code class="java">@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface UseCase{
-  public int id();
-  public String description() default &quot;no description&quot;;
-}
-</code></pre>
-<p>这个@UserCase 注解就定义了两个元素，我们为description元素制定了默认值。如果使用该注解在注解某个方法时，没有给定描述字符，将会使用该默认值代替。<br>注解元素可用的数据类型如下所示：</p>
-<ul>
-<li>所有的基本数据类型（int, float, boolean型等）及其数组</li>
-<li>String 及String[]</li>
-<li>Class 及 Class[]</li>
-<li>enum 及 enum[]</li>
-<li>Annotation 及 Annotation[]<br>如果使用了其他类型的对象，编译器就会抛出异常，对于这些元素的默认值，就更值得注意了，元素不能有不确定的默认值，也就是说，元素要么在定义的时候就赋给默认值，要么就必须在使用注解时提供该元素的值。<br>非常蛋疼的一点是，这些元素除了基本数据类型外，其他的类型的元素不能赋给其一个 null, 所以很难表现这个元素缺失的状态，如果有这样的需求，我们可以通过 <em>定义特殊的值，如空字符串，或者负数以表示该状态</em> 。</li>
-</ul>
-<p>下面我们接着看看如何使用该注解。</p>
-<h1 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h1><p>注解元素的使用过程中，是以键-值对的形式给出的。</p>
-<pre><code class="java">public class PasswordUtils {
-  @UseCase(id= 1,description=&quot;Password must contain at least one numeric&quot;)
-  public boolean validataPassword(String password) {
-    return(password.mathes(&quot;\\w*\\d\\w*&quot;))
-  }
-
-  @UseCase(id=2)
-  public String encryptPassword(String password) {
-    return new StringBuffer(password).reverse().toString();
-  }
-
-  @UseCase(id=3,description=&quot;New password can&#39;t equal previously password&quot;)
-  public boolean checkForNewPassword(List&lt;String&gt; prePassWords, String password){
-    return !prePassWords.contains(password);
-  }
-
-}
-</code></pre>
-<h1 id="什么是元注解"><a href="#什么是元注解" class="headerlink" title="什么是元注解"></a>什么是元注解</h1><p>我们知道，万物是有源头的，就像我们的大千世界都是由原子构成的。元注解就是注解的源头，用于注解其他的注解。这句话有点绕，其实就是在我们定义注解的时候，使用元注解来定义该注解的作用域，使用级别，是否允许继承该注解等相关属性。如下表：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">元注解</th>
-<th style="text-align:left">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">@Target</td>
-<td style="text-align:left">表示该注解可以用于什么地方</td>
-</tr>
-<tr>
-<td style="text-align:left">@Retention</td>
-<td style="text-align:left">表示在什么级别保存该注解信息</td>
-</tr>
-<tr>
-<td style="text-align:left">@Documented</td>
-<td style="text-align:left">将此注解包含在javaDoc中</td>
-</tr>
-<tr>
-<td style="text-align:left">@Inherited</td>
-<td style="text-align:left">允许子类继承父类的注解</td>
-</tr>
-</tbody>
-</table>
-<p>其中@Target的取值有七种：  </p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">值</th>
-<th style="text-align:left">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">CONSTRUCTOR</td>
-<td style="text-align:left">构造器的声明</td>
-</tr>
-<tr>
-<td style="text-align:left">FIELD</td>
-<td style="text-align:left">域声明（包括enum）</td>
-</tr>
-<tr>
-<td style="text-align:left">LOCAL_VARIABLE</td>
-<td style="text-align:left">局部变量的声明</td>
-</tr>
-<tr>
-<td style="text-align:left">METHOD</td>
-<td style="text-align:left">方法的声明</td>
-</tr>
-<tr>
-<td style="text-align:left">PACKAGE</td>
-<td style="text-align:left">包的声明</td>
-</tr>
-<tr>
-<td style="text-align:left">PARAMETER</td>
-<td style="text-align:left">参数的声明</td>
-</tr>
-<tr>
-<td style="text-align:left">TYPE</td>
-<td style="text-align:left">类，接口，或enum的声明</td>
-</tr>
-</tbody>
-</table>
-<p>@Retention的值：  </p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">值</th>
-<th style="text-align:left">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">SOURCE</td>
-<td style="text-align:left">注解将被编译器丢弃</td>
-</tr>
-<tr>
-<td style="text-align:left">CLASS</td>
-<td style="text-align:left">注解在class文件中可用，但是会在VM虚拟机执行时丢弃</td>
-</tr>
-<tr>
-<td style="text-align:left">RUNTIME</td>
-<td style="text-align:left">VM虚拟机将在运行时也保留注释，因此可以通过反射机制类读取注解的信息</td>
-</tr>
-</tbody>
-</table>
-<p>但是，仅仅有这些注解是没法满足我们的编程需求的，我们需要定制实现自己的注解，当然，光有注解也不能有任何的作用，我们需要编写自己的处理器来处理这些注解。<br>接下来将会学习编写注解解释器程序通过反射用于实现注解对应的功能。<br>在 Java SE5 中扩展了反射机制的api接口，同时还提供了一个外部工具apt来帮助我们解析带有注解的源代码。<br>下面，我们就通过使用反射机制实现一个简单的注解解释器，来完成上面的例子中关于@UserCase注解的处理。</p>
-<pre><code class="java">public class UserCaseTracker {
-  public static void trackUseCases(List&lt;Integer&gt; useCases, Class&lt;?&gt; cl) {
-    /**
-    * 此处用到了getDecleardMethods() 和 getAnnotation() 方法，他们都属于AnnotatedElement接口，
-    * class、Method、Field类都实现了这个接口，因此，我们可以通过调用Class的getDecleardMethods方法
-    * 获取该类中所有的方法的Method对象（包括 public、protected 和 private方法），再通过Method的
-    * getAnnotation方法返回具体的注解类型，此例中返回UseCase，如果被注解的方法或者类中没有该注解，则返回空。
-    */
-    for (Method m : cl.getDecleardMethods()) {
-      UserCase uc = m.getAnnotation(Usecase.class);
-      if (uc != null) {
-        System.out.println(&quot;Found use case:&quot; + uc.id() + &quot; &quot; + uc.description());
-        useCases.remove(new Integer(uc.id()));
-      }
-    }
-    for (int i : useCases) {
-       System.out.println(&quot;Warning: Missing use case-&quot; + i);
-    }
-  }
-
-  public static void main(String[] args){
-    List&lt;Integer&gt; useCases = new ArrayList&lt;Integer&gt;();
-    Collections.addAll(useCases, 1, 2, 3, 4);//case的编号
-    trackUseCases(useCases, PasswordUtils.class);
-  }
-}
-</code></pre>
-<h1 id="注解不支持继承"><a href="#注解不支持继承" class="headerlink" title="注解不支持继承"></a>注解不支持继承</h1><p>最后的最后，注解不支持继承这件事，不得不在这里提一提，我们不能使用关键字 <em>extends</em> 来继承某个@interface。<br>期待未来的版本中能给我们带来惊喜。  </p>
-<p>最近在关注java 8中的新的语法，注解方面也发生了一些变化，参见：<a href="https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html" target="_blank" rel="external">Repeating Annotations</a>, 要知何时更新，时刻关注博客哦。</p>
+<h2 id="SurfaceTexture"><a href="#SurfaceTexture" class="headerlink" title="SurfaceTexture"></a>SurfaceTexture</h2><p>相比SurfaceView，SurfaceTexture是从Android3.0（API 11）加入的一个新类，它是Object的子类，它的主要用途从一个图像流捕获帧数据作为OpenGL ES的纹理。<br>这些图像流可以来自于相机的预览数据，或者视频的解码数据，从一个SurfaceTexture 创建一个 surface 可以被用于 <a href="https://developer.android.com/reference/android/hardware/camera2/package-summary.html" target="_blank" rel="external">android.hardware.camera2</a>, <a href="https://developer.android.com/reference/android/media/MediaCodec.html" target="_blank" rel="external">MediaCodec</a>, <a href="https://developer.android.com/reference/android/media/MediaPlayer.html" target="_blank" rel="external">MediaPlayer</a>,<a href="https://developer.android.com/reference/android/renderscript/Allocation.html" target="_blank" rel="external">Allocation</a>等的输出目标。<br>如果<a href="https://developer.android.com/reference/android/graphics/SurfaceTexture.html#updateTexImage(" target="_blank" rel="external">updateTexImage()</a>) 被调用，根据内容流中最近的图像更新在创建SurfaceTexture 时指定的纹理对象的内容，接下来，就可以像操作普通GL纹理一样操作它了。但是这有可能导致一些帧被跳过。这个类跟SurfaceView很像，可以从camera preview或者video decode里面获取图像流（image stream）。</p>
+<h2 id="SurfaceView-和-SurfaceTexture-的区别"><a href="#SurfaceView-和-SurfaceTexture-的区别" class="headerlink" title="SurfaceView 和 SurfaceTexture 的区别"></a>SurfaceView 和 SurfaceTexture 的区别</h2><p>和SurfaceView不同的是，SurfaceTexture在接收图像流之后，不需要显示出来,而是转为GL外部纹理。因此可用于图像流数据的二次处理（如Camera滤镜，桌面特效等）,例如我们可以用SurfaceTexture接收来自camera的图像流，然后从SurfaceTexture中取得图像帧的拷贝进行处理，处理完毕后再送给另一个SurfaceView用于显示即可。</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>从目前个人经验来看，孰优孰劣还很难定夺，还需要根据实际的应用场景选择合适的对象来使用。</p>
+<h2 id="SurfaceView真的会比SurfaceTexture-低功耗？"><a href="#SurfaceView真的会比SurfaceTexture-低功耗？" class="headerlink" title="SurfaceView真的会比SurfaceTexture 低功耗？"></a>SurfaceView真的会比SurfaceTexture 低功耗？</h2><p>在最新的SDK文档中，我们看到在SurfaceView的解释中google添加了下面一段话：</p>
 <blockquote>
-<p>参考文献：<br>《java编程思想》（”Think in java”） “注解”一章</p>
+<p>Note: Starting in platform version N, SurfaceView’s window position is updated synchronously with other View rendering. This means that translating and scaling a SurfaceView on screen will not cause rendering artifacts. Such artifacts may occur on previous versions of the platform when its window is positioned asynchronously.</p>
+</blockquote>
+<p>上面一段话的意思大概时候，在Android N版本之后，SurfaceView 的窗口位置同步的使用了其他的View渲染器更新了。这意味着SurfaceView的平移和缩放将不会引起渲染异常（rendering artifacts），这些“artifacts”在之前的版本上，当它的窗口被异步的放置的时候可能会碰到。</p>
+<p>下面这张图介绍了什么是artifacts，其实就是图像局部出现错位，噪点，锯齿等问题。<br><img src="http://area.autodesk.com/userdata/forum/r/render_artifacts.jpg" alt="http://area.autodesk.com/userdata/forum/r/render_artifacts.jpg"></p>
+<p>从上面的提示中我们并没有找到想要的答案，看来是需要进一步深究了。写之前就知道这是一大坑。。。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>简单地说，SurfaceView是一个有自己Surface的View。它的渲染可以放在单独线程而不是主线程中。其缺点是不能做变形和动画。SurfaceTexture可以用作非直接输出的内容流，这样就提供二次处理的机会。与SurfaceView直接输出相比，这样会有若干帧的延迟。同时，由于它本身管理BufferQueue，因此内存消耗也会稍微大一些。</p>
+<blockquote>
+<p>参考文献：<br>[1] <a href="http://blog.csdn.net/jinzhuojun/article/details/44062175" target="_blank" rel="external">http://blog.csdn.net/jinzhuojun/article/details/44062175</a><br>[2] <a href="http://www.wfuyu.com/technology/22762.html" target="_blank" rel="external">http://www.wfuyu.com/technology/22762.html</a></p>
 </blockquote>
 
 
@@ -397,12 +233,12 @@ public @interface UseCase{
                 </style>
                 <div class="ds-share"
                     style="text-align: right"
-                    data-thread-key="2016/08/02/annotation_learning/"
-                    data-title="java 中的注解"
-                    data-url="http://www.aman.site/2016/08/02/annotation_learning/"
+                    data-thread-key="2016/08/04/SufaceTexture_vs_sufaceView/"
+                    data-title="认识SurfaceView和SurfaceTexture"
+                    data-url="http://www.aman.site/2016/08/04/SufaceTexture_vs_sufaceView/"
                     data-images=""
                     data-content="
-一直对java中的注解不是很了解，但是随处可见，前些天，一位朋友@徐文志程序猿在博客中写了关... | 杨建国的博客 | 渐行渐远 " >
+有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceText... | 杨建国的博客 | 渐行渐远 " >
                     <div class="ds-share-inline">
                       <ul  class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
@@ -420,13 +256,9 @@ public @interface UseCase{
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2016/08/04/SufaceTexture_vs_sufaceView/" data-toggle="tooltip" data-placement="top" title="认识SurfaceView和SurfaceTexture">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2016/07/21/Logger_analyse/" data-toggle="tooltip" data-placement="top" title="Logger开源库刨析">Next Post &rarr;</a>
+                            <a href="/2016/08/02/annotation_learning/" data-toggle="tooltip" data-placement="top" title="java 中的注解">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -435,9 +267,9 @@ public @interface UseCase{
                 <!-- 多说评论框 start -->
                 <div class="comment">
                     <div class="ds-thread"
-                        data-thread-key="2016/08/02/annotation_learning/"
-                        data-title="java 中的注解"
-                        data-url="http://www.aman.site/2016/08/02/annotation_learning/" >
+                        data-thread-key="2016/08/04/SufaceTexture_vs_sufaceView/"
+                        data-title="认识SurfaceView和SurfaceTexture"
+                        data-url="http://www.aman.site/2016/08/04/SufaceTexture_vs_sufaceView/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -463,7 +295,7 @@ public @interface UseCase{
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Java" title="Java">Java</a>
+                          <a class="tag" href="/tags/#Android" title="Android">Android</a>
                         
                     </div>
                 </section>
