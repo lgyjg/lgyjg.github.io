@@ -57,7 +57,7 @@ AndroidStudio和eclipse最大的差别在于，androidstudio并没有WorkSpace�
 #### 没有视角的概念
 第二个比较大的区别在于Andorid Studio没有透视（perspectives），这意味着你不需要像eclipse那样手动的切换不同工作空间的布局。AndroidStudio可以自动的根据你的上下文切换相关的工具。例如，你在调试的时候，会自动切换到Debugger的工具窗口。
 
-![自动显示工作空间](migration_guide_debugger_1.png)
+![自动显示工作空间](/img/in-post/AndroidStudio_VS_eclipse/migration_guide_debugger_1.png)
 
 #### 工具窗口
 androidstudio同样具有工具窗口。打开一个工具窗口，只需要点击相应的工具窗口条即可选择想要打开的窗口。
@@ -68,7 +68,7 @@ androidstudio同样具有工具窗口。打开一个工具窗口，只需要点�
 #### 设置project对应的文件自动滚动
 默认情况下，Andorid Studio 并不支持在切换不同文件的时候，左侧的project文件跟着变动。可以右键点击“project”，在弹出的对话框中勾选"AutoScrollToSource" 和 "AutoScrollFromSource"，使得在点击左侧的文件名时，右侧窗口自动打开并跳转到对应的文件。点击右侧的文件窗口时，左侧也可以自动跳转。  
 
-![自动跟随](migration_guide_auto_scroll_from_source.png)
+![自动跟随](/img/in-post/AndroidStudio_VS_eclipse/migration_guide_auto_scroll_from_source.png)
 
 #### 显示行号
 settings/Preferences | Editor | General | Appearance | Show line numbers
