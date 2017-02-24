@@ -3,7 +3,7 @@ layout: post
 title: Android学习资源推荐
 subtitle: 为大家整理了一些Android领域的学习资料
 author: JianGuo
-header-img: android-study-source-bg1.jpeg
+header-img: img/in-post/AndroidStudySource/android-study-source-bg1.jpeg
 tags: Android
 date: 2016-06-20 16:32:29
 ---

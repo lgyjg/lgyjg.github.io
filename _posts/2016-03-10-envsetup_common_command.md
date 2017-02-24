@@ -4,7 +4,7 @@ title: envsetup-sh的常用命令
 subtitle:   " Android开源项目编译中sh的常用命令"
 date: 2016-03-10 09:22:04
 author:     "JianGuo Yang"
-header-img: "post-bg-unix-linux.jpg"
+header-img: img/in-post/envsetup_common_command/post-bg-unix-linux.jpg
 tags: Android
 ---
 

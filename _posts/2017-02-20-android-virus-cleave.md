@@ -4,7 +4,7 @@ title: 一条短信引发的血案——Android病毒分析
 subtitle: 一条短信引发的血案
 date: 2017-02-20 21:06:32
 author: JianGuo
-header-img: img/post-bg.jpg
+header-img: img/in-post/android-virus-cleave/post-bg-2015.jpg
 tags:
   - Android
 ---

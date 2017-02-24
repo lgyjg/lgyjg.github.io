@@ -5,7 +5,7 @@ subtitle:   " AndroidStudio VS eclipse"
 date: 2016-04-19 20:26:47
 author:     "JianGuo Yang"
 type: "categories"
-header-img: "post-bg-2015.jpg"
+header-img: img/in-post/AndroidStudio_VS_eclipse/post-bg-2015.jpg
 tags: AndroidStudio
 ---
 

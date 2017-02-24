@@ -4,7 +4,7 @@ title: AndroidStudio快捷键大全
 subtitle:   "介绍AndroidStudio常用的快捷键功能，收集了所有的Android Studio Tips Of the Day的内容"
 date: 2016-05-03 18:18:18
 author:     "JianGuo Yang"
-header-img: "post-bg-androidstudio.jpg"
+header-img: img/in-post/AndroidStudio_shortcut_key/post-bg-androidstudio.jpg
 tags: AndroidStudio
 ---
 
