@@ -3,7 +3,7 @@ layout: post
 title: 《何必等来生》第三章读书笔记
 subtitle: 每个人对云南的印象是不一样的，我心中的云南是惬意的，充满诗情画意的云南
 author: JianGuo
-header-img: /img/in-post/yunnan_in_my_heart/dali.jpg
+header-img: img/in-post/yunnan_in_my_heart/dali.jpg
 tags: 感悟
 date: 2016-07-18 03:28:29
 ---
