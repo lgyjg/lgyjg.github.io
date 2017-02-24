@@ -1,0 +1,123 @@
+---
+layout: page
+title: "About"
+description: "Hey, this is Hux."
+header-img: "img/about-bg.jpg"
+---
+
+<!-- Language Selector -->
+<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
+    <option value="0" selected> 中文 Chinese </option>
+    <option value="1"> 英语 English </option>
+</select>
+<!---------------------------------------------------------------------------------------------------->
+<!-- Chinese Version -->
+<div class="zh post-container">
+    <blockquote>
+        喜爱技术，懂点摄影，乐于探索，乐于分享<br>
+        希望在这个世界遇到更好的你。
+    </blockquote>
+<p>Android攻城师一枚，出生于甘肃会宁，毕业于哈尔滨理工大学，高分子材料与工程专业，2015届。喜欢摄影，旅行，音乐，运动。<br>现供职于中科创达<a href="http://www.thundersoft.com" target="_blank" rel="external">thundersoft.Inc</a>, 从事多媒体相关的研发工作，正在关注机器学习，人工智能，虚拟现实等技术。</p>
+<h3 id="关注"><a href="#关注" class="headerlink" title="关注"></a>关注</h3><ol>
+<li>Android,Java,Python,AI,Machin Learning</li>
+<li>互联网，计算机技术</li>
+<li>摄影，影像</li>
+</ol>
+<h3 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h3><p>GitHub: <a href="https://github.com/lgyjg" target="_blank" rel="external">lgyjg</a><br>微博: <a href="http://weibo.com/lgyjg" target="_blank" rel="external">HelloVirtualWorld</a><br>知乎: <a href="https://www.zhihu.com/people/yang-jian-guo-51" target="_blank" rel="external">杨建国</a></p>
+<hr>
+</div>
+<!------------------------------------------------------------------------------------------------------>
+<!-- English Version -->
+<div class="en post-container">
+    <blockquote>
+        Designer or Engineer, things in between.
+    </blockquote>
+<p>Hi, my name is jianguo, I am an android developer at beijing, china. I was born on june 29th 1991 at GanSu. I graduated from  Harbin University Of Science And Technology with the class of 2015, which is located in Heilongjiang province. </p>
+<h3 id="Career-Path"><a href="#Career-Path" class="headerlink" title="Career Path"></a>Career Path</h3><p>I’m employed full time by <a href="http://www.thundersoft.com" target="_blank" rel="external">thundersoft.Inc</a>, in Beijing. Concentrating on MultiMedia technology such as Camera, VoiceTrigger, Gellary etc. I’m interested in Machine Learning, Artificial Intelligence(AI) and Virtual Reality(VR) and so on, because of I think it will change people’s life in future. I am willing to create someting to change the world. In the future, I’d like to start work and learn for ML AI or VR field.</p>
+<h3 id="Focus"><a href="#Focus" class="headerlink" title="Focus"></a>Focus</h3><ol>
+<li>Android,Java,Python,AI,Machin Learning</li>
+<li>Internet of things,Intelligent devices.</li>
+<li>photograph, camera</li>
+</ol>
+<h3 id="Contact-Me"><a href="#Contact-Me" class="headerlink" title="Contact Me"></a>Contact Me</h3><p>GitHub: <a href="https://github.com/lgyjg" target="_blank" rel="external">lgyjg</a><br>weibo: <a href="http://weibo.com/lgyjg" target="_blank" rel="external">HelloVirtualWorld</a><br>zhihu: <a href="https://www.zhihu.com/people/yang-jian-guo-51" target="_blank" rel="external">杨建国</a></p>
+</div>
+<!------------------------------------------------------------------------------------------------------>
+<!-- Handle Language Change -->
+<script type="text/javascript">
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    function onLanChange(index){
+        if(index == 0){
+            $zh.style.display = "block";
+            $en.style.display = "none";
+        }else{
+            $en.style.display = "block";
+            $zh.style.display = "none";
+        }
+    }
+    onLanChange(0);
+</script>
+
+
+
+{% if site.duoshuo_username %}
+<!-- 多说评论框 start -->
+<div class="comment">
+    <div class="ds-thread"
+    {% if site.duoshuo_username == "huxblog" %}
+        data-thread-id="1187623191091085319"
+    {% else %}
+        data-thread-key="{{site.duoshuo_username}}/about"
+    {% endif %}
+
+    data-title="{{page.title}}"
+    data-url="{{site.url}}/about/"></div>
+</div>
+<!-- 多说评论框 end -->
+
+<!-- Duoshuo hacking -->
+<input id="dsUser" type="hidden" value="{{site.duoshuo_username}}"  />
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User hacking by Hux
+    var _user = document.getElementById('dsUser').value;
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+{% endif %}
+
+
+{% if site.disqus_username %}
+<!-- disqus 评论框 start -->
+<div class="comment">
+    <div id="disqus_thread" class="disqus-thread">
+
+    </div>
+</div>
+<!-- disqus 评论框 end -->
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "{{site.disqus_username}}";
+    var disqus_identifier = "{{site.disqus_username}}/{{page.url}}";
+    var disqus_url = "{{site.url}}{{page.url}}";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+{% endif %}

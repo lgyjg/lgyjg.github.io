@@ -1,0 +1,99 @@
+# Site settings
+title: 渐行渐远
+SEOTitle: 杨建国的博客 | 渐行渐远
+header-img: img/home-bg.jpg
+email: hustyjg@163.com
+description: "泡在android世界的日子"
+keyword: "杨建国, 渐行渐远, 博客, android, aman.site"
+url: "http://www.aman.site"              # your host, for absolute URL
+baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
+
+google_site_verification: 7s8wMtCUkn0si9Ku0tgMVDiPBmNXQRIj3L9imZLNFTg
+# ForTest
+debugable: true
+
+# ChooseCDNserver
+use_qiniu: true
+
+
+# SNS settings
+RSS: false
+weibo_username:     lgyjg
+zhihu_username:     yang-jian-guo-51
+github_username:    lgyjg
+facebook_username:  aman.site
+linkedin_username:  建国-杨-964324109
+#twitter_username:  lgyjg
+
+# Build settings
+# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
+highlighter: rouge
+permalink: pretty
+paginate: 10
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+
+
+
+# Gems
+# from PR#40, to support local preview for Jekyll 3.0
+gems: [jekyll-paginate]
+
+
+
+# Markdown settings
+# replace redcarpet to kramdown,
+# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
+# document: http://jekyllrb.com/docs/configuration/#kramdown
+markdown: kramdown
+kramdown:
+  input: GFM                            # use Github Flavored Markdown !important
+
+
+
+# Disqus settings
+#disqus_username: _your_disqus_short_name_
+
+# Duoshuo settings
+duoshuo_username: amansite
+# Share component is depend on Comment so we can NOT use share only.
+duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+
+
+
+
+# Analytics settings
+# Baidu Analytics
+ba_track_id: 41c114db1f7b1a79a2a2442b96df6457
+# Google Analytics
+ga_track_id: 'UA-86795794-1'            # Format: UA-xxxxxx-xx
+ga_domain: aman                         # default: auto
+
+
+
+# Sidebar settings
+sidebar: true                           # whether or not using Sidebar.
+sidebar-about-description: "记录在android开发中的点点滴滴，希望认识更多的朋友！"
+sidebar-avatar: /img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+
+
+
+# Featured Tags
+featured-tags: true                     # whether or not using Feature-Tags
+featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+
+
+
+# Friends
+friends: [
+    {
+        title: "徐文志程序猿",
+        href: "http://xuwenzhi.com"
+    },{
+        title: "宋祎超",
+        href: "http://songyichao.com"
+    },{
+        title: "Hux Blog",
+        href: "http://huangxuan.me"
+    }
+]
