@@ -178,20 +178,24 @@ https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.
 不但申请了权限，木马病毒还声明了三个服务和三个广播接收器：
 
 服务：
-- com.phone.stop6.service.SecondService —— 程序守护进程服务
+
+- com.phone.stop6.service.SecondService —— 程序守护进程服务 
+
 ```xml
 <service
     android:name="com.phone.stop6.service.SecondService"
     android:process=":thee_second2_service3" />
 ```
-- com.phone.stop6.service.BootService —— 程序启动服务
+- com.phone.stop6.service.BootService —— 程序启动服务 
+
 ```xml
 <service
     android:name="com.phone.stop6.service.BootService"
     android:enabled="true"
     android:exported="true" />
 ```
-- com.phone.stop6.service.SmsServic —— 短信收发服务，在单独的进程中运行。
+- com.phone.stop6.service.SmsServic —— 短信收发服务，在单独的进程中运行。 
+
 ```xml
 <service
     android:name="com.phone.stop6.service.SmsService"
