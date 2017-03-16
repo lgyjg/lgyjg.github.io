@@ -11,8 +11,19 @@ tags:
 
 > 最近在学习深度学习机器学习的相关内容，作为经典的神经网络算法，确实是有很多应用的场景，也值得学习和探讨，因此在学习中记录下来，也大家交流。
 
+## 题外话
+大家想想，我们人类是如何从出生到慢慢长大的过程中记忆生活中的一些东西的？生物在外界刺激的条件下是如何建立反馈机制的？相信学过生物的同学肯定听说过神经元也就是神经细胞，它的官方定义是神经系统中负责神经传导的基本结构和功能单位。
+
+它的结构呢，大致是这个样子的：
+![](img/in-post/DeepLearning_nerual_network/shenjingyuan.JPG)
+(摘自：https://zh.wikipedia.org/wiki/%E7%A5%9E%E7%B6%93%E5%85%83#/media/File:Complete_neuron_cell_diagram_zh.svg)
+
+其实在生物体的神经结构中，有很多神经元，这些神经元间相互联系形成了网状结构，构成了生物学中的神经网络。人脑大约由10的12次方个神经元组成，而其中的每个神经元又与约100～10000个其他神经元相连接，如此构成一个庞大而复杂的神经元网络。
+
+这样的神经网络
+
 ## 神经网络算法简介
-在机器学习和认知科学领域，人工神经网络（artificial neural network，缩写ANN），简称神经网络（neural network，缩写NN）或类神经网络，是一种模仿生物神经网络(动物的中枢神经系统，特别是大脑)的结构和功能的数学模型或计算模型，用于对函数进行估计或近似。
+在机器学习和认知科学领域，人工神经网络（artificial neural network，缩写ANN），简称神经网络（neural network，缩写NN）或类神经网络，是一种模仿生物神经网络(动物的中枢神经系统，特别是大脑)的结构和功能的数学模型或计算模型，用于对函数进行估计或近似处理。
 
 神经网络的出现也正是模仿生物神经网络的反馈机制建立的数学模型。最著名的神经网络算法是1980年提出的"反向传播算法"（backpropagation），简称BP。算法本身的更多细节可以阅读一些书籍或者网页，这里不在仔细讲述，即使讲述也可能会误导大家。
 
@@ -24,7 +35,7 @@ tags:
 
 ![Feed_forward_neural_net](http://simage.jdon.com/bigdata/mla13.png)
 
-对于这种神经网络：
+对于这种神经网络，有以下特点：
 1. 每个层由若干个基本单元组成
 2. 数据集通过输入层传入到神经网络中进行计算，这些数据是特征集的特征实例变量。
 3. 经过输入层再由连接节点的权重经过一系列的计算传入到下一层，直到传输到输出层为止
@@ -57,3 +68,12 @@ tags:
 
 ## 参考文献
 1. https://zh.wikipedia.org/wiki/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C
+2. http://www.fon.hum.uva.nl/praat/manual/Feedforward_neural_networks_1__What_is_a_feedforward_ne.html
+3. http://www.eis.mdx.ac.uk/staffpages/rvb/teaching/BIS3226/hand11.pdf
+4. https://en.wikipedia.org/wiki/Feedforward_neural_network
+5. https://www.med.nyu.edu/chibi/sites/default/files/chibi/file2.pdf
+6. https://cn.mathworks.com/help/nnet/ref/feedforwardnet.html?requestedDomain=www.mathworks.com
+7. https://cn.mathworks.com/help/nnet/ug/multilayer-neural-network-architecture.html
+8. http://www-rohan.sdsu.edu/doc/matlab/toolbox/nnet/backpr52.html
+9. http://www.cs.cmu.edu/~rsalakhu/papers/sfnn.pdf
+10. 
