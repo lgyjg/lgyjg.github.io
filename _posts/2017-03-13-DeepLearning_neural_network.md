@@ -55,7 +55,7 @@ tan-sigmoid
 
 多层向前神经网络也称为有理式多层前馈神经网络，由一个输入层，一个输出层和若干个隐藏层组成，在它内部，参数从输入层向输出层单向传播。其结构如下图：
 
-![Feed_forward_neural_net](http://simage.jdon.com/bigdata/mla13.png)
+![Feed_forward_neural_net](/img/in-post/DeepLearning_neural_network/a-feed-forward-neural-network.png)
 
 对于这种神经网络，有以下特点：
 1. 每个层由若干个基本单元组成
