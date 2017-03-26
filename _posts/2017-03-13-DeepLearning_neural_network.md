@@ -13,7 +13,7 @@ tags:
 
 ## 题外话
 大家想想，我们人类是如何从出生到慢慢长大的过程中记忆生活中的一些东西的？生物在外界刺激的条件下是如何建立反馈机制的？相信学过生物的同学肯定听说过神经元也就是神经细胞，它的官方定义是神经系统中负责神经传导的基本结构和功能单位。它的结构呢，大致是这个样子的： 
-![](img/in-post/DeepLearning_nerual_network/shenjingyuan.JPG)
+![](/img/in-post/DeepLearning_nerual_network/shenjingyuan.JPG)
 (摘自：https://zh.wikipedia.org/wiki/%E7%A5%9E%E7%B6%93%E5%85%83#/media/File:Complete_neuron_cell_diagram_zh.svg)
 
 其实在生物体的神经结构中，有很多神经元，这些神经元间相互联系形成了网状结构，构成了生物学中的神经网络。人脑大约由140亿个神经元组成，而其中的每个神经元又与约100～10000个其他神经元相连接，如此构成一个庞大而复杂的神经元网络。
