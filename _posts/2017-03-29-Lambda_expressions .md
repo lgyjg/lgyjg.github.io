@@ -172,7 +172,7 @@ mButton.setOnclickListenner(v -> {
 ```
 
 # 使用Lambda表达式优化你的代码
-在接下来的介绍中，我会给大家介绍如何使用Lambda表达式简化代码逻辑，优化代码。我们从下面这个例子看起：
+在接下来的介绍中，我会给大家介绍如何使用Lambda表达式简化代码逻辑，优化代码。我们使用官方文档中给出的这个例子，英文好的同学可以直接跳转到[Lambda Quick Start](http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/index.html#overview)学习。
 
 ## 第一次尝试
 我们还是以上文中的Person类为基础介绍。
