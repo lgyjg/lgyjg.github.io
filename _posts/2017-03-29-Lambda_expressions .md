@@ -174,18 +174,462 @@ mButton.setOnclickListenner(v -> {
 # 使用Lambda表达式优化你的代码
 在接下来的介绍中，我会给大家介绍如何使用Lambda表达式简化代码逻辑，优化代码。我们使用官方文档中给出的这个例子，英文好的同学可以直接跳转到[Lambda Quick Start](http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/index.html#overview)学习。
 
-## 第一次尝试
-我们还是以上文中的Person类为基础介绍。
+我们有这样的一个用户场景，我们要通过一个数据集查找出符合特殊身份的人， 在美国有这样的三类人群必须满足以下条件：司机（年龄大于16周岁）、义务兵（18-25周岁的男性）、飞行员（23-65周岁）
+
+## 准备工作
+
+以上这些特殊身份的人都属于Person，Person类有七个成员属性givenName、surName、age、gender、eMail、phone、adress。我们基于builder模式来构建Person类的实例，如果对Builder设计模式有疑问，可以看看我的另一篇博客：[Builder设计模式]()。在Personn类中提供了一个静态方法createShortList用于创建一个Person列表。
+
+```java
+public class Person {
+  private String givenName;
+  private String surName;
+  private int age;
+  private Gender gender;
+  private String eMail;
+  private String phone;
+  private String address;
+
+  public static class Builder{...}
+
+  private Person(Person.Builder builder){
+    givenName = builder.givenName;
+    surName = builder.surName;
+    age = builder.age;
+    gender = builder.gender;
+    eMail = builder.eMail;
+    phone = builder.phone;
+    address = builder.address;
+  }
+  //...
+  public static List<Person> createShortList(){
+    List<Person> people = new ArrayList<>();
+    
+    people.add(
+      new Person.Builder()
+            .givenName("Bob")
+            .surName("Baker")
+            .age(21)
+            .gender(Gender.MALE)
+            .email("bob.baker@example.com")
+            .phoneNumber("201-121-4678")
+            .address("44 4th St, Smallville, KS 12333")
+            .build() 
+      );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("Jane")
+            .surName("Doe")
+            .age(25)
+            .gender(Gender.FEMALE)
+            .email("jane.doe@example.com")
+            .phoneNumber("202-123-4678")
+            .address("33 3rd St, Smallville, KS 12333")
+            .build() 
+      );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("John")
+            .surName("Doe")
+            .age(25)
+            .gender(Gender.MALE)
+            .email("john.doe@example.com")
+            .phoneNumber("202-123-4678")
+            .address("33 3rd St, Smallville, KS 12333")
+            .build()
+    );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("James")
+            .surName("Johnson")
+            .age(45)
+            .gender(Gender.MALE)
+            .email("james.johnson@example.com")
+            .phoneNumber("333-456-1233")
+            .address("201 2nd St, New York, NY 12111")
+            .build()
+    );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("Joe")
+            .surName("Bailey")
+            .age(67)
+            .gender(Gender.MALE)
+            .email("joebob.bailey@example.com")
+            .phoneNumber("112-111-1111")
+            .address("111 1st St, Town, CA 11111")
+            .build()
+    );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("Phil")
+            .surName("Smith")
+            .age(55)
+            .gender(Gender.MALE)
+            .email("phil.smith@examp;e.com")
+            .phoneNumber("222-33-1234")
+            .address("22 2nd St, New Park, CO 222333")
+            .build()
+    );
+    
+    people.add(
+      new Person.Builder()
+            .givenName("Betty")
+            .surName("Jones")
+            .age(85)
+            .gender(Gender.FEMALE)
+            .email("betty.jones@example.com")
+            .phoneNumber("211-33-1234")
+            .address("22 4th St, New Park, CO 222333")
+            .build()
+    );
+    
+    
+    return people;
+  }
+
+```
+这个基本的类就构建完毕了，那我们就开始写一个RoboContact类来实现用户需求——从列表中找出不同身份的人，并将他们打印出来这些人的部分信息。我们首先考虑传统的方式实现这个功能：
+```java
+public class RoboContactMethods {
+  // 遍历列表，给所有司机打电话
+  public void callDrivers(List<Person> pl){
+    for(Person p:pl){
+      if (p.getAge() >= 16){
+        roboCall(p);
+      }
+    }
+  }
+  // 同理，给所有义务兵发邮件
+  public void emailDraftees(List<Person> pl){
+    for(Person p:pl){
+      if (p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE){
+        roboEmail(p);
+      }
+    }
+  }
+  // 给所有邮递员发信
+  public void mailPilots(List<Person> pl){
+    for(Person p:pl){
+      if (p.getAge() >= 23 && p.getAge() <= 65){
+        roboMail(p);
+      }
+    }
+  }
+  
+  // 打电话给某人
+  public void roboCall(Person p){
+    System.out.println("Calling " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone());
+  }
+  // 发邮件给某人
+  public void roboEmail(Person p){
+    System.out.println("EMailing " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getEmail());
+  }
+  // 发信给某人
+  public void roboMail(Person p){
+    System.out.println("Mailing " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getAddress());
+  }
+
+}
+```
+上面的这个类就实现了简单的人员筛选的功能，但是这样的代码却在某些方面显得很臃肿：
+* 没有遵循DRY原则。
+ - 每个方法都进行了重复的遍历操作，其时间复杂度为O(n).
+ - 要为每个筛选方法重写选择标准
+* 需要用大量的方法实现每个用例
+* 代码不够灵活，如果搜索条件发生变化，则需要改动代码中的一些地方，这样使得代码变得不可维护
 
 ## 重构方法
+那我们有没有办法更加合理的实现这个需求呢？办法是有的，那下面就来优化这个逻辑。我们想到，如果能将判断条件作为单独的方法，那么某些方法就可以抽象出来：
+```java
+public class RoboContactMethods2 {
+  
+  public void callDrivers(List<Person> pl){
+    for(Person p:pl){
+      if (isDriver(p)){
+        roboCall(p);
+      }
+    }
+  }
+  
+  public void emailDraftees(List<Person> pl){
+    for(Person p:pl){
+      if (isDraftee(p)){
+        roboEmail(p);
+      }
+    }
+  }
+  
+  public void mailPilots(List<Person> pl){
+    for(Person p:pl){
+      if (isPilot(p)){
+        roboMail(p);
+      }
+    }
+  }
+  
+  public boolean isDriver(Person p){
+    return p.getAge() >= 16;
+  }
+  
+  public boolean isDraftee(Person p){
+    return p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
+  }
+  
+  public boolean isPilot(Person p){
+    return p.getAge() >= 23 && p.getAge() <= 65;
+  }
+  // ...
+}
+```
+这样改动之后我们能够发现，将搜索条件封装在一个方法中，提高了方法的重用性，但是每个查询用例仍然需要单独的方法，那有没有好的办法能够使用相同的语句将搜索条件传递给方法呢？
 
 ## 使用匿名内部类
+我们想到了匿名内部类。我们定义一个接口，并定义了一个test方法，并返回boolean值。
+```java
+public interface MyTest<T> {
+  public boolean test(T t);
+}
+```
+这样，我们就可以将搜索条件从方法中抽离出来了：
+```java
+//...
+  public void phoneContacts(List<Person> pl, MyTest<Person> aTest){
+    for(Person p:pl){
+      if (aTest.test(p)){
+        roboCall(p);
+      }
+    }
+  }
+
+  public void emailContacts(List<Person> pl, MyTest<Person> aTest){
+    for(Person p:pl){
+      if (aTest.test(p)){
+        roboEmail(p);
+      }
+    }
+  }
+
+  public void mailContacts(List<Person> pl, MyTest<Person> aTest){
+    for(Person p:pl){
+      if (aTest.test(p)){
+        roboMail(p);
+      }
+    }
+  }
+//...
+```
+
+这样把查询的条件交给了调用者：
+
+```java
+List<Person> pl = Person.createShortList();
+RoboContactAnon robo = new RoboContactAnon();
+
+robo.phoneContacts(pl, 
+    new MyTest<Person>(){
+      @Override
+      public boolean test(Person p){
+        return p.getAge() >=16;
+      }
+    }
+);
+
+System.out.println("\n=== Emailing all Draftees ===");
+robo.emailContacts(pl, 
+    new MyTest<Person>(){
+      @Override
+      public boolean test(Person p){
+        return p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
+      }
+    }
+);
+
+
+System.out.println("\n=== Mail all Pilots ===");
+robo.mailContacts(pl, 
+    new MyTest<Person>(){
+      @Override
+      public boolean test(Person p){
+        return p.getAge() >= 23 && p.getAge() <= 65;
+      }
+    }
+);
+```
+其实，这样的代码相比之前的遍历的方式，变得更加难以阅读，并且将搜索条件的控制转交给了调用者，而无法控制其合法性，同时，我们必须要为每次调用编写查询条件。这是实践中“垂直”问题的一个很好的例子。那是不是Lambda表达式就能够弥补这样的缺陷呢？答案是是的。
 
 ## 正确使用Lambda表达式
+Lambda表达式完美的解决了这个问题，而且允许轻易的重用任何表达式，那我们看看改进后的代码：
+```java
+List<Person> pl = Person.createShortList();
+    RoboContactLambda robo = new RoboContactLambda();
+    
+    // Predicates
+    MyTest<Person> allDrivers = p -> p.getAge() >= 16;
+    MyTest<Person> allDraftees = p -> p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
+    MyTest<Person> allPilots = p -> p.getAge() >= 23 && p.getAge() <= 65;
+    
+    robo.phoneContacts(pl, allDrivers);
+    robo.emailContacts(pl, allDraftees);
+    robo.mailContacts(pl, allPilots);
+    
+    // 可以容易的混合使用查询条件
+    robo.mailContacts(pl, allDraftees);  
+    robo.phoneContacts(pl, allPilots);    
+```
+相比我们原始的实现，使用了Lambda表达式后，代码变得简洁，而且还增加了代码的弹性，从原先的一个方法只能实现打电话到最终能的自由组合。这样的改变使我们不必在后期需求变更的时候忙于到处修改代码。
+
+我们还可以继续封装查询条件：
+```java
+public class SearchCriteria {
+  private final Map<String, Predicate<Person>> searchMap = new HashMap<>();
+
+  private SearchCriteria() {
+    super();
+    initSearchMap();
+  }
+
+  private void initSearchMap() {
+    Predicate<Person> allDrivers = p -> p.getAge() >= 16;
+    Predicate<Person> allDraftees = p -> p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
+    Predicate<Person> allPilots = p -> p.getAge() >= 23 && p.getAge() <= 65;
+
+    searchMap.put("allDrivers", allDrivers);
+    searchMap.put("allDraftees", allDraftees);
+    searchMap.put("allPilots", allPilots);
+  }
+
+  public Predicate<Person> getCriteria(String PredicateName) {
+    Predicate<Person> target;
+    target = searchMap.get(PredicateName);
+    if (target == null) {
+      System.out.println("Search Criteria not found... ");
+      System.exit(1);
+    }
+    return target;
+  }
+
+  public static SearchCriteria getInstance() {
+    return new SearchCriteria();
+  }
+}
+```
+
+在本例中，我们使用了自定义的接口实现了Lambda表达式，其实，在java SE 8中，早都为我们准备好了一大波类基本的函数式接口，他们在 java.util.function 包下。大概有以下几种：
+
+* Predicate: 该对象的属性作为参数传递，类似于上文中的MyTest接口
+* Consumer: An action to be performed with the object passed as argument
+* Function: 将对象T转化为U，也就是说通过apply(T t)传递的T对象，经过转化后，返回U对象的实例。
+* Supplier: Provide an instance of a T (such as a factory)
+* UnaryOperator: A unary operator from T -> T
+* BinaryOperator: A binary operator from (T, T) -> T
 
 # Lambda表达式与Collections
+在此之前，其实集合类以及使用了很多，但是这次，我们要使用Lambda表达式改变Collection的用法。
 
-# Java SE 8 中的接口
+使用一个单例为外部提供了不同的查询条件，外部可通过SearchCriteria.getInstance().getCriteria(PredicateName)来获取想要的查询条件。
+
+## ForEach
+Lambda表达式为我们带来了新的功能，使我们在循环遍历一些集合的时候变得异常的容易：
+```java
+List<Person> pl = Person.createShortList();
+// 基本的lambda表达式
+pl.forEach( p -> p.print() );
+// 一种“方法参考”的实现方式，在已经存在相关方法的前提下，可以使用该方式代替lambda表达式
+pl.forEach(Person::print);
+// 
+pl.forEach(p -> { System.out.println(p.printCustom(r -> "Name: " + r.getGivenName() + " EMail: " + r.getEmail())); });
+// 注：此方法实现的前提是Person中存在如下的方法用于实现自定义的log打印；
+public String printCustom(Function <Person, String> f){
+  return f.apply(this);
+}
+
+```
+可以通过这种方式遍历任何集合。基本结构类似于增强型for循环。 然而，包括类中的迭代机制提供了许多好处。
+
+## 链接和过滤器
+In addition to looping through the contents of a collection, you can chain methods together. The first method to look at is filter which takes a Predicate interface as a parameter.
+
+The following example loops though a List after first filtering the results.
+```java
+List<Person> pl = Person.createShortList();
+SearchCriteria search = SearchCriteria.getInstance();
+
+pl.stream().filter(search.getCriteria("allPilots"))
+  .forEach(Person::printWesternName);
+
+pl.stream().filter(search.getCriteria("allDraftees"))
+  .forEach(Person::printEasternName);
+```
+The first and last loops demonstrate how the List is filtered based on the search criteria. 
+Getting Lazy
+
+These features are useful, but why add them to the collections classes when there is already a perfectly good for loop? By moving iteration features into a library, it allows the developers of Java to do more code optimizations. To explain further, a couple of terms need definitions.
+
+Laziness: In programming, laziness refers to processing only the objects that you want to process when you need to process them. In the previous example, the last loop is "lazy" because it loops only through the two Person objects left after the List is filtered. The code should be more efficient because the final processing step occurs only on the selected objects.
+Eagerness: Code that performs operations on every object in a list is considered "eager". For example, an enhanced for loop that iterates through an entire list to process two objects, is considered a more "eager" approach.
+By making looping part of the collections library, code can be better optimized for "lazy" operations when the opportunity arises. When a more eager approach makes sense (for example, computing a sum or an average), eager operations are still applied. This approach is a much more efficient and flexible than always using eager operations.
+
+The stream Method
+
+In the previous code example, notice that the stream method is called before filtering and looping begin. This method takes a Collection as input and returns a java.util.stream.Stream interface as the output. A Stream represents a sequence of elements on which various methods can be chained. By default, once elements are consumed they are no longer available from the stream. Therefore, a chain of operations can occur only once on a particular Stream. In addition, a Stream can be serial(default) or parallel depending on the method called. An example of a parallel stream is included at the end of this section.
+
+
+## 突变和结果
+As previously mentioned, a Stream is disposed of after its use. Therefore, the elements in a collection cannot be changed or mutated with a Stream. However, what if you want to keep elements returned from your chained operations? You can save them to a new collection. The following code shows how to do just that.
+
+```java
+List<Person> pl = Person.createShortList();
+SearchCriteria search = SearchCriteria.getInstance();
+List<Person> pilotList = pl
+        .stream()
+        .filter(search.getCriteria("allPilots"))
+        .collect(Collectors.toList());
+pilotList.forEach(Person::printWesternName);
+```
+The collect method is called with one parameter, the Collectors class. The Collectors class is able to return a List or Set based on the results of the stream. The example shows how the result of the stream is assigned to a new List which is iterated over.
+
+## 使用map计算
+The map method is commonly used with filter. The method takes a property from a class and does something with it. The following example demonstrates this by performing calculations based on age.
+
+```java
+List<Person> pl = Person.createShortList();
+SearchCriteria search = SearchCriteria.getInstance();
+
+int sum = 0;
+int count = 0;
+
+for (Person p:pl){
+  if (p.getAge() >= 23 && p.getAge() <= 65 ){
+    sum = sum + p.getAge();
+    count++;
+  }
+}
+
+long average = sum / count;
+long totalAge = pl
+        .stream()
+        .filter(search.getCriteria("allPilots"))
+        .mapToInt(p -> p.getAge())
+        .sum();
+
+OptionalDouble averageAge = pl
+        .parallelStream()
+        .filter(search.getCriteria("allPilots"))
+        .mapToDouble(p -> p.getAge())
+        .average();
+```
+
+The program calculates the average age of pilots in our list. The first loop demonstrates the old style of calculating the number by using a for loop. The second loop uses the map method to get the age of each person in a serial stream. Notice that totalAge is a long. The map method returns an IntSteam object, which contains a sum method that returns a long.
+
+Note: To compute the average the second time, calculating the sum of ages is unnecessary. However, it is instructive to show an example with the sum method.
+
+The last loop computes the average age from the stream. Notice that the parallelStream method is used to get a parallel stream so that the values can be computed concurrently. The return type is a bit different here as well.
 
 # Lambda表达式有什么优势？
 
