@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java中的Lambda表达式
-subtitle: java中的volatile关键字
+subtitle: Java中的Lambda表达式
 date: 2017-03-29 23:44:32
 author: JianGuo
 header-img: img/post-bg-2015.jpg
@@ -229,67 +229,7 @@ public class Person {
             .build() 
       );
     
-    people.add(
-      new Person.Builder()
-            .givenName("John")
-            .surName("Doe")
-            .age(25)
-            .gender(Gender.MALE)
-            .email("john.doe@example.com")
-            .phoneNumber("202-123-4678")
-            .address("33 3rd St, Smallville, KS 12333")
-            .build()
-    );
-    
-    people.add(
-      new Person.Builder()
-            .givenName("James")
-            .surName("Johnson")
-            .age(45)
-            .gender(Gender.MALE)
-            .email("james.johnson@example.com")
-            .phoneNumber("333-456-1233")
-            .address("201 2nd St, New York, NY 12111")
-            .build()
-    );
-    
-    people.add(
-      new Person.Builder()
-            .givenName("Joe")
-            .surName("Bailey")
-            .age(67)
-            .gender(Gender.MALE)
-            .email("joebob.bailey@example.com")
-            .phoneNumber("112-111-1111")
-            .address("111 1st St, Town, CA 11111")
-            .build()
-    );
-    
-    people.add(
-      new Person.Builder()
-            .givenName("Phil")
-            .surName("Smith")
-            .age(55)
-            .gender(Gender.MALE)
-            .email("phil.smith@examp;e.com")
-            .phoneNumber("222-33-1234")
-            .address("22 2nd St, New Park, CO 222333")
-            .build()
-    );
-    
-    people.add(
-      new Person.Builder()
-            .givenName("Betty")
-            .surName("Jones")
-            .age(85)
-            .gender(Gender.FEMALE)
-            .email("betty.jones@example.com")
-            .phoneNumber("211-33-1234")
-            .address("22 4th St, New Park, CO 222333")
-            .build()
-    );
-    
-    
+    // 这里省去其他添加Person的操作
     return people;
   }
 
@@ -553,35 +493,37 @@ public String printCustom(Function <Person, String> f){
 可以通过这种方式遍历任何集合。基本结构类似于增强型for循环。 然而，包括类中的迭代机制提供了许多好处。
 
 ## 链接和过滤器
-In addition to looping through the contents of a collection, you can chain methods together. The first method to look at is filter which takes a Predicate interface as a parameter.
+除此之外，在循环遍历集合的每个元素之前，我们可以通过filter对集合进行过滤，并且可以将方法链到一起。一种方式是将过滤器filter作为参数传递。
 
-The following example loops though a List after first filtering the results.
+下面的这个例子就是将集合过滤后的结果集再进行循环遍历：
+
 ```java
 List<Person> pl = Person.createShortList();
 SearchCriteria search = SearchCriteria.getInstance();
-
-pl.stream().filter(search.getCriteria("allPilots"))
-  .forEach(Person::printWesternName);
-
-pl.stream().filter(search.getCriteria("allDraftees"))
-  .forEach(Person::printEasternName);
+// 过滤所有的飞行员，并且打印
+pl.stream().filter(search.getCriteria("allPilots")).forEach(Person::printWesternName);
+// 过滤所有的义务兵，并且打印
+pl.stream().filter(search.getCriteria("allDraftees")).forEach(Person::printEasternName);
 ```
-The first and last loops demonstrate how the List is filtered based on the search criteria. 
+从上面的例子可以看出，通过将封装的Predicate<Person>对象通过参数传递给Collection，实现了对集合的过滤。
+
 Getting Lazy
+懒是人类进步的阶梯
 
-These features are useful, but why add them to the collections classes when there is already a perfectly good for loop? By moving iteration features into a library, it allows the developers of Java to do more code optimizations. To explain further, a couple of terms need definitions.
+这些小功能是非常有用的，但是在当前已经能够很好解决循环遍历问题来说，为什么会把他们加到集合类中，
+将迭代功能移入库中，使得java开发者能够更好的优化代码结构，为了更好的解释这个优点，我们需要定义两个概念；
 
-Laziness: In programming, laziness refers to processing only the objects that you want to process when you need to process them. In the previous example, the last loop is "lazy" because it loops only through the two Person objects left after the List is filtered. The code should be more efficient because the final processing step occurs only on the selected objects.
-Eagerness: Code that performs operations on every object in a list is considered "eager". For example, an enhanced for loop that iterates through an entire list to process two objects, is considered a more "eager" approach.
-By making looping part of the collections library, code can be better optimized for "lazy" operations when the opportunity arises. When a more eager approach makes sense (for example, computing a sum or an average), eager operations are still applied. This approach is a much more efficient and flexible than always using eager operations.
+- **Laziness**: 在编程中，Laziness指的是只处理需要处理的对象，上面的例子中，只处理了被过滤之后的对象，使得代码的效率更加高效。
 
-The stream Method
+- **Eagerness**: 对列表中的所有对象进行处理的代码被认为是“eager”, 例如，一个增强的for循环遍历所有元素来处理两个对象，通常被认为是“eager”的途径。这个概念相对于Laziness。
+通过循环遍历部分集合，代码可以更好的通过Lazy操作进行优化，这种方式比始终使用eager模式更加高效和灵活。但是在大多数殷勤的情境中，例如求和或者求平均数，这种eager操作还是非常有必要的。
 
-In the previous code example, notice that the stream method is called before filtering and looping begin. This method takes a Collection as input and returns a java.util.stream.Stream interface as the output. A Stream represents a sequence of elements on which various methods can be chained. By default, once elements are consumed they are no longer available from the stream. Therefore, a chain of operations can occur only once on a particular Stream. In addition, a Stream can be serial(default) or parallel depending on the method called. An example of a parallel stream is included at the end of this section.
+- stream()方法
 
+在上面的例子中，我们发现在调用filter之前调用了一个stream方法，这个方法使用了一个Collection对象作为输入，返回了一个java.util.stream.Stream接口对象作为输出。stream表示在各个可以连接的方法上的一个元素序列。默认情况下，一旦元素被消费掉，他们对于Stream来说不在可见，因此，一个链操作在一个指定的流上只会发生一次，另外，一个流是可以串行（默认）或者并行执行，这篇文章的结尾有一个并行的例子。
 
 ## 突变和结果
-As previously mentioned, a Stream is disposed of after its use. Therefore, the elements in a collection cannot be changed or mutated with a Stream. However, what if you want to keep elements returned from your chained operations? You can save them to a new collection. The following code shows how to do just that.
+如上所述，Stream在使用之后被丢弃。 因此，集合中的元素不能用Stream更改或突变。 但是，如果要保留从链接操作返回的元素怎么办？ 您可以将它们保存到新的集合中。 代码如下：
 
 ```java
 List<Person> pl = Person.createShortList();
@@ -592,10 +534,11 @@ List<Person> pilotList = pl
         .collect(Collectors.toList());
 pilotList.forEach(Person::printWesternName);
 ```
-The collect method is called with one parameter, the Collectors class. The Collectors class is able to return a List or Set based on the results of the stream. The example shows how the result of the stream is assigned to a new List which is iterated over.
+collect()方法中，Collectors.toList()的返回值被传递，Collectors使得stream的结果能够返回一个列表或者一个集合， 该示例显示如何将流的结果分配给迭代器的新列表。
 
-## 使用map计算
-The map method is commonly used with filter. The method takes a property from a class and does something with it. The following example demonstrates this by performing calculations based on age.
+
+## map
+map()方法常用于过滤，该方法从类中获取一个属性并且使用该属性执行某些操作，下面的示例展示了基于年龄的map计算。
 
 ```java
 List<Person> pl = Person.createShortList();
@@ -603,36 +546,34 @@ SearchCriteria search = SearchCriteria.getInstance();
 
 int sum = 0;
 int count = 0;
-
+// 常规用法
 for (Person p:pl){
   if (p.getAge() >= 23 && p.getAge() <= 65 ){
     sum = sum + p.getAge();
     count++;
   }
 }
-
 long average = sum / count;
+
+// 使用map计算总年龄
 long totalAge = pl
         .stream()
         .filter(search.getCriteria("allPilots"))
-        .mapToInt(p -> p.getAge())
+        .mapToInt(p -> p.getAge()) // 此方法返回一个IntStream对象，这个对象中包含一个返回long的sum方法
         .sum();
-
+// 使用map进行平均年龄计算
 OptionalDouble averageAge = pl
-        .parallelStream()
+        .parallelStream()  // 此方法用于获取并行流，可以进行并发计算，返回值类型也有所不同。
         .filter(search.getCriteria("allPilots"))
         .mapToDouble(p -> p.getAge())
         .average();
 ```
-
-The program calculates the average age of pilots in our list. The first loop demonstrates the old style of calculating the number by using a for loop. The second loop uses the map method to get the age of each person in a serial stream. Notice that totalAge is a long. The map method returns an IntSteam object, which contains a sum method that returns a long.
-
-Note: To compute the average the second time, calculating the sum of ages is unnecessary. However, it is instructive to show an example with the sum method.
-
-The last loop computes the average age from the stream. Notice that the parallelStream method is used to get a parallel stream so that the values can be computed concurrently. The return type is a bit different here as well.
+上面的代码颠覆性的取代了常规的for循环遍历，而是用了stream把一个集合转化为流之后，调用map从Person对象中取出年龄，最终使用sum方法完成了求和操作。
 
 # Lambda表达式有什么优势？
+Lambda表达式是Java SE 8在提高开发人员生产效率上的一个重大改进。通过语法上的改进，可以减少开发人员需要编写和维护的代码数量。在实战中，往往结合一些现在比较火热的开源框架实现函数式编程，如RxJava。极大的简化了代码的复杂度，对于能读懂函数式编程的人来说，代码的逻辑变得更加清晰，但是对于没有接触过Lambda表达式的朋友来说，或许增加了代码的难度。但是，无论如何，我们没有理由拒绝新的东西，作为Java SE 8的新功能，在推出将近两年之后，我们还不去了解他就说不过去了。
 
+这篇文章的初成也是在我一边学习lambda表达式，一边总结的产物，其中大量参考了官方教程中的示例和思想，如果在文章中有理解的不到位的或者错误的地方，欢迎朋友留言和我交流。
 
 # 参考文献
 1. http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/Lambda-QuickStart/index.html#overview
