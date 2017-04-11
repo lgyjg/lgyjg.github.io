@@ -1,9 +1,9 @@
 ---
-layout:     post
+layout: post
 title: java 中的注解
-subtitle:   针对java中注解的学习笔记
+subtitle: 针对java中注解的学习笔记
 date: 2016-08-02 20:22:04
-author:     "JianGuo Yang"
+author: "JianGuo Yang"
 header-img:
 tags: Java
 ---

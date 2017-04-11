@@ -2,7 +2,7 @@
 layout: post
 title: 纪念毕业一周年
 subtitle: To commemorate the first anniversary of graduation
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/in-post/To_Commemorate_The_First_Anniversary_Of_Graduation/graduation.jpg
 tags: 感悟
 date: 2016-07-15 03:28:29

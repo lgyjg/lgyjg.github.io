@@ -3,7 +3,7 @@ layout: post
 title: 深度学习之神经网络算法
 subtitle: 深度学习之神经网络算法
 date: 2017-03-13 23:44:32
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/post-bg-2015.jpg
 tags:
   - DeepLearning
@@ -12,7 +12,7 @@ tags:
 > 最近在学习深度学习机器学习的相关内容，神经网络算法确实是有很多应用的场景，也非常值得学习和探讨，因此在学习中记录下来，也大家交流。
 
 ## 题外话
-这里抛出一个问题，人是如何从出生到慢慢长大的过程中记忆生活中的一些东西的？生物在外界刺激的条件下是如何建立反馈机制的？相信学过生物的同学肯定听说过神经元也就是神经细胞，它的定义是神经系统中负责神经传导的基本结构和功能单位。下图是一个典型的神经元结构： 
+这里抛出一个问题，人是如何从出生到慢慢长大的过程中记忆生活中的一些东西的？生物在外界刺激的条件下是如何建立反馈机制的？相信学过生物的同学肯定听说过神经元也就是神经细胞，它的定义是神经系统中负责神经传导的基本结构和功能单位。下图是一个典型的神经元结构：
 ![神经元](/img/in-post/DeepLearning_neural_network/shenjingyuan.JPG)
 (摘自：[https://zh.wikipedia.org/wiki/%E7%A5%9E%E7%B6%93%E5%85%83#/media/File:Complete_neuron_cell_diagram_zh.svg](https://zh.wikipedia.org/wiki/%E7%A5%9E%E7%B6%93%E5%85%83#/media/File:Complete_neuron_cell_diagram_zh.svg))
 
@@ -51,7 +51,7 @@ tan-sigmoid
 
 
 ## 多层向前神经网络
-有了神经元模型的概念之后，就对于神经网络的建立没有那么多神秘感了。这里着重介绍下神经网络算法中的最早被提出也是最简单的神经网络模型 —— 多层向前神经网络（Multiplayer Feed-Forward Neural Network）. 
+有了神经元模型的概念之后，就对于神经网络的建立没有那么多神秘感了。这里着重介绍下神经网络算法中的最早被提出也是最简单的神经网络模型 —— 多层向前神经网络（Multiplayer Feed-Forward Neural Network）.
 
 多层向前神经网络也称为有理式多层前馈神经网络，由一个输入层，一个输出层和若干个隐藏层组成，在它内部，参数从输入层向输出层单向传播。其结构如下图：
 

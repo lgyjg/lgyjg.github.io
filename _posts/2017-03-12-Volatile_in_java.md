@@ -3,13 +3,13 @@ layout: post
 title: java中的volatile关键字
 subtitle: java中的volatile关键字
 date: 2017-03-12 16:44:32
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/post-bg-2015.jpg
 tags:
   - Java
 ---
 
-## 前言 
+## 前言
 
 java语言对于同步的支持提供了两种内在的同步机制：同步块（或同步方法）、volatile变量。同步块的用法相对来说对于volatile更加完善，但同时又比较重，运行时的开销也比较大，而volatile相比而言虽然不能完全完成synchronized的功能，但是在某些场景下由于其简单、轻量、开销低的特点而被作为一种更优的方式使用，它不会引起线程上下文的切换和调度。同时volatile 变量不会像锁那样造成线程阻塞，因此也很少造成可伸缩性问题。在某些情况下，如果读操作远远大于写操作，volatile 变量同步机制的性能要优于锁。这就是我们使用volatile变量的原因。
 
@@ -53,8 +53,8 @@ volatile boolean shutdownRequested;
 ...
 public void shutdown() { shutdownRequested = true; }
 
-public void doWork() { 
-    while (!shutdownRequested) { 
+public void doWork() {
+    while (!shutdownRequested) {
         // do stuff
     }
 }
@@ -76,10 +76,10 @@ public class BackgroundFloobleLoader {
 
 public class SomeOtherClass {
     public void doWork() {
-        while (true) { 
+        while (true) {
             // do some stuff...
             // use the Flooble, but only if it is ready
-            if (floobleLoader.theFlooble != null) 
+            if (floobleLoader.theFlooble != null)
                 doSomething(floobleLoader.theFlooble);
         }
     }

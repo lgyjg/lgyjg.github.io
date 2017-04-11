@@ -206,7 +206,7 @@ public class Person {
   //...
   public static List<Person> createShortList(){
     List<Person> people = new ArrayList<>();
-    
+
     people.add(
       new Person.Builder()
             .givenName("Bob")
@@ -216,9 +216,9 @@ public class Person {
             .email("bob.baker@example.com")
             .phoneNumber("201-121-4678")
             .address("44 4th St, Smallville, KS 12333")
-            .build() 
+            .build()
       );
-    
+
     people.add(
       new Person.Builder()
             .givenName("Jane")
@@ -228,9 +228,9 @@ public class Person {
             .email("jane.doe@example.com")
             .phoneNumber("202-123-4678")
             .address("33 3rd St, Smallville, KS 12333")
-            .build() 
+            .build()
       );
-    
+
     // 这里省去其他添加Person的操作
     return people;
   }
@@ -263,7 +263,7 @@ public class RoboContactMethods {
       }
     }
   }
-  
+
   // 打电话给某人
   public void roboCall(Person p){
     System.out.println("Calling " + p.getGivenName() + " " + p.getSurName() + " age " + p.getAge() + " at " + p.getPhone());
@@ -291,7 +291,7 @@ public class RoboContactMethods {
 那我们有没有办法更加合理的实现这个需求呢？办法是有的，那下面就来优化这个逻辑。我们想到，如果能将判断条件作为单独的方法，那么某些方法就可以抽象出来：
 ```java
 public class RoboContactMethods2 {
-  
+
   public void callDrivers(List<Person> pl){
     for(Person p:pl){
       if (isDriver(p)){
@@ -299,7 +299,7 @@ public class RoboContactMethods2 {
       }
     }
   }
-  
+
   public void emailDraftees(List<Person> pl){
     for(Person p:pl){
       if (isDraftee(p)){
@@ -307,7 +307,7 @@ public class RoboContactMethods2 {
       }
     }
   }
-  
+
   public void mailPilots(List<Person> pl){
     for(Person p:pl){
       if (isPilot(p)){
@@ -315,15 +315,15 @@ public class RoboContactMethods2 {
       }
     }
   }
-  
+
   public boolean isDriver(Person p){
     return p.getAge() >= 16;
   }
-  
+
   public boolean isDraftee(Person p){
     return p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
   }
-  
+
   public boolean isPilot(Person p){
     return p.getAge() >= 23 && p.getAge() <= 65;
   }
@@ -374,7 +374,7 @@ public interface MyTest<T> {
 List<Person> pl = Person.createShortList();
 RoboContactAnon robo = new RoboContactAnon();
 
-robo.phoneContacts(pl, 
+robo.phoneContacts(pl,
     new MyTest<Person>(){
       @Override
       public boolean test(Person p){
@@ -384,7 +384,7 @@ robo.phoneContacts(pl,
 );
 
 System.out.println("\n=== Emailing all Draftees ===");
-robo.emailContacts(pl, 
+robo.emailContacts(pl,
     new MyTest<Person>(){
       @Override
       public boolean test(Person p){
@@ -395,7 +395,7 @@ robo.emailContacts(pl,
 
 
 System.out.println("\n=== Mail all Pilots ===");
-robo.mailContacts(pl, 
+robo.mailContacts(pl,
     new MyTest<Person>(){
       @Override
       public boolean test(Person p){
@@ -411,16 +411,16 @@ Lambda表达式完美的解决了这个问题，而且允许轻易的重用任�
 ```java
 List<Person> pl = Person.createShortList();
     RoboContactLambda robo = new RoboContactLambda();
-    
+
     // Predicates
     MyTest<Person> allDrivers = p -> p.getAge() >= 16;
     MyTest<Person> allDraftees = p -> p.getAge() >= 18 && p.getAge() <= 25 && p.getGender() == Gender.MALE;
     MyTest<Person> allPilots = p -> p.getAge() >= 23 && p.getAge() <= 65;
-    
+
     robo.phoneContacts(pl, allDrivers);
     robo.emailContacts(pl, allDraftees);
     robo.mailContacts(pl, allPilots);
-    
+
     // 可以容易的混合使用查询条件
     robo.mailContacts(pl, allDraftees);  
     robo.phoneContacts(pl, allPilots);    
@@ -485,7 +485,7 @@ List<Person> pl = Person.createShortList();
 pl.forEach( p -> p.print() );
 // 一种“方法参考”的实现方式，在已经存在相关方法的前提下，可以使用该方式代替lambda表达式
 pl.forEach(Person::print);
-// 
+//
 pl.forEach(p -> { System.out.println(p.printCustom(r -> "Name: " + r.getGivenName() + " EMail: " + r.getEmail())); });
 // 注：此方法实现的前提是Person中存在如下的方法用于实现自定义的log打印；
 public String printCustom(Function <Person, String> f){

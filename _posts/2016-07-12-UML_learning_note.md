@@ -2,7 +2,7 @@
 layout: post
 title: UML序列图学习笔记
 subtitle: 序列图主要用于按照交互发生的一系列顺序，显示对象之间的这些交互。
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/in-post/UML_learning_note/what-is-uml.jpg
 tags: UML
 date: 2016-07-12 19:50:29

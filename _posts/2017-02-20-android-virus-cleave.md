@@ -3,7 +3,7 @@ layout: post
 title: 一条短信引发的血案——Android病毒分析
 subtitle: 一条短信引发的血案
 date: 2017-02-20 21:06:32
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/post-bg-2015.jpg
 tags:
   - Android
@@ -153,7 +153,7 @@ https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.
 </manifest>
 
 ```
-看完这个清单文件吓出宝宝一身冷汗，一个请柬你至于把google全家的权限都拿到么？至于开三个服务，三个广播接收器么？要这么多权限准没好事。看看都申请了什么权限： 
+看完这个清单文件吓出宝宝一身冷汗，一个请柬你至于把google全家的权限都拿到么？至于开三个服务，三个广播接收器么？要这么多权限准没好事。看看都申请了什么权限：
 
 - android.permission.RECEIVE_WAP_PUSH  —— 允许应用程序接收和处理 WAP 信息，可借此监视您的信息,或者将信息删除而不向您显示。这就是大摇大摆的拦截短信啊。
 - android.permission.RECEIVE_BOOT_COMPLETED —— 接收开机启动
@@ -179,14 +179,14 @@ https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.
 
 服务：
 
-- com.phone.stop6.service.SecondService —— 程序守护进程服务 
+- com.phone.stop6.service.SecondService —— 程序守护进程服务
 
 ```xml
 <service
     android:name="com.phone.stop6.service.SecondService"
     android:process=":thee_second2_service3" />
 ```
-- com.phone.stop6.service.BootService —— 程序启动服务 
+- com.phone.stop6.service.BootService —— 程序启动服务
 
 ```xml
 <service
@@ -194,7 +194,7 @@ https://whois.aliyun.com/whois/domain/bugydq.science?spm=5176.8076989.339865.11.
     android:enabled="true"
     android:exported="true" />
 ```
-- com.phone.stop6.service.SmsServic —— 短信收发服务，在单独的进程中运行。 
+- com.phone.stop6.service.SmsServic —— 短信收发服务，在单独的进程中运行。
 
 ```xml
 <service
@@ -333,7 +333,7 @@ public void setNiMa(String paramString) {
 木马作者手机号：1309716**** 1875007****
 木马作者邮箱号：1309716****@wo.cn
 木马作者邮箱密码：qq123123
-木马散播主机：45.127.97.231 
+木马散播主机：45.127.97.231
 相关域名：bugydq.science
 ```
 
@@ -353,5 +353,3 @@ public void setNiMa(String paramString) {
 从这篇文章希望大家能够对自己的个人信息引起重视，千万不要点击下载来路不明的apk应用程序。对于权限的授权也要三思而后行。然而，Android网络安全面临的不仅仅就是这些，也远比文中提到的这个过时的木马病毒严重的多。即便是一个正常的程序，也会被通过各种手段成为病毒的傀儡。
 
 要解决这些问题，一是要考我们开发者的良知和安全意识，二是靠政府强有力的摧毁这个链条背后的黑产，不惜一切的保证公民能够享受安全可信的网络环境。同时，也需要我们每个人提高自己的安全意识，不要将密码记录到手机的任何地方，密码不要设置任何和你相关的字符或者数字，可以告诉大家一个好的方式，将你认为好记的字母或者数字进行hash运算，将结果作为密码进行设置，以后即便忘了密码，也可以重新计算得到。或者像我一样，使用数学公式作为密码。
-
-

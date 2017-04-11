@@ -2,7 +2,7 @@
 layout: post
 title: 认识SurfaceView和SurfaceTexture
 subtitle: 有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceTexture 更加低功耗，这也激起了很多应用的换脸热潮，所以今天准备一探究竟。
-author: JianGuo
+author: "JianGuo Yang"
 header-img:
 tags: Android
 keywords: surfaceTexture, surfaceView
@@ -13,7 +13,7 @@ date: 2016-08-04 00:28:29
 >有听闻说在 Android 7.0 之后SurfaceView 将比 SurfaceTexture 更加低功耗，这也激起了很多应用的换脸热潮，所以今天准备一探究竟。  
 BTW： 晚上闲来无事，于是乎又给自己挖了一坑，突然发现想把这个坑填满，遥遥无期啊。
 
-## SurfaceView 
+## SurfaceView
 surfaceView继承自View，因此它本质上是一个View。但与普通View不同的是，它有自己的Surface。在google的API中，有两个子类分别是：GLSurfaceView 和 VideoView。SurfaceView 是专门用于嵌入在View hierachy的树形结构中进行图像绘制的图层（surface）。我们可以控制这个view的格式，例如大小。SurfaceView将会专注于放置在屏幕上恰当位置的那个图层。对于一个Surface而言，它在Z轴，也就是垂直于屏幕的方向上是有序排列的，所以，它在持有它的SurfaceView的窗口后面。这句话可能很多人不能理解，盗张图（摘自[http://blog.csdn.net/jinzhuojun/article/details/44062175](http://blog.csdn.net/jinzhuojun/article/details/44062175)） 来说明这个问题。
 
 ![](http://img.blog.csdn.net/20150304164219975?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamluemh1b2p1bg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)

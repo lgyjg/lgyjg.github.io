@@ -3,7 +3,7 @@ layout: post
 title: Camera api2 Characteristics 详解（一）
 subtitle: Camera Characteristics 详解
 date: 2017-03-05 20:49:32
-author: JianGuo
+author: "JianGuo Yang"
 header-img: img/post-bg-2015.jpg
 tags:
   - Android

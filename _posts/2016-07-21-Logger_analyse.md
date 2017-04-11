@@ -2,7 +2,7 @@
 layout: post
 title: Logger开源库刨析
 subtitle: Logger是github上关于Andorid Log打印优化和封装的软件，是一款简洁、优雅、强大的log跟踪器，截止目前已经有4003个star。
-author: JianGuo
+author: "JianGuo Yang"
 header-img:
 tags: 开源项目
 date: 2016-07-21 20:58:29
