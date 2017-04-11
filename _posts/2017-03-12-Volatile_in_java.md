@@ -2,7 +2,7 @@
 layout: post
 title: java中的volatile关键字
 subtitle: java中的volatile关键字
-date: 2017-03-12 22:08:00
+date: 2017-03-12 16:44:32
 author: "JianGuo Yang"
 header-img: img/post-bg-2015.jpg
 tags:
