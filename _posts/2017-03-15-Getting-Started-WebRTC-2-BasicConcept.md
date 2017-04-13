@@ -9,29 +9,29 @@ tags:
   - WebRTC
 ---
 
-# WebRTC 入门（一） —— 相关概念
+# WebRTC 入门（二） —— 基础概念之MediaStream
 
 ## WebRTC相关概念介绍
 
-WebRTC 应用需要完成如下的事:
+想要实现webRTC的功能，一个WebRTC应用首先需要完成如下操作:
 
-- 获取音视频或者其他格式的数据。
-- 获取诸如ip地址，端口等网络信息，并且在即使有NAT和防火墙的情况下和其他的WebRTC端交换这些数据用于建立连接。
-- 对等的信令用于发起或关闭回话，报告错误等。
-- 相互交换关于媒体和本地端的分辨率和解码类型等能力的信息。
-- 交换音视频流或者数据流信息。
+1. 获取音视频或者其他格式的数据。
+2. 获取诸如ip地址，端口等网络信息，并且在即使有NAT和防火墙的情况下和其他的WebRTC端交换这些数据用于建立连接。
+3. 对等的信令用于发起或关闭回话，报告错误等。
+4. 相互交换关于媒体和本地端的分辨率和解码类型等能力的信息。
+5. 交换音视频流或者数据流信息。
 
-为了获取和传送流数据，WebRTC实现以下API:
+为了获取和传送流数据，WebRTC应用需要实现以下API:
 
 - MediaStream: 通过MediaStream的API能够通过设备的摄像头及话筒获得视频、音频的同步流
 - RTCPeerConnection: RTCPeerConnection是WebRTC用于构建点对点之间稳定、高效的音视频流传输的组件
-- RTCDataChannel: RTCDataChannel使得浏览器之间（点对点）建立一个高吞吐量、低延时的信道，用于传输任意数据
+- RTCDataChannel: RTCDataChannel用于传输任意数据，它能够在浏览器之间（点对点）建立一个高吞吐量、低延时的信道
 
-(下面详细讨论WebRTC的网络和信令方面的内容。)
+（以后的章节会讨论WebRTC的网络和信令方面的内容)
 
 ### MediaStream
 
-The [MediaStream API](http://dev.w3.org/2011/webrtc/editor/getusermedia.html) 代表着同步的媒体流。例如，从camera和麦克风获取一个流，并输入到同步的video tracks 和 audio tracks。(不要与<track>元素代表的Media track相混淆， 这是 [完全不同](http://www.html5rocks.com/en/tutorials/track/basics/)的两种概念。)
+[MediaStream API](http://dev.w3.org/2011/webrtc/editor/getusermedia.html) 代表着同步的媒体流。例如，从camera和麦克风获取一个流，并输入到同步的video tracks 和 audio tracks。(不要与<track>元素代表的Media track相混淆， 这是 [完全不同](http://www.html5rocks.com/en/tutorials/track/basics/)的两种概念。)
 
 大概理解MediaStream最简单的方式是在实践中观察。
 1. 在Chrome或者Opera浏览器中打开[示例](https://webrtc.github.io/samples/src/content/getusermedia/gum).
@@ -106,7 +106,7 @@ navigator.getUserMedia error:
 NavigatorUserMediaError {code: 1, PERMISSION_DENIED: 1}
 ```
 
-### Screen and tab capture
-Chrome apps 也使得通过 [chrome.tabCapture](http://developer.chrome.com/dev/extensions/tabCapture) 和 [chrome.desktopCapture](https://developer.chrome.com/extensions/desktopCapture) APIs 分享单个浏览器tab或者整个桌面成为了可能。一个桌面捕捉的例子扩展见网站：[WebRTC samples GitHub repository](https://github.com/webrtc/samples/tree/master/src/content/getusermedia/desktopcapture). 关于截屏 ，代码及更多的相关信息，见 HTML5 Rocks update: [Screensharing with WebRTC](http://updates.html5rocks.com/2012/12/Screensharing-with-WebRTC).
+### 屏幕录像和浏览器tab抓取
+Chrome内核使得其应用通过 [chrome.tabCapture](http://developer.chrome.com/dev/extensions/tabCapture) 和 [chrome.desktopCapture](https://developer.chrome.com/extensions/desktopCapture) API分享单个浏览器tab或者整个桌面成为了可能。一个桌面捕捉的例子扩展见网站：[WebRTC samples GitHub repository](https://github.com/webrtc/samples/tree/master/src/content/getusermedia/desktopcapture). 关于截屏 ，代码及更多的相关信息，见 HTML5 Rocks update: [Screensharing with WebRTC](http://updates.html5rocks.com/2012/12/Screensharing-with-WebRTC).
 
 同样的，在Chrome浏览器中，使用进行实验性的chromeMediaSource constraint 进行屏幕捕捉，并将其作为一个 MediaStream 的资源成为了可能。如下的[demo所示](https://html5-demos.appspot.com/static/getusermedia/screenshare.html). 注意，这种屏幕捕捉技术是需要HTTPS的，并且应该仅仅用于开发目的，可以通过命令行标记进行打开，具体方式见[discuss-webrtc post](https://groups.google.com/forum/#!msg/discuss-webrtc/TPQVKZnsF5g/Hlpy8kqaLnEJ).
