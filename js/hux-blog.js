@@ -5,9 +5,10 @@
  */
 
 // Tooltip Init
-$(function() {
-    $("[data-toggle='tooltip']").tooltip();
-});
+// Unuse by Hux since V1.6: Titles now display by default so there is no need for tooltip
+// $(function() {
+//     $("[data-toggle='tooltip']").tooltip();
+// });
 
 
 // make all images responsive
@@ -27,7 +28,7 @@ $(document).ready(function() {
 });
 
 // responsive embed videos
-$(document).ready(function () { 
+$(document).ready(function() {
     $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
     $('iframe[src*="youtube.com"]').addClass('embed-responsive-item');
     $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
@@ -88,6 +89,15 @@ jQuery(document).ready(function($) {
                     }
                 }
                 this.previousTop = currentTop;
+
+
+                //adjust the appearance of side-catalog
+                $catalog.show()
+                if (currentTop > (bannerHeight + 41)) {
+                    $catalog.addClass('fixed')
+                } else {
+                    $catalog.removeClass('fixed')
+                }
             });
     }
 });
