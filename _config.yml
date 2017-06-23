@@ -15,7 +15,6 @@ debugable: true
 # ChooseCDNserver
 use_qiniu: true
 
-
 # SNS settings
 RSS: false
 weibo_username:     lgyjg
@@ -30,16 +29,12 @@ linkedin_username:  建国-杨-964324109
 highlighter: rouge
 permalink: pretty
 paginate: 10
-exclude: ["drafts","less","node_modules","Gruntfile.js","package.json","README.md"]
+exclude: ["drafts","less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
-
-
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
 gems: [jekyll-paginate]
-
-
 
 # Markdown settings
 # replace redcarpet to kramdown,
@@ -49,18 +44,11 @@ markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
 
-
-
 # Disqus settings
-#disqus_username: _your_disqus_short_name_
+disqus_username: aman-site
 
-# Duoshuo settings
-duoshuo_username: amansite
-# Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
-
-
-
+# Netease setttings
+#netease_comment: true
 
 # Analytics settings
 # Baidu Analytics
@@ -69,20 +57,18 @@ ba_track_id: 41c114db1f7b1a79a2a2442b96df6457
 ga_track_id: 'UA-86795794-1'            # Format: UA-xxxxxx-xx
 ga_domain: aman                         # default: auto
 
-
-
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "记录在android开发中的点点滴滴，希望认识更多的朋友！"
 sidebar-avatar: /img/avatar.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
-
-
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
 featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
 
-
+# Progressive Web Apps
+chrome-tab-theme-color: "#000000"
+service-worker: true
 
 # Friends
 friends: [
@@ -108,5 +94,4 @@ friends: [
         title: "顾嘉伟程序猿",
         href: "http://www.gujiawei.cn/"
     }
-
 ]
