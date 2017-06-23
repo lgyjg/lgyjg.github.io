@@ -15,7 +15,7 @@ tags:
 最近被google认领的亲儿子语言：Kotlin，相信Android开发者早都有所耳闻，国外的一些开发者早在去年
 就开始有尝试在项目用使用Kotlin开发了。这篇博客主要介绍国外的一位开发者总结的[Kotlin在Android
 测试中的使用](https://fernandocejas.com/2017/02/03/android-testing-with-kotlin/)。
-同时也会加上一些自己在kotlin使用中的技巧和经验。如有纰漏，请大家留言指正。
+同时也会加上一些自己的理解。如有纰漏，请大家留言指正。
 
 # Kotlin
 简单说说吧，在google 17 I/O大会上，google宣布Kotlin作为Android开发的官方语言，从此Kotlin
@@ -52,13 +52,10 @@ buildscript {
 // in app build.gradle
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-
 ...
-
 dependencies {
   ...
   compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.2-5"
-
   ...
   testCompile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.6'
   testCompile 'org.jetbrains.kotlin:kotlin-test-junit:1.0.6'
@@ -88,17 +85,17 @@ afterEvaluate {
   }
 }
 ```
-接下来就可以像java项目一样开始编写测试代码了。
+环境配置好之后，接下来就可以像java语言一样编写测试代码了。
 
-## JUit Test
+## JUnit Test
 
 这里我们仅使用[JUnit](http://junit.org/junit4/), [Mockito-kotlin](https://github.com/nhaarman/mockito-kotlin) 和 [Kluent](https://github.com/MarkusAmshove/Kluent) 库进行单元测试的编写。
 下面是一个简单的GetUserDetails.java类的测试case的例子，来自[Android-KotlinInTests](https://github.com/android10/Android-KotlinInTests):
 ```kotlin
 class GetUserDetailsTest {
-
   private val USER_ID = 123
 
+  // 需要声明为“lateinit”，否则编译器会报错
   private lateinit var getUserDetails: GetUserDetails
 
   private val userRepository: UserRepository = mock()
@@ -107,6 +104,7 @@ class GetUserDetailsTest {
 
   @Before
   fun setUp() {
+    // 初始化该变量
     getUserDetails = GetUserDetails(userRepository, threadExecutor, postExecutionThread)
   }
 
@@ -137,6 +135,7 @@ class SerializerTest {
                               "\"followers\": 7484,\n " +
                               "\"email\": \"jcooper@babbleset.edu\"\n}"
 
+  // 在声明时初始化
   private var serializer = Serializer()
 
   @Test
@@ -283,7 +282,7 @@ class MainActivityTest : AcceptanceTest<MainActivity>(MainActivity::class.java) 
   }
 }
 ```
-## 运行我们的测试 battery
+## 运行测试
 从Android Studio / Intellij 运行时，我们无需配置多余的代码，但是在命令行运行时，我们可以添加以下几个任务：
 ```groovy
 task runUnitTests(dependsOn: [':app:testDebugUnitTest']) {
@@ -302,7 +301,7 @@ task runAcceptanceTests(dependsOn: [':app:connectedAndroidTest']) {
 完美运行。。。
 
 # 总结
-如果你还没有开始使用kotlin开发Android应用，并使用它作为你的测试语言，你现在可以做个尝试了。
+如果你还没有开始使用kotlin开发Android应用，并使用它作为你的测试代码的语言，你现在可以做个尝试了。
 
 # 参考文献
 >
