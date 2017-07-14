@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 浅谈 Rxjava [PPT]
+title: 浅谈 Rxjava
 subtitle: 一篇本人在团队技术讲座中分享的关于Rxjava的ppt。
 date: 2017-06-23 18:44:32
 author: JianGuo
