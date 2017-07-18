@@ -157,11 +157,111 @@ public class UserCaseTracker {
   }
 }
 ```
+
 # 注解不支持继承
 最后的最后，注解不支持继承这件事，不得不在这里提一提，我们不能使用关键字 *extends* 来继承某个@interface。
 期待未来的版本中能给我们带来惊喜。  
 
-最近在关注java 8中的新的语法，注解方面也发生了一些变化，参见：[Repeating Annotations](https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html), 要知何时更新，时刻关注博客哦。
+# Android中的注解
+在Android应用开发的过程中，我们会遇到多种形式的注解，这些注解主要分为以下几类：
+
+## Nullness 注解 —— @NonNull
+这类注解定义了函数的参数或者返回值是否能够为空，当我们使用```@NonNull```注解某个方法的参数或者返回值时，、
+则表示该值不能为空，如果为空，则编译器会动态提示我们，也可以通过lint静态扫描时，发现可能存在的空指针异常。
+
+## 资源型注解
+这类注解主要用于标注Android应用代码中某个变量所代表的资源类型。在Android中，所有的资源都在R.java中以int
+常量的形式存在，这就导致我们想要在方法中接受一个颜色值的资源的时候，却传入了String类型的资源id，而编译器不能
+发现这样的问题，这些问题只能在运行时暴露出来。
+
+这类注解主要由 support-annotations-23.1.1提供，主要由以下几种：
+ - @AnimatorRes
+ - @AnimRes
+ - @AnyRes
+ - @ArrayRes
+ - @AttrRes
+ - @BoolRes
+ - @ColorRes
+ - @DrawableRes
+ - @FractionRes 标记是fraction类型，表示所占的百分比，主要在动画资源中常用到
+ - @IdRes
+ - @IntegerRes
+ - @InterpolatorRes 差值器类型
+ - @LayoutRes
+ - @MenuRes
+ - @PluralsRes 复数资源
+ - @RawRes
+ - @String Res
+ - @StyleableRes
+ - @StyleRes
+ - @TransitionRes
+ - @XmlRes
+
+ 定义资源类型的还有一个比较特殊的注解就是```@ColorInt```，这个注解表述了该int值为rgb的颜色值，虽说不是
+ 标准的Android资源类型，但我们仍可以认为颜色值也是一种资源类型的注解吧。
+
+## 类型定义型注解 —— @IntDef
+这类注解的主线主要是为了代替枚举类型，规范了参数的可取值范围，由于枚举在Android平台运行效率上的瓶颈，我们
+一般不推荐使用枚举类型，那如果解决这个问题呢，我们变想到用注解规范我们传入的参数的范围。
+来看一个例子：
+```java
+public static final int MODE1 = 0;
+public static final int MODE2 = 1;
+public static final int MODE3 = 2;
+
+// 定义编译策略
+@Retention(RetentionPolicy.SOURCE)
+// 表示该注解标注的参数只能从以下值中获取, flag 表示返回值或者参数是否符合某种模式，可选
+@IntDef(flag=true, value={MODE1, MODE2, MODE3})
+public @interface NavigationMode{}
+
+// 使用
+@NavigationMode pubic int getNavitationMode()
+pubic void setNavigationMode(@NavigationMode int mode);
+```
+## 线程相关注解
+关于线程相关的注解主要有四个：
+- @UiThread 表示该方法需运行在UI线程，常用来标注视图相关的函数
+- @MainThread 表示该方法需运行在主线程，常用来标注Activity生命周期相关的函数
+- @WorkerThread 后台线程
+- @BinderThread
+
+## 值范围注解
+这类注解表示函数的参数的取值在一定的范围内，主要有：
+- @Size(min=1) 集合的数量至少为1
+- @Size(max=23),
+- @Size(2), @Size(multiple=2) 分别表示元素的个数是2，或者2的倍数
+- @IntRange(from=0, to=255)
+- @FloatRange(from=0.0, to=255.0)
+
+## 权限注解 —— @RequiresPermission
+这个注解标注了在运行给方法时，需要获取的权限类型。通常有以下几种变形
+- @RequiresPermission(Manifest.permission.SET_WALLPAPER)
+- @RequiresPermission(anyOf = {Manifest.permission.SET_WALLPAPER, ....})
+- @RequiresPermission(allOf = {...})
+- @RequiresPermission.Read(@RequiresPermission(...))  
+- @RequiresPermission.Write(@RequiresPermission(...))
+
+对于Intent的权限，我们可以标注到Action字符串定义的地方
+```java
+@RequiresPermission(Manifest.permission.SET_WALLPAPER)
+public static final String ACTION_A = "adb";
+```
+
+## 重写函数注解 —— @CallSuper
+用于提示开发者，重写该函数时，需要调用super方法，否则会出现问题。
+
+## 返回值注解 —— @CheckResult
+用于提示开发者，需要开发者对返回值进行校验
+
+## 测试相关注解
+- @VisibleForTesting 对测试代码可见
+
+## 混淆注解 —— @Keep
+表示不混淆该方法
+
+
+最近在关注java 8中的新的语法，注解方面也发生了一些变化，参见：[Repeating Annotations](https://docs.oracle.com/javase/tutorial/java/annotations/repeating.html)。
 
 > 参考文献：
 《java编程思想》（"Think in java"） "注解"一章
