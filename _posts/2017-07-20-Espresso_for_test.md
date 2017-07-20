@@ -11,7 +11,7 @@ tags:
 
 > Espresso 是意大利浓缩咖啡的意思，在原产国意大利，它的意思就是咖啡的意思，意大利咖啡是一种通过
 迫使接近沸腾的高压水流通过磨成细粉的咖啡制作而成的饮料， 使用这样一个名字作为自动化测试的框架的名字，
-我想作者的意思是让我们都能够拜托测试的苦恼，坐在沙发上喝杯浓缩咖啡，让自动化脚本来完成繁重的测试工作吧。
+我想作者的意思是让我们都能够摆脱测试的苦恼，坐在沙发上喝杯浓缩咖啡，让自动化脚本来完成繁重的测试工作吧。
 官方是这么说的： “Espresso tests run optimally fast! It lets you leave your waits, syncs,
 sleeps, and polls behind while it manipulates and asserts on the application UI when it is at rest.”，
 这篇文章就来介绍一下Espresso的基本用法，可以作为一个简单的入门文章供大家参考。
