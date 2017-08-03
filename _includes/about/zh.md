@@ -24,6 +24,6 @@
       知乎: <a href="https://www.zhihu.com/people/yang-jian-guo-51" target="_blank" rel="external">杨建国</a>
     </p>
     <p>
-      下载我的<a href="/img/杨建国简历-Android开发工程师-中文_v1.2.pdf" target="_blank" rel="external">简历</a><br>
+      下载我的<a href="/img/杨建国简历-Android开发工程师-中文_v1.3.pdf" target="_blank" rel="external">简历</a><br>
     </p>
 </div>
