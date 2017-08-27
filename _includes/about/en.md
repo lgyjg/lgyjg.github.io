@@ -31,7 +31,4 @@
         <br>
         zhihu:<a href="https://www.zhihu.com/people/yang-jian-guo-51" target="_blank" rel="external">杨建国</a>
     </p>
-    <p>
-      Dowload my <a href="/img/JianguoYang_AndroidEngineer_Resume_EN.pdf" target="_blank" rel="external">resume</a><br>
-    </p>
 </div>
