@@ -6,8 +6,8 @@
         希望在这个世界遇到更好的你。
     </blockquote>
     <p>Android攻城师一枚，毕业于哈尔滨理工大学，2015届高分子材料与工程专业。喜欢摄影，旅行，音乐，运动。
-        <br>现供职于中科创达<a href="http://www.thundersoft.com" target="_blank" rel="external">thundersoft.Inc</a>,
-        从事多媒体相关的研发工作，正在关注机器学习，人工智能，虚拟现实等技术。</p>
+        <br>现供职于<a href="http://www.xiaomi.com" target="_blank" rel="external">北京小米科技有限责任公司</a>,
+        从事Camera相关的研发工作，正在关注机器学习，人工智能，kotlin，python等技术。</p>
     <h3 id="关注">
         <a href="#关注" class="headerlink" title="关注"></a>关注</h3>
     <ol>

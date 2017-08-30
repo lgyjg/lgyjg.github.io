@@ -9,8 +9,8 @@
         of 2015, which is located in Heilongjiang province. </p>
     <h3 id="Career-Path"><a href="#Career-Path" class="headerlink" title="Career Path"></a>Career
         Path</h3>
-    <p>I’m employed full time by <a href="http://www.thundersoft.com" target="_blank"
-                                    rel="external">thundersoft.Inc</a>, in Beijing. Concentrating on
+    <p>I’m employed full time by <a href="http://www.xiaomi.com" target="_blank"
+                                    rel="external">xiaomi</a>, in Beijing. Concentrating on
         MultiMedia technology such as Camera, VoiceTrigger, Gellary etc. I’m interested in Machine
         Learning, Artificial Intelligence(AI) and Virtual Reality(VR) and so on, because of I think
         it will change people’s life in future. I am willing to create someting to change the world.
