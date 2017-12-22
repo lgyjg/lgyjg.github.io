@@ -36,21 +36,21 @@ E AndroidRuntime:  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:77
 
 通常，我们写的代码是这样的：
 
-![图1](/img/in-post/Android_Handler_Memory_Leak/pic_1.jpg)
+![图1](/img/in-post/Android_Handler_Memory_Leak/pic_1.png)
 
 我们发现AndroidStudio已经智能的提示这块代码可能导致内存泄露了：
 
-![图2](/img/in-post/Android_Handler_Memory_Leak/pic_2.jpg)
+![图2](/img/in-post/Android_Handler_Memory_Leak/pic_2.png)
 
 如果一个Handler被申明为内部类，它将有可能阻止其外部类的回收，如果Handler使用的是其他的非Main thread的Looper 或者MessageQueue，这时是没有问题的，但是如果Handler使用了主线程的Looper或者MessageQueue，则需要修改Handler的声明方式，申明为一个静态类，并使用WeakReference 来应用外部类的实例，并保证所有使用的外部类的实例都采用弱引用的方式实现。
 
 说的一头雾水？于是乎网上找到了解决方案，把Handler实现成了这个样子：
 
-![图3](/img/in-post/Android_Handler_Memory_Leak/pic_3.jpg)
+![图3](/img/in-post/Android_Handler_Memory_Leak/pic_3.png)
 
 于是乎，你给Handler发送了这样一条消息：
 
-![图4](/img/in-post/Android_Handler_Memory_Leak/pic_4.jpg)
+![图4](/img/in-post/Android_Handler_Memory_Leak/pic_4.png)
 
 无论你怎么打开销毁Activity，OOM再也没有出现，终于，AndroidStudio不再报错了，长吸一口气，终于可以愉快的玩耍了！
 
@@ -58,19 +58,19 @@ E AndroidRuntime:  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:77
 
 就这样你以为你解决了问题。可是，有一天，你的猪队友发送了这样一条消息给Handler：
 
-![图5](/img/in-post/Android_Handler_Memory_Leak/pic_5.jpg)
+![图5](/img/in-post/Android_Handler_Memory_Leak/pic_5.png)
 
 
 结果没多久，OOM又出现了！ 什么？WTF，之前写的不起作用？ 因为Runnable也持有外部类Activity的引用啊！
 于是你有吐着血把Runable写成了静态内部类：
 
-![图6](/img/in-post/Android_Handler_Memory_Leak/pic_6.jpg)
+![图6](/img/in-post/Android_Handler_Memory_Leak/pic_6.png)
 
 但现实中，并没有这么轻松，因为Runable或多或少要引用很多Activity的成员变量，都是用弱引用代码可读性骤然下降。
 
 最终，你在徘徊与彷徨之中，有一位老人给你抛出这么一段代码：
 
-![图7](/img/in-post/Android_Handler_Memory_Leak/pic_7.jpg)
+![图7](/img/in-post/Android_Handler_Memory_Leak/pic_7.png)
 
 于是，你的眼前一片光明，OOM再也没有出现过了！！！
 
