@@ -43,12 +43,12 @@ pip install lxml
 pip install requests
 pip install pandas
 pip install bs4
-pip install rushare
+pip install tushare
 ```
 这里遇到了一个坑，如果在jupyter notebook 中遇到'module' object has no attribute 'stock'的错误，需要重启下kernel。
 如果需要安装特定版本的模块，可以在模块名后面加==，如lxml==3.4.2。
 
-不出以为的话，你的环境已经准备好了。
+不出意外的话，你的环境已经准备好了。
 
 ```shell 
 jupyter notebook
