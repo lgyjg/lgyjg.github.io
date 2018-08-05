@@ -60,9 +60,7 @@ function checkSignature()
     sort($tmpArr);
     $tmpStr = implode( $tmpArr );
     $tmpStr = sha1($tmpStr);
-
-    //error_log("sha1 tempstr =".$tmpStr."; ", 3, "/var/tmp/my-errors.log");
-    //error_log("signature = ".$signature."\n", 3, "/var/tmp/my-errors.log");
+    
     return $tmpStr == $signature;
 }
 
