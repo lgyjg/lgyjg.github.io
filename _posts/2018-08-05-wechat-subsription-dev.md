@@ -12,7 +12,7 @@ tags:
 > 周末刚好有一天休息的时间，一时兴起，就把自己停更半年的公众号（“开源技术”）拿出来折腾了，打开公众号后台，看了看仅有的18个粉丝，心头一丝凉意。不过为了扩展下公众号的功能，我决定给公众号做个聊天机器人，造福单身汉。 要开通公众号的开发功能，还是有一些门槛的，域名，备案，服务器这些是少不了了。如果你也想折腾大的话，提前把这些准备好。
 
 
-# 配置服务器配置并开通开发者功能
+## 配置服务器配置并开通开发者功能
 在开启这个功能的时候，需要配置四个参数。
 
 * URL —— 服务器响应地址，必须以http://或https://开头，分别支持80端口和443端口。 这里建议使用二级域名，不要使用路由。
@@ -32,11 +32,11 @@ api_token = md5 ('模块名' + '控制器名' + '方法名' + '2018-08-05' + '�
 
 如果你填写完上面的信息，就可以保存设置并开启功能了，不过需要注意的是，填写的URL的域名需要实名认证并且备案，否则无法开通。
 
-# 请求鉴权
+## 请求鉴权
 微信提供了一种鉴权算法帮助你确认所有的请求都是来自于微信服务器，每次微信发送的GET请求，都会包含如下信息：
-- signature	微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-- timestamp	时间戳
-- nonce	随机数
+* signature	微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
+* timestamp	时间戳
+* nonce	随机数
 
 对于首次校验的signature请求，还会多一个参数：```echostr	随机字符串```, 如果鉴权成功，我们需要将该字符串返回给微信，才能成功开启该功能。
 根据微信文档，鉴权算法如下：
@@ -95,13 +95,14 @@ if (isset($_GET["echostr"])){
 ?>
 ```	
 
-# 消息接受与推送
+## 消息接受与推送
 
 微信公众平台提供了三种消息回复的格式，即文本回复、音乐回复和图文回复，这里介绍文字的回复，其他的可以按照同样的思路实现。
 
 对于每一个POST请求，开发者在响应包中返回特定xml结构，对该消息进行响应（现支持回复文本、图文、语音、视频、音乐）。
 
 文本回复xml 结构：
+
 ```xml
  <xml>
  <ToUserName><![CDATA[toUser]]></ToUserName>
@@ -111,6 +112,7 @@ if (isset($_GET["echostr"])){
  <Content><![CDATA[content]]></Content>
  </xml>
 ```
+
 其中：
 * ToUserName —— 接受者OPENID
 * FromUserName —— 开发者微信号，也就是微信公共号提供的原始id，每个公众号唯一。
@@ -119,6 +121,7 @@ if (isset($_GET["echostr"])){
 * Content —— 消息内容
 
 我们可以针对消息的包装封装出一个函数：
+
 ```php
 function getResonseMessage($object, $content){
     $textTpl = "<xml>
@@ -245,6 +248,7 @@ private function receiveFile($object) {
 ```
 
 上面的代码需要注意的一点，使用了simplexml_load_string函数，这个函数是php 的一个xml组建，需要单独安装，否则不能正常运行：
+
 ```shell
 sudo apt-get install php-xml
 sudo apt-get install php-xmlrpc
