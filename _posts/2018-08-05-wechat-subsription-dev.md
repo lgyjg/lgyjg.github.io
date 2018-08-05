@@ -139,45 +139,45 @@ function getResonseMessage($object, $content){
 
 ```php
 /**
- * 响应用户发来的消息
+ * 响应用户发来的消息;
  */
 public function responseMsg(){
-    //获取post过来的数据，它一个XML格式的数据 
+    //获取post过来的数据，它一个XML格式的数据 ;
     $postStr = file_get_contents('php://input');
     if (!empty($postStr)){
-        // 解析该xml字符串，利用simpleXML 
+        // 解析该xml字符串，利用simpleXML; 
         libxml_disable_entity_loader(true);
-        // 禁止xml实体解析，防止xml注入, 将XML数据解析为一个对象 
+        // 禁止xml实体解析，防止xml注入, 将XML数据解析为一个对象; 
         $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
         $RX_TYPE = trim($postObj->MsgType);
         Utils::logger("type is :".$RX_TYPE, "用户1");
-        //消息类型分类 
+        //消息类型分类; 
         switch($RX_TYPE){
-            case "event": // 事件类型 
+            case "event": // 事件类型; 
                 $result = $this->receiveEvent($postObj);
                 break;
-            case "text"://文本消息 
+            case "text"://文本消息; 
                 $result = $this->receiveText($postObj);
                 break;
-            case 'image'://图片消息 
+            case 'image'://图片消息; 
                 $result = $this->receiveImage($postObj);
                 break;
-            case 'voice'://语音消息 
+            case 'voice'://语音消息; 
                 $result = $this->receiveVoice($postObj);
                 break;
-            case 'video'://视频消息 
+            case 'video'://视频消息; 
                 $result = $this->receiveVideo($postObj);
                 break;
-            case 'shortvideo'://短视频消息 
+            case 'shortvideo'://短视频消息; 
                 $result = $this->receiveShortvideo($postObj);
                 break;
-            case 'location'://位置消息  
+            case 'location'://位置消息;  
                 $result = $this->receiveLocation($postObj);
                 break;
-            case 'link'://链接消息 
+            case 'link'://链接消息; 
                 $result = $this->receiveLink($postObj);
                 break;
-            case 'file': // 文件 
+            case 'file': // 文件; 
                 $result = $this->receiveFile($postObj);
                 break;
             default:
@@ -197,14 +197,14 @@ private function receiveText($object) {
 
 private function receiveEvent($object){
     switch ($object->Event){
-        //关注公众号事件 
-        case "subscribe": // 关注事件 
+        //关注公众号事件; 
+        case "subscribe": // 关注事件; 
             $content = "欢迎关注开源技术微信公众号，在这里等你很久了";
             break;
-        case "CLICK": //菜单点击事件 
+        case "CLICK": //菜单点击事件; 
             $content = "大王终于翻我牌了…";
             break;
-        case "VIEW"://连接跳转事件 
+        case "VIEW"://连接跳转事件; 
             $content = "你想去哪儿啊";
             break;
         default:
