@@ -24,24 +24,27 @@ tags:
 
 api_token = md5 ('模块名' + '控制器名' + '方法名' + '2018-08-05' + '加密密钥')
 其中的 
-1、 '2018-08-05' 为当天时间，
+
+1、'2018-08-05' 为当天时间，
 2、'加密密钥' 为私有的加密密钥，我使用了上面随机生成的EncodingAESKey。
 
 为什么要使用这种方式呢，主要还是为了安全性，防止访问鉴权被破解。同时复杂的token可以避免和其他公众号的token重复，如果重复，则会开启功能失败。 
 
 如果你填写完上面的信息，就可以保存设置并开启功能了，不过需要注意的是，填写的URL的域名需要实名认证并且备案，否则无法开通。
 
-# 消息鉴权
+# 请求鉴权
 微信提供了一种鉴权算法帮助你确认所有的请求都是来自于微信服务器，每次微信发送的GET请求，都会包含如下信息：
-signature	微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
-timestamp	时间戳
-nonce	随机数
+- signature	微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。
+- timestamp	时间戳
+- nonce	随机数
 
 对于首次校验的signature请求，还会多一个参数：```echostr	随机字符串```, 如果鉴权成功，我们需要将该字符串返回给微信，才能成功开启该功能。
 根据微信文档，鉴权算法如下：
+
 * 1)将token、timestamp、nonce三个参数进行字典序排序 
 * 2）将三个参数字符串拼接成一个字符串进行sha1加密 
 * 3）开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
+
 ```php
 <?php
 define("TOKEN","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
